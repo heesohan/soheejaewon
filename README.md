@@ -1,2 +1,0 @@
-# soheejaewon
-Wedding invitation
