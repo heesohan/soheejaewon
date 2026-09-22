@@ -3,16 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>최재원 · 한소희 결혼합니다</title>
+<title>최재원, 한소희 결혼합니다</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@300;400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <!-- 카카오 SDK (공유하기/로그인용) : YOUR_KAKAO_JS_KEY를 발급받은 JavaScript 키로 교체 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <!-- 카카오맵 SDK (지도용, 위와 같은 JS 키 사용) : libraries=services 는 주소->좌표 변환(Geocoder)에 필수 -->
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JS_KEY&libraries=services"></script>
 
+
+<!--
+  ==================== 빠른 수정 안내 ====================
+  1) 메인 이름을 위·아래로 이동: CSS의 --name-offset-y 값 수정
+     예) 12px → 20px : 이름만 8px 더 아래로 이동
+         12px → 0px  : 원래 위치로 이동
+         12px → -8px : 이름을 위로 이동
+  2) 메인 사진 크기: --photo-width 값 수정 (현재 60%)
+  3) 사진 뒤 흰 종이 테두리: --paper-border 값 수정 (현재 2px)
+  4) 하트 움직임을 없애려면 .heart-rain span의 animation 줄을 삭제하거나
+     animation:none; 으로 변경
+  아래 '메인 첫 화면' 영역의 CSS와 HTML에는 항목별 설명 주석이 있습니다.
+-->
 <style>
+@import url('https://fonts.googleapis.com/earlyaccess/jejugothic.css');
 :root{
   --bg-dark:#2d2d2d;
   --accent:#689ebb;
@@ -33,11 +47,25 @@ html,body{
   max-width:480px;
   margin:0 auto;
   min-height:100vh;
-  background-color:var(--bg-dark);
+
+  /* =====================================================
+     전체 공통 배경: 
+     ===================================================== */
+  background-color:#2d2d2d;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='120' viewBox='0 0 240 120'%3E%3Cpath d='M0 60 Q30 40 60 60 T120 60 T180 60 T240 60' stroke='%23c0c0c0' stroke-opacity='0.05' stroke-width='1' fill='none'/%3E%3Cpath d='M0 90 Q30 70 60 90 T120 90 T180 90 T240 90' stroke='%23c0c0c0' stroke-opacity='0.04' stroke-width='1' fill='none'/%3E%3Cpath d='M0 30 Q30 10 60 30 T120 30 T180 30 T240 30' stroke='%23c0c0c0' stroke-opacity='0.035' stroke-width='1' fill='none'/%3E%3C/svg%3E");
-  background-repeat:repeat;
-  background-size:240px 120px;
+    radial-gradient(ellipse 52% 7% at -8% 7%, rgba(63,63,63,.38) 0%, rgba(55,55,55,.22) 38%, transparent 78%),
+    radial-gradient(ellipse 45% 8% at 106% 15%, rgba(60,60,60,.34) 0%, rgba(51,51,51,.18) 42%, transparent 80%),
+    radial-gradient(ellipse 58% 7% at 0% 28%, rgba(59,59,59,.30) 0%, transparent 76%),
+    radial-gradient(ellipse 47% 9% at 105% 39%, rgba(62,62,62,.32) 0%, rgba(48,48,48,.16) 47%, transparent 81%),
+    radial-gradient(ellipse 62% 8% at -10% 52%, rgba(57,57,57,.29) 0%, transparent 78%),
+    radial-gradient(ellipse 50% 8% at 108% 66%, rgba(61,61,61,.31) 0%, transparent 79%),
+    radial-gradient(ellipse 60% 7% at 4% 80%, rgba(58,58,58,.27) 0%, transparent 79%),
+    radial-gradient(ellipse 48% 8% at 104% 94%, rgba(61,61,61,.30) 0%, transparent 80%),
+    linear-gradient(165deg, #2b2b2b 0%, #303030 42%, #2c2c2c 100%);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  background-position:center top;
+
   position:relative;
   overflow-x:hidden;
   box-shadow:0 0 60px rgba(0,0,0,0.6);
@@ -65,46 +93,95 @@ section.section{padding:64px 24px; position:relative;}
   to{ opacity:1; transform:translateY(0); }
 }
 
-/* ===================== 1. main ===================== */
+/* =========================================================
+   1. 메인 첫 화면
+   - 수정할 때는 아래 :root의 숫자만 먼저 조절해 보세요.
+   ========================================================= */
 #main{
-  height:100vh;
-  min-height:520px;
-  padding:0;
-  background:#000;
+  /* ===== 쉽게 수정하는 값 ===== */
+  --name-offset-y:16px; /* 이름만 아래로 내리는 거리. 숫자를 키우면 더 아래로 이동 */
+  --photo-width:60%; /* 사진 너비. 예: 55%, 65% */
+  --photo-max-width:290px; /* 큰 화면에서 사진의 최대 너비 */
+  --paper-border:2px; /* 사진 뒤 흰 종이가 사진 밖으로 보이는 두께 */
+
+  /* 첫 화면의 높이·안쪽 여백 */
+  min-height:100svh;
+  height:auto;
+  padding:clamp(46px,10vh,84px) 24px clamp(46px,9vh,76px);
   position:relative;
   display:flex;
-  align-items:flex-end;
-  justify-content:center;
-}
-#main img{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover;
-  filter:brightness(0.92);
-}
-#main .scroll-indicator{
-  position:absolute;
-  bottom:32px;
-  display:flex;
-  flex-direction:column;
   align-items:center;
-  gap:6px;
-  z-index:2;
-  color:var(--text-white);
-  font-size:12px;
-  letter-spacing:0.15em;
+  justify-content:center;
+  overflow:hidden;
+
+  /* 미색 종이 질감 배경 */
+  background-color:#e8e4d9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .11'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 22% 15%,rgba(255,255,255,.68),transparent 48%),
+    radial-gradient(ellipse at 80% 92%,rgba(130,117,91,.11),transparent 56%),
+    linear-gradient(110deg,rgba(117,102,76,.045),transparent 42%,rgba(255,255,255,.30) 72%,rgba(117,102,76,.05));
+  background-size:180px 180px,100% 100%,100% 100%,100% 100%;
+  color:#28241f;
 }
-.bounce-arrow{
-  width:10px; height:10px;
-  border-right:2px solid var(--text-white);
-  border-bottom:2px solid var(--text-white);
-  transform:rotate(45deg);
-  animation:bounceDown 1.6s infinite;
+
+/* 종이 카드 가장자리의 아주 옅은 이중 테두리 */
+#main::before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border:1px solid rgba(112,101,83,.14);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.23),0 0 0 1px rgba(255,255,255,.22);
+  border-radius:3px;
+  pointer-events:none;
 }
-@keyframes bounceDown{
-  0%,100%{transform:rotate(45deg) translate(0,0); opacity:0.4;}
-  50%{transform:rotate(45deg) translate(6px,6px); opacity:1;}
+
+/* 배경에서 떠다니는 하트 전체 영역 */
+.heart-rain{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+/* 개별 하트: 하단 끝이 둥근 흰색 음각 SVG 하트 */
+.heart-rain span{position:absolute;width:clamp(13px,4vw,21px);aspect-ratio:1/1;background-repeat:no-repeat;background-position:center;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 30'%3E%3Cpath d='M16 27.5C13.3 25.4 3 18.1 3 10.4 3 6.5 6 3.8 9.8 3.8c2.7 0 5.1 1.5 6.2 3.7 1.1-2.2 3.5-3.7 6.2-3.7 3.8 0 6.8 2.7 6.8 6.6 0 7.7-10.3 15-13 17.1Z' fill='%23eeece4' stroke='%23ffffff' stroke-opacity='.9' stroke-width='.7'/%3E%3C/svg%3E");filter:drop-shadow(1px 1px .6px rgba(123,111,93,.25));animation:heartFloat 4.8s ease-in-out infinite alternate;}
+/* 각 하트의 위치·크기·움직임 시작 시점 */
+.heart-rain span:nth-child(1){left:7%;top:12%;animation-delay:-1.8s}.heart-rain span:nth-child(2){left:85%;top:9%;width:10px;animation-delay:-.6s}.heart-rain span:nth-child(3){left:13%;top:32%;width:12px;animation-delay:-3.4s}.heart-rain span:nth-child(4){left:91%;top:37%;width:13px;animation-delay:-2.3s}.heart-rain span:nth-child(5){left:5%;top:57%;width:10px;animation-delay:-4.1s}.heart-rain span:nth-child(6){left:87%;top:61%;width:12px;animation-delay:-1.3s}.heart-rain span:nth-child(7){left:18%;top:76%;width:11px;animation-delay:-.2s}.heart-rain span:nth-child(8){left:78%;top:81%;width:12px;animation-delay:-3s}.heart-rain span:nth-child(9){left:44%;top:7%;width:11px;animation-delay:-2.7s}.heart-rain span:nth-child(10){left:3%;top:88%;width:11px;animation-delay:-.8s}
+/* 하트가 아주 천천히 위로 떠오르는 애니메이션 */
+@keyframes heartFloat{from{transform:translate3d(0,0,0) rotate(-7deg);opacity:.4}to{transform:translate3d(5px,-15px,0) rotate(7deg);opacity:.85}}
+
+/* 이름·사진·예식 정보를 세로 중앙으로 모아 두는 컨테이너 */
+.main-paper-intro{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
+/* jaewon sohee: Sacramento + 종이에 눌린 양각 효과 */
+/* 신랑·신부 영문 이름: Cormorant Unicase + 종이에 눌린 양각 효과 */
+.main-names{
+  margin:0 0 clamp(44px,8vh,76px);
+  position:relative;
+  top:var(--name-offset-y);
+
+  font-family:'Cormorant Unicase',serif;
+  font-size:17pt;
+  font-weight:500;
+  line-height:1;
+  letter-spacing:.035em;
+
+  color:#e5e0d4;
+  white-space:nowrap;
+  text-shadow:
+    -1px -1px 1px rgba(255,255,255,.92),
+    1px 1px 1px rgba(117,104,84,.37),
+    0 1px 2px rgba(105,92,72,.12);
 }
+/* 사진과 사진 뒤 2px 흰 종이 레이어를 함께 감싸는 영역 */
+.main-photo-wrap{position:relative;z-index:0;width:var(--photo-width);max-width:var(--photo-max-width);isolation:isolate;}
+/* 사진과 동일 위치이며 사방 2px 크게 보이는 흰 종이 */
+.main-photo-wrap::before{content:"";position:absolute;z-index:-1;inset:calc(var(--paper-border) * -1);background:#fbfaf6;box-shadow:0 5px 10px rgba(53,42,30,.11);}
+/* 실제 메인 사진: 세로는 원본 비율로 자동 유지 */
+.main-photo{display:block;width:100%;height:auto;object-fit:contain;filter:sepia(.12) saturate(.82) contrast(.95) brightness(.99);}
+/* 사진 아래 예식 일시·장소 */
+.main-wedding-info{margin:clamp(35px,7vh,62px) 0 0;font-family:'Jeju Gothic','Noto Sans KR',sans-serif;font-size:12px;font-weight:400;line-height:2.05;letter-spacing:.025em;color:#332e27;}
+.main-wedding-info span{display:block;}
+.main-wedding-info .venue{margin-top:2px;font-size:11px;letter-spacing:.015em;}
+
+/* 화면 높이가 낮은 기기에서는 첫 화면이 넘치지 않게 여백·사진만 축소 */
+@media (max-height:690px){#main{padding-top:34px;padding-bottom:34px;}.main-names{margin-bottom:28px;font-size:28pt;}.main-photo-wrap{width:55%;max-width:240px;}.main-wedding-info{margin-top:28px;line-height:1.85;}}
+/* '동작 줄이기' 설정 사용자는 하트 움직임을 멈춤 */
+@media (prefers-reduced-motion:reduce){.heart-rain span{animation:none;}}
 
 /* ===================== 2. INVITATION CARD ===================== */
 #invitation{ text-align:center; background:transparent; }
@@ -271,99 +348,64 @@ section.section{padding:64px 24px; position:relative;}
 }
 .card-counter .count-num{ color:var(--accent); font-weight:700; }
 
-/* ===================== 사진 팝업 ===================== */
-
 .photo-popup{
-  position:fixed;
-  inset:0;
-  z-index:300;
+  position:fixed; inset:0;
+  background:rgba(45,45,45,0.5);
   display:none;
   align-items:center;
   justify-content:center;
+  z-index:300;
   overflow:hidden;
-
-  /* 사진 외 배경: 사이트 배경색 50% 반투명 */
-  background:rgba(45,45,45,0.5);
-
   touch-action:none;
-  overscroll-behavior:contain;
 }
+.photo-popup.active{ display:flex; }
 
-.photo-popup.active{
+.popup-close{
+  position:absolute; top:20px; right:20px;
+  width:36px; height:36px;
+  border:none; border-radius:50%;
+  background:rgba(0,0,0,0.4);
+  color:#fff; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:310;
+}
+.popup-nav{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:40px; height:40px;
+  border:none; border-radius:50%;
+  background:rgba(0,0,0,0.35);
+  color:#fff; font-size:22px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:310;
+}
+.popup-prev{ left:14px; }
+.popup-next{ right:14px; }
+
+.popup-track{
   display:flex;
+  width:300vw;
+  height:100%;
+  transform:translate3d(-100vw,0,0);
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
+  will-change:transform;
 }
+.popup-track.no-transition{ transition:none !important; }
 
-/*
-  사진이 실제로 표시되는 영역.
-  화면보다 작게 두어 바깥 반투명 배경이 계속 보이도록 함.
-*/
-.popup-stage{
-  position:relative;
-  width:92vw;
-  height:86vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
+.popup-slide{
+  width:100vw; height:100%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
 }
-
-/* 현재 팝업 사진 */
-.popup-image{
-  display:block;
-  max-width:100%;
-  max-height:100%;
-  width:auto;
-  height:auto;
+.popup-slide img{
+  width:100vw;
+  height:100%;
   object-fit:contain;
-  transform:translate3d(0,0,0) scale(1);
   transform-origin:center center;
-  transition:transform 0.25s ease, opacity 0.24s ease;
-  will-change:transform, opacity;
-  pointer-events:none;
+  transition:transform 0.2s ease;
   user-select:none;
   -webkit-user-drag:none;
 }
-	
-	.popup-close{
-  position:absolute;
-  top:18px;
-  right:18px;
-  z-index:310;
+.popup-slide img.no-transition{ transition:none; }
 
-  width:36px;
-  height:36px;
-  padding:0;
-
-  border:0;
-  border-radius:50%;
-  background:rgba(0,0,0,0.22);
-  color:rgba(255,255,255,0.9);
-
-  font-family:Arial,sans-serif;
-  font-size:28px;
-  font-weight:300;
-  line-height:34px;
-  text-align:center;
-
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.popup-close:active{
-  background:rgba(0,0,0,0.38);
-}
-
-/* 스와이프 중에는 손가락을 즉시 따라감 */
-.popup-image.is-dragging{
-  transition:none;
-}
-
-/* 다음/이전 이미지로 바뀌기 직전 페이드아웃 */
-.popup-image.is-fading{
-  opacity:0;
-}
-	
-	
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
@@ -547,12 +589,29 @@ footer{ text-align:center; padding:24px 24px 60px; }
 <body>
 <div class="site" id="site">
 
-  <!-- ===================== 1. 메인 ===================== -->
+  <!-- ===================== 1. 메인 첫 화면 ===================== -->
   <section id="main" class="section">
-    <img src="https://heesohan.github.io/soheejaewon/11.jpg">
-    <div class="scroll-indicator">
-      <span>SCROLL</span>
-      <div class="bounce-arrow"></div>
+    <!-- 배경에서 천천히 움직이는 음각 하트 10개 -->
+    <div class="heart-rain" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- 이름 · 사진 · 예식 정보 -->
+    <div class="main-paper-intro">
+      <!-- 이름 문구를 바꾸려면 아래 텍스트만 수정 -->
+      <h1 class="main-names">Jaewon and Sohee</h1>
+
+      <!-- 사진을 바꾸려면 아래 src="..." 안의 이미지 주소만 교체 -->
+      <div class="main-photo-wrap">
+        <img class="main-photo" src="https://heesohan.github.io/soheejaewon/11.jpg" alt="최재원과 한소희의 웨딩 사진">
+      </div>
+
+      <!-- 예식 일시·장소를 바꾸려면 아래 텍스트만 수정 -->
+      <p class="main-wedding-info">
+        <span>2026년 11월 28일 토요일 12시</span>
+        <span class="venue">서울중앙교회 교육원 6층 중강당</span>
+      </p>
     </div>
   </section>
 
@@ -830,22 +889,18 @@ footer{ text-align:center; padding:24px 24px 60px; }
 </div>
 
 <div class="toast" id="toast"></div>
-<!-- 사진 팝업 -->
+<!-- 사진 확대 팝업 -->
 <div class="photo-popup" id="photoPopup">
-  <button
-    type="button"
-    class="popup-close"
-    id="popupClose"
-    aria-label="사진 팝업 닫기">×</button>
-
-  <div class="popup-stage" id="popupStage">
-    <img
-      class="popup-image"
-      id="popupImage"
-      src="https://heesohan.github.io/soheejaewon/1.jpg"
-      alt="웨딩 사진">
+  <button class="popup-close" id="popupClose" aria-label="닫기">✕</button>
+  <button class="popup-nav popup-prev" id="popupPrev" aria-label="이전 사진">‹</button>
+  <button class="popup-nav popup-next" id="popupNext" aria-label="다음 사진">›</button>
+  <div class="popup-track" id="popupTrack">
+    <div class="popup-slide"><img id="popupImgPrev" src="" alt=""></div>
+    <div class="popup-slide"><img id="popupImgCur"  src="" alt=""></div>
+    <div class="popup-slide"><img id="popupImgNext" src="" alt=""></div>
   </div>
-	
+</div>
+
 <script>
 /* ---------- modal ---------- */
 function openModal(){ document.getElementById('contactModal').classList.add('active'); }
@@ -1098,19 +1153,6 @@ function attachDrag(card){
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
       openPhotoPopup(cardOrder[0]);
-		card.addEventListener('click', (event) => {
-  if(card.dataset.wasDragged === 'true'){
-    card.dataset.wasDragged = 'false';
-	  if(Math.hypot(curX, curY) > TAP_THRESHOLD){
-  card.dataset.wasDragged = 'true';
-}
-    return;
-  }
-
-  event.preventDefault();
-  event.stopPropagation();
-  openPhotoPopup(cardOrder[0]);
-});
     } else {
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
@@ -1145,291 +1187,187 @@ function throwCard(card, x, y){
 
 renderStack();
 
-
 /* ==========================================================
-   사진 팝업
-   - 카드 클릭: 해당 사진 팝업
-   - 한 손가락 좌우 스와이프: 이전/다음 사진
-   - 화면 폭의 18%만 이동해도 전환
-   - 두 손가락 핀치: 현재 사진만 최대 200% 확대
-   - 확대 상태 한 손가락 이동: 사진 이동
-   - 전체 페이지 확대 없음
+   사진 확대 팝업 (캐러셀 방식) — 이 블록이 팝업 관련 코드의 유일한 버전임
+   - 화면 너비의 18%만 밀어도 다음/이전 사진으로 넘어감
+   - 손을 놓았을 때 이미 이동한 만큼은 그대로 이어서 마무리 (남은 거리에 비례한 시간)
+     -> 튕기듯 던져지는 느낌 없이 드래그가 자연스럽게 이어짐
+   - 핀치/더블탭으로 최대 200% 확대, 확대 중엔 드래그가 팬(이동)
+   - 이동 없는 탭 한 번 또는 X 버튼 -> 종료
    ========================================================== */
+const photoPopup    = document.getElementById('photoPopup');
+const popupTrack    = document.getElementById('popupTrack');
+const imgPrevEl     = document.getElementById('popupImgPrev');
+const imgCurEl      = document.getElementById('popupImgCur');
+const imgNextEl     = document.getElementById('popupImgNext');
+const popupCloseBtn = document.getElementById('popupClose');
+const popupPrevBtn  = document.getElementById('popupPrev');
+const popupNextBtn  = document.getElementById('popupNext');
 
-const photoPopup = document.getElementById('photoPopup');
-const popupStage = document.getElementById('popupStage');
-const popupImage = document.getElementById('popupImage');
-const popupCloseButton = document.getElementById('popupClose');
-
-const POPUP_MAX_SCALE = 2;
-const SWIPE_RATIO = 0.18;
-const SLIDE_DURATION = 300;
+const POPUP_MAX_SCALE    = 2;    // 200%
+const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
+const BASE_SETTLE_MS     = 420;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
 
 let popupIndex = 0;
-let popupScale = 1;
-let popupX = 0;
-let popupY = 0;
-let popupChanging = false;
-
+let popupScale = 1, popupPanX = 0, popupPanY = 0;
 const popupPointers = new Map();
+let pinchStartDist = 0, pinchStartScale = 1;
+let dragStartX = 0, dragStartY = 0, dragDX = 0, dragDY = 0, tapMoved = false;
+let panBaseX = 0, panBaseY = 0;
+let lastTapTime = 0, tapCloseTimer = null;
+let popupAnimating = false;
 
-let startX = 0;
-let startY = 0;
-let moveX = 0;
-let moveY = 0;
-let hasMoved = false;
-
-let pinchStartDistance = 0;
-let pinchStartScale = 1;
-let panStartX = 0;
-let panStartY = 0;
-
-function wrapPopupIndex(index){
-  return ((index % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+function wrapIndex(i){
+  return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
 }
-
-function applyPopupImageTransform(animated = false){
-  popupImage.classList.toggle('is-dragging', !animated);
-  popupImage.style.transform =
-    `translate3d(${popupX}px,${popupY}px,0) scale(${popupScale})`;
+function setPopupImages(){
+  imgPrevEl.src = GALLERY_IMAGES[wrapIndex(popupIndex - 1)];
+  imgCurEl.src  = GALLERY_IMAGES[wrapIndex(popupIndex)];
+  imgNextEl.src = GALLERY_IMAGES[wrapIndex(popupIndex + 1)];
 }
-
-function resetPopupImage(){
-  popupScale = 1;
-  popupX = 0;
-  popupY = 0;
-
-  popupImage.classList.add('is-dragging');
-  popupImage.style.transform = 'translate3d(0,0,0) scale(1)';
-
-  requestAnimationFrame(() => {
-    popupImage.classList.remove('is-dragging');
-  });
+function resetZoom(){
+  popupScale = 1; popupPanX = 0; popupPanY = 0;
+  imgCurEl.classList.add('no-transition');
+  imgCurEl.style.transform = 'translate(0px,0px) scale(1)';
+  requestAnimationFrame(() => imgCurEl.classList.remove('no-transition'));
 }
-
-function preloadNeighborImages(){
-  const prev = new Image();
-  const next = new Image();
-
-  prev.src = GALLERY_IMAGES[wrapPopupIndex(popupIndex - 1)];
-  next.src = GALLERY_IMAGES[wrapPopupIndex(popupIndex + 1)];
-}
-
-/* 카드의 실제 이미지 번호를 받아 팝업 표시 */
-function openPhotoPopup(imageIndex){
-  popupIndex = Number(imageIndex);
-  popupChanging = false;
-
-  popupImage.src = GALLERY_IMAGES[popupIndex];
-  resetPopupImage();
-  preloadNeighborImages();
-
+function openPhotoPopup(imgIdx){
+  popupIndex = imgIdx;
+  popupAnimating = false;
+  setPopupImages();
+  resetZoom();
+  popupTrack.classList.add('no-transition');
+  popupTrack.style.transform = 'translate3d(-100vw,0,0)';
+  requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closePhotoPopup(){
   photoPopup.classList.remove('active');
   document.body.style.overflow = '';
-  popupPointers.clear();
-  popupChanging = false;
-  resetPopupImage();
 }
-popupCloseButton.addEventListener('click', (event) => {
-  event.stopPropagation();
-  closePhotoPopup();
-});
-/*
-  direction:
-  1  = 다음 사진 (왼쪽 스와이프)
-  -1 = 이전 사진 (오른쪽 스와이프)
-*/
-function changePopupPhoto(direction){
-  if(popupChanging) return;
 
-  popupChanging = true;
+// direction: -1 이전 사진, 0 원위치 복귀, 1 다음 사진
+// durationMs: 이 전환에 걸릴 시간(ms) — 남은 거리에 비례해서 호출부에서 계산해서 넘김
+function settleSwipe(direction, durationMs){
+  const target = direction === -1 ? '0vw' : direction === 1 ? '-200vw' : '-100vw';
+  popupAnimating = direction !== 0;
+  popupTrack.style.transitionDuration = `${durationMs}ms`;
+  popupTrack.style.transitionTimingFunction = 'cubic-bezier(0.22,1,0.36,1)';
+  popupTrack.style.transform = `translate3d(${target},0,0)`;
 
-  const width = popupStage.clientWidth || window.innerWidth * 0.92;
-  const outX = direction === 1 ? -width : width;
-
-  /* 지금 사진을 사용자가 민 방향으로 자연스럽게 끝까지 보냄 */
-  popupImage.classList.remove('is-dragging');
-  popupImage.style.transition =
-    `transform ${SLIDE_DURATION}ms cubic-bezier(0.22,1,0.36,1),
-     opacity ${SLIDE_DURATION}ms ease`;
-
-  popupImage.style.transform =
-    `translate3d(${outX}px,0,0) scale(1)`;
-
-  popupImage.style.opacity = '0';
-
-  setTimeout(() => {
-    popupIndex = wrapPopupIndex(popupIndex + direction);
-
-    popupImage.src = GALLERY_IMAGES[popupIndex];
-
-    /* 새 사진은 반대편 화면 밖에서 준비 */
-    const inX = direction === 1 ? width : -width;
-
-    popupImage.style.transition = 'none';
-    popupImage.style.opacity = '1';
-    popupImage.style.transform =
-      `translate3d(${inX}px,0,0) scale(1)`;
-
-    popupScale = 1;
-    popupX = 0;
-    popupY = 0;
-
+  if(direction === 0){
+    setTimeout(() => { popupAnimating = false; }, durationMs);
+    return;
+  }
+  popupTrack.addEventListener('transitionend', function handler(){
+    popupTrack.removeEventListener('transitionend', handler);
+    popupIndex = wrapIndex(popupIndex + direction);
+    setPopupImages();
+    resetZoom();
+    popupTrack.classList.add('no-transition');
+    popupTrack.style.transform = 'translate3d(-100vw,0,0)';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        /* 새 사진이 중앙으로 스르륵 들어옴 */
-        popupImage.style.transition =
-          `transform ${SLIDE_DURATION}ms cubic-bezier(0.22,1,0.36,1)`;
-
-        popupImage.style.transform =
-          'translate3d(0,0,0) scale(1)';
-
-        setTimeout(() => {
-          popupImage.style.transition = '';
-          popupChanging = false;
-          preloadNeighborImages();
-        }, SLIDE_DURATION);
+        popupTrack.classList.remove('no-transition');
+        popupAnimating = false;
       });
     });
-  }, SLIDE_DURATION);
+  }, { once: true });
 }
 
-function returnPopupPhoto(){
-  popupImage.classList.remove('is-dragging');
-  popupImage.style.transition =
-    'transform 230ms cubic-bezier(0.22,1,0.36,1)';
-  popupImage.style.transform =
-    'translate3d(0,0,0) scale(1)';
+popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS); });
+popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(1, BASE_SETTLE_MS); });
+popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhotoPopup(); });
 
-  setTimeout(() => {
-    popupImage.style.transition = '';
-  }, 230);
-}
-
-photoPopup.addEventListener('pointerdown', (event) => {
-  if(popupChanging) return;
-
-  popupPointers.set(event.pointerId, {
-    x:event.clientX,
-    y:event.clientY
-  });
-
-  photoPopup.setPointerCapture(event.pointerId);
+photoPopup.addEventListener('pointerdown', (e) => {
+  if(e.target.closest('.popup-nav') || e.target.closest('.popup-close')) return;
+  if(popupAnimating) return;
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  photoPopup.setPointerCapture(e.pointerId);
 
   if(popupPointers.size === 1){
-    startX = event.clientX;
-    startY = event.clientY;
-    moveX = 0;
-    moveY = 0;
-    hasMoved = false;
-
-    panStartX = popupX;
-    panStartY = popupY;
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    dragDX = 0; dragDY = 0; tapMoved = false;
+    panBaseX = popupPanX; panBaseY = popupPanY;
+    popupTrack.classList.add('no-transition');
   }
-
   if(popupPointers.size === 2){
-    const points = [...popupPointers.values()];
-
-    pinchStartDistance = Math.hypot(
-      points[0].x - points[1].x,
-      points[0].y - points[1].y
-    );
-
+    const pts = [...popupPointers.values()];
+    pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
     pinchStartScale = popupScale;
-    hasMoved = true;
   }
 });
 
-photoPopup.addEventListener('pointermove', (event) => {
-  if(!popupPointers.has(event.pointerId)) return;
+photoPopup.addEventListener('pointermove', (e) => {
+  if(!popupPointers.has(e.pointerId)) return;
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
 
-  popupPointers.set(event.pointerId, {
-    x:event.clientX,
-    y:event.clientY
-  });
-
-  /* 두 손가락 핀치: 현재 사진만 200%까지 확대 */
   if(popupPointers.size === 2){
-    const points = [...popupPointers.values()];
-
-    const distance = Math.hypot(
-      points[0].x - points[1].x,
-      points[0].y - points[1].y
-    );
-
-    if(pinchStartDistance > 0){
-      popupScale = Math.min(
-        POPUP_MAX_SCALE,
-        Math.max(1, pinchStartScale * (distance / pinchStartDistance))
-      );
-
-      applyPopupImageTransform(false);
-    }
-
+    const pts = [...popupPointers.values()];
+    const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    popupScale = Math.min(POPUP_MAX_SCALE, Math.max(1, pinchStartScale * (d / pinchStartDist)));
+    imgCurEl.classList.add('no-transition');
+    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
     return;
   }
 
-  moveX = event.clientX - startX;
-  moveY = event.clientY - startY;
+  dragDX = e.clientX - dragStartX;
+  dragDY = e.clientY - dragStartY;
+  if(Math.hypot(dragDX, dragDY) > 6) tapMoved = true;
 
-  if(Math.hypot(moveX, moveY) > 6){
-    hasMoved = true;
-  }
-
-  /* 확대 상태면 사진 이동 */
   if(popupScale > 1){
-    popupX = panStartX + moveX;
-    popupY = panStartY + moveY;
-    applyPopupImageTransform(false);
-    return;
+    popupPanX = panBaseX + dragDX;
+    popupPanY = panBaseY + dragDY;
+    imgCurEl.classList.add('no-transition');
+    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
+  } else {
+    popupTrack.style.transitionDuration = '0ms';
+    popupTrack.style.transform = `translate3d(calc(-100vw + ${dragDX}px),0,0)`;
   }
-
-  /* 기본 상태면 사진이 손가락을 따라 좌우로 이동 */
-  popupImage.classList.add('is-dragging');
-  popupImage.style.transform =
-    `translate3d(${moveX}px,0,0) scale(1)`;
 });
 
-function endPopupPointer(event){
-  popupPointers.delete(event.pointerId);
+function popupPointerEnd(e){
+  popupPointers.delete(e.pointerId);
+  if(popupPointers.size > 0) return;
 
-if(popupScale > 1){
-  if(!hasMoved){
-    closePhotoPopup();
+  imgCurEl.classList.remove('no-transition');
+
+  if(popupScale === 1){
+    popupTrack.classList.remove('no-transition');
+    const widthPx = photoPopup.clientWidth || window.innerWidth;
+    const ratio = Math.min(Math.abs(dragDX) / widthPx, 1);
+
+    if(ratio > SWIPE_COMMIT_RATIO){
+      const direction = dragDX > 0 ? -1 : 1;
+      const duration = Math.max(120, BASE_SETTLE_MS * (1 - ratio));
+      settleSwipe(direction, duration);
+    } else {
+      const duration = Math.max(150, BASE_SETTLE_MS * (0.6 + ratio));
+      settleSwipe(0, duration);
+      if(!tapMoved) handleTap();
+    }
+  } else if(!tapMoved){
+    handleTap();
   }
-  return;
+  dragDX = 0; dragDY = 0;
 }
+photoPopup.addEventListener('pointerup', popupPointerEnd);
+photoPopup.addEventListener('pointercancel', popupPointerEnd);
 
-  const width = popupStage.clientWidth || window.innerWidth * 0.92;
-  const swipeRatio = Math.abs(moveX) / width;
-
-  /* 18%만 움직여도 사진 전환 */
-  if(swipeRatio >= SWIPE_RATIO){
-    changePopupPhoto(moveX < 0 ? 1 : -1);
-  }else{
-    returnPopupPhoto();
-  }
-
-  moveX = 0;
-  moveY = 0;
-}
-if(swipeRatio >= SWIPE_RATIO){
-  changePopupPhoto(moveX < 0 ? 1 : -1);
-}else{
-  returnPopupPhoto();
-
-  if(!hasMoved){
-    closePhotoPopup();
+function handleTap(){
+  const now = Date.now();
+  if(now - lastTapTime < 300){
+    clearTimeout(tapCloseTimer);
+    lastTapTime = 0;
+    if(popupScale > 1){ popupScale = 1; popupPanX = 0; popupPanY = 0; }
+    else{ popupScale = POPUP_MAX_SCALE; }
+    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
+  } else {
+    lastTapTime = now;
+    tapCloseTimer = setTimeout(() => { closePhotoPopup(); }, 300);
   }
 }
-	
-photoPopup.addEventListener('pointerup', endPopupPointer);
-photoPopup.addEventListener('pointercancel', endPopupPointer);
 </script>
 </body>
 </html>
