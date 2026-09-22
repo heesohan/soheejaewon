@@ -1,1 +1,889 @@
-최재원 · 한소희 모바일 청첩장
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>최재원 · 한소희 결혼합니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- 네이버 지도 API -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ufk7afdc7d"></script>
+<!-- 카카오 SDK -->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+<style>
+:root{
+  --bg-dark:#2d2d2d;
+  --accent:#689ebb;
+  --accent-hover:#244c9f;
+  --text-white:#ffffff;
+  --success:#ec8db3;
+  --btn-light:#fdfdfc;
+  --btn-light-text:#2d2d2d;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  background:#1a1a1a;
+  font-family:'Noto Sans KR',sans-serif;
+  color:var(--text-white);
+  -webkit-font-smoothing:antialiased;
+}
+.site{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  background-color:var(--bg-dark);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='120' viewBox='0 0 240 120'%3E%3Cpath d='M0 60 Q30 40 60 60 T120 60 T180 60 T240 60' stroke='%23c0c0c0' stroke-opacity='0.05' stroke-width='1' fill='none'/%3E%3Cpath d='M0 90 Q30 70 60 90 T120 90 T180 90 T240 90' stroke='%23c0c0c0' stroke-opacity='0.04' stroke-width='1' fill='none'/%3E%3Cpath d='M0 30 Q30 10 60 30 T120 30 T180 30 T240 30' stroke='%23c0c0c0' stroke-opacity='0.035' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:240px 120px;
+  position:relative;
+  overflow-x:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,0.6);
+}
+@media (min-width:481px){
+  body{ display:flex; justify-content:center; background:#0f0f0f; }
+}
+.serif{font-family:'Gowun Batang',serif;}
+.divider{
+  width:60%;
+  height:1px;
+  margin:0 auto;
+  background:linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
+}
+section.section{padding:64px 24px; position:relative;}
+
+/* 콘텐츠는 항상 보이도록 기본값을 visible로 설정, JS 실행 여부와 무관하게 표시됨 */
+.fade-in{
+  opacity:1;
+  transform:none;
+  animation:fadeInUp 0.9s ease both;
+}
+@keyframes fadeInUp{
+  from{ opacity:0; transform:translateY(16px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+/* 1. HERO */
+#hero{
+  height:100vh;
+  min-height:520px;
+  padding:0;
+  background:#000;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+#hero img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:brightness(0.92);
+}
+#hero .scroll-indicator{
+  position:absolute;
+  bottom:32px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  z-index:2;
+  color:var(--text-white);
+  font-size:12px;
+  letter-spacing:0.15em;
+}
+.bounce-arrow{
+  width:10px; height:10px;
+  border-right:2px solid var(--text-white);
+  border-bottom:2px solid var(--text-white);
+  transform:rotate(45deg);
+  animation:bounceDown 1.6s infinite;
+}
+@keyframes bounceDown{
+  0%,100%{transform:rotate(45deg) translate(0,0); opacity:0.4;}
+  50%{transform:rotate(45deg) translate(6px,6px); opacity:1;}
+}
+
+/* 2. INVITATION CARD */
+#invitation{ text-align:center; background:transparent; }
+#invitation .symbol{ font-size:22px; color:var(--accent); margin-bottom:18px; letter-spacing:0.3em;}
+#invitation .names{
+  font-family:'Gowun Batang',serif;
+  font-size:15px;
+  line-height:2.1;
+  margin-bottom:28px;
+  color:var(--text-white);
+}
+#invitation .names b{ color:var(--accent); font-weight:700; }
+#invitation .message{
+  font-family:'Gowun Batang',serif;
+  font-size:15px;
+  line-height:2;
+  color:rgba(255,255,255,0.9);
+  margin-bottom:28px;
+}
+#invitation .signature{
+  font-size:13px;
+  letter-spacing:0.05em;
+  color:rgba(255,255,255,0.7);
+}
+
+/* 3. CONTACT */
+#contact{ text-align:center; }
+.section-title{
+  font-family:'Gowun Batang',serif;
+  font-size:18px;
+  margin-bottom:24px;
+  letter-spacing:0.1em;
+}
+.contact-btn{
+  display:inline-block;
+  padding:14px 40px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:30px;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:0.05em;
+  cursor:pointer;
+  transition:background 0.2s ease, transform 0.15s ease;
+}
+.contact-btn:hover,.contact-btn:active{ background:var(--accent-hover); transform:scale(0.98);}
+
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:100;
+}
+.modal-overlay.active{ display:flex; }
+.modal-box{
+  width:100%;
+  max-width:480px;
+  background:var(--bg-dark);
+  border-radius:24px 24px 0 0;
+  padding:28px 20px 36px;
+  transform:translateY(100%);
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  position:relative;
+  overflow:hidden;
+}
+.modal-overlay.active .modal-box{ transform:translateY(0); }
+.modal-box .star-deco{
+  position:absolute;
+  color:#8ec5e0;
+  opacity:0.5;
+  pointer-events:none;
+}
+.modal-close{
+  position:absolute; top:16px; right:20px;
+  background:none; border:none;
+  color:var(--btn-light);
+  font-size:20px; cursor:pointer;
+  z-index:2;
+}
+.modal-title{ text-align:center; font-family:'Gowun Batang',serif; font-size:16px; margin-bottom:20px;}
+.contact-columns{ display:flex; gap:12px; }
+.contact-col{ flex:1; }
+.contact-col h4{
+  text-align:center;
+  font-size:13px;
+  color:var(--accent);
+  margin-bottom:14px;
+  font-weight:500;
+  letter-spacing:0.05em;
+}
+.person-card{
+  background:rgba(255,255,255,0.05);
+  border-radius:14px;
+  padding:12px 10px;
+  margin-bottom:10px;
+  text-align:center;
+}
+.person-card .rel{ font-size:11px; color:rgba(255,255,255,0.6); margin-bottom:4px;}
+.person-card .name{ font-size:14px; margin-bottom:8px; }
+.person-card .icons{ display:flex; justify-content:center; gap:14px; }
+.person-card .icons a{
+  color:var(--text-white);
+  text-decoration:none;
+  font-size:15px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:30px; height:30px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  transition:background 0.2s ease;
+}
+.person-card .icons a:hover{ background:var(--accent-hover); }
+
+/* 4. GALLERY */
+#gallery{ padding:64px 0; }
+#gallery .section-title{ text-align:center; padding:0 24px; }
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:12px;
+  padding:0 24px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.carousel::-webkit-scrollbar{ display:none; }
+.carousel img{
+  scroll-snap-align:center;
+  width:78%;
+  flex-shrink:0;
+  height:360px;
+  object-fit:cover;
+  border-radius:14px;
+}
+
+/* 5. DATE & COUNTDOWN */
+#datecount{ text-align:center; }
+.dday-text{
+  font-family:'Gowun Batang',serif;
+  font-size:15px;
+  margin-bottom:8px;
+  line-height:1.8;
+}
+.dday-text .heart{ color:var(--success); }
+.countdown{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:24px 0 32px;
+}
+.countdown .unit{
+  background:rgba(255,255,255,0.06);
+  border-radius:12px;
+  padding:12px 10px;
+  min-width:58px;
+}
+.countdown .unit .num{ font-size:20px; font-weight:700; color:var(--accent); }
+.countdown .unit .lab{ font-size:11px; color:rgba(255,255,255,0.6); margin-top:2px;}
+.calendar{
+  max-width:320px;
+  margin:0 auto;
+  background:rgba(255,255,255,0.04);
+  border-radius:16px;
+  padding:18px;
+}
+.calendar .cal-header{ font-size:14px; margin-bottom:12px; letter-spacing:0.05em; }
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  font-size:12px;
+}
+.calendar-grid .dow{ color:rgba(255,255,255,0.4); padding-bottom:6px; }
+.calendar-grid .day{ padding:6px 0; border-radius:8px; }
+.calendar-grid .day.highlight{
+  background:#ec8db3;
+  color:#2d2d2d;
+  font-weight:700;
+}
+
+/* 6. LOCATION */
+#location{ text-align:center; }
+.map-wrap{
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:16px;
+  height:220px;
+  background:#3a3a3a;
+}
+#naverMapEl, #kakaoMapEl{ width:100%; height:100%; }
+.map-tabs{ display:flex; gap:8px; margin-bottom:12px; justify-content:center; }
+.map-tabs button{
+  padding:6px 16px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:transparent;
+  color:var(--text-white);
+  font-size:12px;
+  cursor:pointer;
+}
+.map-tabs button.active{ background:var(--accent); border-color:var(--accent); }
+.address{ font-size:14px; margin-bottom:16px; line-height:1.6; }
+.directions-btn{
+  display:inline-block;
+  padding:12px 30px;
+  background:var(--btn-light);
+  color:var(--btn-light-text);
+  border-radius:30px;
+  font-size:13px;
+  font-weight:500;
+  text-decoration:none;
+  margin-bottom:32px;
+  transition:opacity 0.2s ease;
+}
+.directions-btn:hover{ opacity:0.85; }
+.info-block{
+  text-align:left;
+  background:rgba(255,255,255,0.04);
+  border-radius:14px;
+  padding:16px 18px;
+  margin-bottom:14px;
+  display:flex;
+  gap:12px;
+}
+.info-block .mini-icon{
+  font-size:22px;
+  flex-shrink:0;
+  line-height:1.3;
+}
+.info-block .info-text{ font-size:13px; line-height:1.7; color:rgba(255,255,255,0.9); white-space:pre-line;}
+.info-block .info-text b{ color:var(--accent); }
+
+/* 7. ACCOUNT ACCORDION */
+#account{ text-align:center; }
+.accordion{ text-align:left; }
+.acc-item{
+  background:rgba(255,255,255,0.04);
+  border-radius:14px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.acc-header{
+  padding:16px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+}
+.acc-header .chevron{ transition:transform 0.25s ease; }
+.acc-item.open .chevron{ transform:rotate(180deg); }
+.acc-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+}
+.acc-item.open .acc-body{ max-height:220px; }
+.acc-body-inner{ padding:0 18px 18px; }
+.acct-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  font-size:13px;
+}
+.acct-card .acct-name{ color:rgba(255,255,255,0.7); font-size:12px; display:block; margin-bottom:2px;}
+.acct-card .acct-bank{ font-size:13px; color:#fff; }
+.acc-actions{ display:flex; gap:8px; }
+.acc-actions button{
+  border:none;
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:11px;
+  cursor:pointer;
+}
+.copy-btn{ background:rgba(255,255,255,0.15); color:#fff; }
+.copy-btn.copied{ background:var(--success); color:#2d2d2d; }
+.kakaopay-btn{ background:#FEE500; color:#3c1e1e; font-weight:600; }
+
+
+/* 공유하기 섹션 */
+#sec-share{ text-align:center; padding:56px 24px; }
+.share-btn-wrap{ display:flex; gap:12px; justify-content:center; }
+.btn-copy-link, .btn-kakao{
+  flex:1;
+  max-width:180px;
+  padding:13px;
+  border-radius:30px;
+  border:none;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+}
+.btn-kakao{ background:#FEE500; color:#3c1e1e; }
+.btn-copy-link{ background:rgba(255,255,255,0.12); color:#fff; }
+
+.toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:rgba(0,0,0,0.85);
+  color:#fff;
+  padding:12px 22px;
+  border-radius:30px;
+  font-size:13px;
+  opacity:0;
+  transition:opacity 0.3s ease, transform 0.3s ease;
+  z-index:200;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+footer{ text-align:center; padding:24px 24px 60px; }
+.footer-note{ font-size:11px; color:rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+<div class="site" id="site">
+
+  <!-- 1. 히어로 -->
+  <section id="hero" class="section">
+    <img src="https://heesohan.github.io/soheejaewon/4.jpg">
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="bounce-arrow"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 2. 초대장 카드 -->
+  <section id="invitation" class="section fade-in">
+    <div class="symbol">𓇼</div>
+    <div class="names serif">
+      <b>최창균</b>·<b>김원경</b>의 장남 <b>재원</b><br>
+      <b>한상필</b>·<b>최지윤</b>의 장녀 <b>소희</b>
+    </div>
+    <div class="message serif">
+      하나님의 은혜 안에서<br>
+      두 사람이 한 길을 걷고자 합니다.<br><br>
+      저희의 새로운 시작을<br>
+      함께 축복해 주세요.
+    </div>
+    <div class="signature">최재원 · 한소희 드림</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 3. 연락처 -->
+  <section id="contact" class="section fade-in">
+    <div class="section-title serif">연락하기</div>
+    <button class="contact-btn" onclick="openModal()">연락하기</button>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 4. 포토 갤러리 -->
+  <section id="gallery" class="section fade-in">
+    <div class="section-title serif">우리의 순간들</div>
+    <div class="carousel">
+      <img src="https://heesohan.github.io/soheejaewon/1.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/2.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/3.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/4.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/5.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/6.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/7.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/8.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/9.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/10.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/11.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/12.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/13.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/14.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/15.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/16.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/17.jpg">
+      <img src="https://heesohan.github.io/soheejaewon/18.jpg">
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 5. 날짜 & 카운트다운 -->
+  <section id="datecount" class="section fade-in">
+    <div class="dday-text serif">
+      최재원 <span class="heart">♥</span> 한소희의 결혼식이<br>
+      <span id="ddayNum">-</span>일 남았습니다
+    </div>
+    <div class="countdown">
+      <div class="unit"><div class="num" id="cd-days">00</div><div class="lab">DAYS</div></div>
+      <div class="unit"><div class="num" id="cd-hours">00</div><div class="lab">HOUR</div></div>
+      <div class="unit"><div class="num" id="cd-mins">00</div><div class="lab">MIN</div></div>
+      <div class="unit"><div class="num" id="cd-secs">00</div><div class="lab">SEC</div></div>
+    </div>
+    <div class="calendar">
+      <div class="cal-header serif">2026년 11월</div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 6. 오시는 길 -->
+  <section id="location" class="section fade-in">
+    <div class="section-title serif">오시는 길</div>
+    <div class="map-tabs">
+      <button class="active" onclick="switchMap('naver')">네이버지도</button>
+      <button onclick="switchMap('kakao')">카카오맵</button>
+    </div>
+    <div class="map-wrap">
+      <div id="naverMapEl"></div>
+      <div id="kakaoMapEl" style="display:none;"></div>
+    </div>
+    <div class="address">경기 안양시 동안구 관양로 305</div>
+    <a class="directions-btn" href="https://map.kakao.com/link/search/경기 안양시 동안구 관양로 305" target="_blank">길찾기</a>
+
+    <div class="info-block">
+      <div class="mini-icon">🚗</div>
+      <div class="info-text"><b>자가용</b>
+주차장 : 서울중앙교회 본당 지하
+교회당 주차공간이 협소하여
+만차 시 현장에서 안내드리고 있습니다.
+[천변 주차장, 대로변 유료 주차장, 인덕원 환승주차장]
+
+교회당 주차 공간이 협소하므로
+가급적 대중교통 이용을 부탁 드립니다.</div>
+    </div>
+    <div class="info-block">
+      <div class="mini-icon">🚇</div>
+      <div class="info-text"><b>지하철</b>
+4호선 인덕원역 3번 출구 도보 5분</div>
+    </div>
+    <div class="info-block">
+      <div class="mini-icon">🚌</div>
+      <div class="info-text"><b>버스</b>
+인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장
+일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303, 777
+간선: 441, 502, 540
+마을: 마8, 12</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 7. 축의금 계좌 -->
+  <section id="account" class="section fade-in">
+    <div class="section-title serif">마음 전하는 곳</div>
+    <div class="accordion">
+      <div class="acc-item" id="groomAcc">
+        <div class="acc-header" onclick="toggleAcc('groomAcc')">
+          <span>신랑측 계좌번호</span><span class="chevron">▾</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">최재원 · 카카오뱅크</span>
+                <span class="acct-bank">3333-07-9419395</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+                <button class="kakaopay-btn" onclick="kakaoPaySend('최재원')">카카오페이</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="acc-item" id="brideAcc">
+        <div class="acc-header" onclick="toggleAcc('brideAcc')">
+          <span>신부측 계좌번호</span><span class="chevron">▾</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">한소희 · 카카오뱅크</span>
+                <span class="acct-bank">3333-37-4090797</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+                <button class="kakaopay-btn" onclick="kakaoPaySend('한소희')">카카오페이</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 9. 공유하기 -->
+  <section id="sec-share" class="section fade-in" style="background:transparent;">
+    <div class="section-title serif">공유하기</div>
+    <div class="share-btn-wrap">
+      <button class="btn-copy-link" onclick="copyLink()">청첩장 복사하기</button>
+      <button class="btn-kakao" onclick="shareKakao()">카톡으로 전달하기</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-note">20261128 © SHJW </div>
+  </footer>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <span class="star-deco" style="top:14px;left:24px;font-size:14px;">✦</span>
+    <span class="star-deco" style="top:40px;right:60px;font-size:10px;">✦</span>
+    <span class="star-deco" style="bottom:20px;left:40px;font-size:12px;">✦</span>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title serif">신랑측 · 신부측에 연락하기</div>
+    <div class="contact-columns">
+      <div class="contact-col">
+        <h4>신랑측</h4>
+        <div class="person-card">
+          <div class="rel">신랑</div>
+          <div class="name">최재원</div>
+          <div class="icons">
+            <a href="tel:010-7788-5538">📞</a>
+            <a href="sms:010-7788-5538">💬</a>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="rel">신랑 아버지</div>
+          <div class="name">최창균</div>
+          <div class="icons">
+            <a href="tel:010-6231-7888">📞</a>
+            <a href="sms:010-6231-7888">💬</a>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="rel">신랑 어머니</div>
+          <div class="name">김원경</div>
+          <div class="icons">
+            <a href="tel:010-8025-1800">📞</a>
+            <a href="sms:010-8025-1800">💬</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-col">
+        <h4>신부측</h4>
+        <div class="person-card">
+          <div class="rel">신부</div>
+          <div class="name">한소희</div>
+          <div class="icons">
+            <a href="tel:010-9893-9179">📞</a>
+            <a href="sms:010-9893-9179">💬</a>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="rel">신부 아버지</div>
+          <div class="name">한상필</div>
+          <div class="icons">
+            <a href="tel:010-9650-2739">📞</a>
+            <a href="sms:010-9650-2739">💬</a>
+          </div>
+        </div>
+        <div class="person-card">
+          <div class="rel">신부 어머니</div>
+          <div class="name">최지윤</div>
+          <div class="icons">
+            <a href="tel:010-6825-9119">📞</a>
+            <a href="sms:010-6825-9119">💬</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- modal ---------- */
+function openModal(){ document.getElementById('contactModal').classList.add('active'); }
+function closeModal(){ document.getElementById('contactModal').classList.remove('active'); }
+document.getElementById('contactModal').addEventListener('click', (e)=>{
+  if(e.target.id==='contactModal') closeModal();
+});
+
+/* ---------- countdown ---------- */
+const targetDate = new Date('2026-11-28T12:00:00+09:00');
+function updateCountdown(){
+  const now = new Date();
+  const diff = targetDate - now;
+  const days = Math.max(Math.floor(diff/(1000*60*60*24)),0);
+  const hours = Math.max(Math.floor((diff/(1000*60*60))%24),0);
+  const mins = Math.max(Math.floor((diff/(1000*60))%60),0);
+  const secs = Math.max(Math.floor((diff/1000)%60),0);
+  document.getElementById('ddayNum').textContent = days;
+  document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+/* ---------- calendar (2026-11, highlight 28) ---------- */
+function buildCalendar(){
+  const grid = document.getElementById('calendarGrid');
+  const dows = ['일','월','화','수','목','금','토'];
+  dows.forEach(d=>{
+    const el = document.createElement('div');
+    el.className='dow'; el.textContent=d;
+    grid.appendChild(el);
+  });
+  const year=2026, month=10;
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month+1, 0).getDate();
+  for(let i=0;i<firstDay;i++){
+    const empty=document.createElement('div');
+    grid.appendChild(empty);
+  }
+  for(let d=1; d<=lastDate; d++){
+    const el = document.createElement('div');
+    el.className='day';
+    el.textContent=d;
+    if(d===28) el.classList.add('highlight');
+    grid.appendChild(el);
+  }
+}
+buildCalendar();
+
+/* ---------- 네이버 지도 초기화 ---------- */
+const VENUE_LAT = 37.3908;
+const VENUE_LNG = 126.9767;
+
+function initNaverMap(){
+  if(!window.naver || !naver.maps){ return; }
+  const map = new naver.maps.Map('naverMapEl', {
+    center: new naver.maps.LatLng(VENUE_LAT, VENUE_LNG),
+    zoom: 16
+  });
+  new naver.maps.Marker({
+    position: new naver.maps.LatLng(VENUE_LAT, VENUE_LNG),
+    map: map,
+    title: '서울중앙교회'
+  });
+}
+window.addEventListener('load', initNaverMap);
+
+/* ---------- 카카오맵 초기화 ---------- */
+function initKakaoMap(){
+  if(!window.kakao || !kakao.maps){ return; }
+  const container = document.getElementById('kakaoMapEl');
+  const map = new kakao.maps.Map(container, {
+    center: new kakao.maps.LatLng(VENUE_LAT, VENUE_LNG),
+    level: 4
+  });
+  new kakao.maps.Marker({
+    position: new kakao.maps.LatLng(VENUE_LAT, VENUE_LNG),
+    map: map
+  });
+}
+
+let kakaoMapInitialized = false;
+function switchMap(type){
+  document.getElementById('naverMapEl').style.display = type==='naver' ? 'block':'none';
+  document.getElementById('kakaoMapEl').style.display = type==='kakao' ? 'block':'none';
+  document.querySelectorAll('.map-tabs button').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  if(type==='kakao' && !kakaoMapInitialized){
+    initKakaoMap();
+    kakaoMapInitialized = true;
+  }
+}
+
+/* ---------- accordion ---------- */
+function toggleAcc(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ---------- toast helper ---------- */
+function showToast(message){
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, 2000);
+}
+
+function _copy(text, message){
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast(message);
+  }).catch(()=>{
+    showToast('복사에 실패했습니다');
+  });
+}
+
+/* ---------- 계좌번호 복사 ---------- */
+function acctCopy(el){
+  var card = el.closest('.acct-card') || el;
+  var bank = card.querySelector('.acct-bank') ? card.querySelector('.acct-bank').innerText : '';
+  _copy(bank.trim(), '계좌번호가 복사되었습니다 ✓');
+}
+
+/* ---------- kakao pay ---------- */
+function kakaoPaySend(person){
+  alert(person + ' 님에게 카카오페이 송금 (실서비스 연동 시 Kakao Pay Partner API 키 필요)');
+}
+
+/* ---------- Kakao SDK 초기화 ---------- */
+if(window.Kakao && !Kakao.isInitialized()){
+  Kakao.init('YOUR_KAKAO_JS_KEY');
+}
+
+function copyLink(){
+  _copy(location.href, '청첩장 링크가 복사되었습니다 ✓');
+}
+
+function shareKakao(){
+  if(window.Kakao && Kakao.isInitialized()){
+    Kakao.Share.sendDefault({
+      objectType:'feed',
+      content:{
+        title:'최재원 ♥ 한소희 결혼합니다',
+        description:'2026.11.28 (토) 12:00',
+        imageUrl: location.href,
+        link:{ mobileWebUrl: location.href, webUrl: location.href }
+      },
+      buttons:[{
+        title:'청첩장 보기',
+        link:{ mobileWebUrl: location.href, webUrl: location.href }
+      }]
+    });
+  } else {
+    showToast('카카오 JS 키 연동 후 사용 가능합니다');
+  }
+}
+
+/* ---------- RSVP form -> Supabase(Lovable Cloud) ---------- */
+const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+
+document.getElementById('rsvpForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const btn = document.getElementById('rsvpSubmitBtn');
+  const msg = document.getElementById('rsvpMsg');
+  const payload = {
+    name: document.getElementById('rsvpName').value,
+    phone: document.getElementById('rsvpPhone').value,
+    attendance: document.querySelector('input[name="attendance"]:checked').value,
+    guest_count: parseInt(document.getElementById('rsvpGuests').value || '1',10),
+    meal_preference: document.getElementById('rsvpMeal').value,
+    message: document.getElementById('rsvpMessage').value
+  };
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rsvp_submissions`, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer':'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('submit failed');
+    btn.classList.add('success');
+    btn.textContent='전달 완료 ✓';
+    msg.classList.add('show');
+    document.getElementById('rsvpForm').reset();
+  } catch(err){
+    showToast('전달 중 오류 - Supabase URL/키 연결이 필요합니다');
+    console.error(err);
+  }
+});
+</script>
+</body>
+</html>
