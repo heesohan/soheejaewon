@@ -1062,6 +1062,19 @@ function attachDrag(card){
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
       openPhotoPopup(cardOrder[0]);
+		card.addEventListener('click', (event) => {
+  if(card.dataset.wasDragged === 'true'){
+    card.dataset.wasDragged = 'false';
+	  if(Math.hypot(curX, curY) > TAP_THRESHOLD){
+  card.dataset.wasDragged = 'true';
+}
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  openPhotoPopup(cardOrder[0]);
+});
     } else {
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
@@ -1098,355 +1111,276 @@ renderStack();
 
 
 /* ==========================================================
-   사진 팝업: 확대 + 슬라이드
-   - 기존 배경/버튼/HTML/CSS는 유지
-   - 핀치 확대: 현재 사진만, 최대 200%
-   - 더블탭: 1배 ↔ 200%
-   - 1배일 때 한 손가락 좌우 스와이프: 이전/다음 사진
-   - 화면 너비의 18%만 밀어도 전환
-   - 확대된 상태에서는 한 손가락 드래그: 사진 이동
+   사진 팝업
+   - 카드 클릭: 해당 사진 팝업
+   - 한 손가락 좌우 스와이프: 이전/다음 사진
+   - 화면 폭의 18%만 이동해도 전환
+   - 두 손가락 핀치: 현재 사진만 최대 200% 확대
+   - 확대 상태 한 손가락 이동: 사진 이동
+   - 전체 페이지 확대 없음
    ========================================================== */
 
 const photoPopup = document.getElementById('photoPopup');
-const popupViewport = document.getElementById('popupViewport');
-const popupTrack = document.getElementById('popupTrack');
-
-const imgPrevEl = document.getElementById('popupImgPrev');
-const imgCurEl = document.getElementById('popupImgCur');
-const imgNextEl = document.getElementById('popupImgNext');
-
-const popupCloseBtn = document.getElementById('popupClose');
-const popupPrevBtn = document.getElementById('popupPrev');
-const popupNextBtn = document.getElementById('popupNext');
+const popupStage = document.getElementById('popupStage');
+const popupImage = document.getElementById('popupImage');
 
 const POPUP_MAX_SCALE = 2;
 const SWIPE_RATIO = 0.18;
-const SLIDE_MS = 380;
+const SLIDE_DURATION = 300;
 
 let popupIndex = 0;
 let popupScale = 1;
 let popupX = 0;
 let popupY = 0;
-let popupSliding = false;
+let popupChanging = false;
 
-const activePointers = new Map();
+const popupPointers = new Map();
 
 let startX = 0;
 let startY = 0;
-let deltaX = 0;
-let deltaY = 0;
-let moved = false;
+let moveX = 0;
+let moveY = 0;
+let hasMoved = false;
 
-let pinchBaseDistance = 0;
-let pinchBaseScale = 1;
-let panBaseX = 0;
-let panBaseY = 0;
+let pinchStartDistance = 0;
+let pinchStartScale = 1;
+let panStartX = 0;
+let panStartY = 0;
 
-let lastTapAt = 0;
-let closeTimer = null;
-
-/* 배열 범위를 벗어나도 첫/마지막 사진으로 순환 */
-function popupIndexWrap(index){
+function wrapPopupIndex(index){
   return ((index % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
 }
 
-/* CSS의 92vw 대신 실제 팝업 사진 창 폭을 사용 */
-function getPopupWidth(){
-  return popupViewport.clientWidth || window.innerWidth * 0.92;
-}
-
-/* 화면 중앙(현재 사진) 위치 */
-function getMiddleX(){
-  return -getPopupWidth();
-}
-
-/* 이전/현재/다음 이미지를 각각 한 번만 세팅 */
-function setPopupImageSources(){
-  imgPrevEl.src = GALLERY_IMAGES[popupIndexWrap(popupIndex - 1)];
-  imgCurEl.src = GALLERY_IMAGES[popupIndexWrap(popupIndex)];
-  imgNextEl.src = GALLERY_IMAGES[popupIndexWrap(popupIndex + 1)];
-
-  /* 현재 사진과 양옆 사진을 미리 디코딩해 전환 지연 최소화 */
-  [imgPrevEl, imgCurEl, imgNextEl].forEach((image) => {
-    if(image.decode) image.decode().catch(() => {});
-  });
-}
-
-/* 확대/이동은 항상 중앙(현재) 사진 한 장에만 적용 */
-function applyCurrentImageTransform(animated = false){
-  imgCurEl.classList.toggle('no-transition', !animated);
-  imgCurEl.style.transform =
+function applyPopupImageTransform(animated = false){
+  popupImage.classList.toggle('is-dragging', !animated);
+  popupImage.style.transform =
     `translate3d(${popupX}px,${popupY}px,0) scale(${popupScale})`;
 }
 
-/* 사진이 전환될 때 확대 상태는 무조건 초기화 */
-function resetCurrentImageTransform(){
+function resetPopupImage(){
   popupScale = 1;
   popupX = 0;
   popupY = 0;
 
-  [imgPrevEl, imgCurEl, imgNextEl].forEach((image) => {
-    image.classList.add('no-transition');
-    image.style.transform = 'translate3d(0,0,0) scale(1)';
-  });
+  popupImage.classList.add('is-dragging');
+  popupImage.style.transform = 'translate3d(0,0,0) scale(1)';
 
   requestAnimationFrame(() => {
-    [imgPrevEl, imgCurEl, imgNextEl].forEach((image) => {
-      image.classList.remove('no-transition');
-    });
+    popupImage.classList.remove('is-dragging');
   });
 }
 
-function setTrackX(x, duration = 0){
-  popupTrack.style.transitionDuration = `${duration}ms`;
-  popupTrack.style.transitionTimingFunction =
-    'cubic-bezier(0.22,1,0.36,1)';
-  popupTrack.style.transform = `translate3d(${x}px,0,0)`;
+function preloadNeighborImages(){
+  const prev = new Image();
+  const next = new Image();
+
+  prev.src = GALLERY_IMAGES[wrapPopupIndex(popupIndex - 1)];
+  next.src = GALLERY_IMAGES[wrapPopupIndex(popupIndex + 1)];
 }
 
-/* 카드에서 클릭한 사진 번호를 현재 사진으로 정확히 설정 */
+/* 카드의 실제 이미지 번호를 받아 팝업 표시 */
 function openPhotoPopup(imageIndex){
   popupIndex = Number(imageIndex);
-  popupSliding = false;
+  popupChanging = false;
 
-  setPopupImageSources();
-  resetCurrentImageTransform();
+  popupImage.src = GALLERY_IMAGES[popupIndex];
+  resetPopupImage();
+  preloadNeighborImages();
 
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
-
-  requestAnimationFrame(() => {
-    setTrackX(getMiddleX(), 0);
-  });
 }
 
 function closePhotoPopup(){
   photoPopup.classList.remove('active');
   document.body.style.overflow = '';
-  activePointers.clear();
-  popupSliding = false;
-  clearTimeout(closeTimer);
+  popupPointers.clear();
+  popupChanging = false;
+  resetPopupImage();
 }
 
 /*
-  사진 전환
-  direction = -1: 이전 사진
-  direction = 1 : 다음 사진
-  direction = 0 : 현재 사진 위치로 복귀
+  direction:
+  1  = 다음 사진 (왼쪽 스와이프)
+  -1 = 이전 사진 (오른쪽 스와이프)
 */
-function slidePopup(direction, duration = SLIDE_MS){
-  if(popupSliding) return;
+function changePopupPhoto(direction){
+  if(popupChanging) return;
 
-  const width = getPopupWidth();
-  const middleX = -width;
+  popupChanging = true;
 
-  const targetX =
-    direction === -1 ? 0 :
-    direction === 1 ? -width * 2 :
-    middleX;
+  const width = popupStage.clientWidth || window.innerWidth * 0.92;
+  const outX = direction === 1 ? -width : width;
 
-  popupSliding = direction !== 0;
-  setTrackX(targetX, duration);
+  /* 지금 사진을 사용자가 민 방향으로 자연스럽게 끝까지 보냄 */
+  popupImage.classList.remove('is-dragging');
+  popupImage.style.transition =
+    `transform ${SLIDE_DURATION}ms cubic-bezier(0.22,1,0.36,1),
+     opacity ${SLIDE_DURATION}ms ease`;
 
-  if(direction === 0){
-    setTimeout(() => {
-      popupSliding = false;
-    }, duration);
-    return;
-  }
+  popupImage.style.transform =
+    `translate3d(${outX}px,0,0) scale(1)`;
 
-  popupTrack.addEventListener('transitionend', function onEnd(event){
-    if(event.propertyName !== 'transform') return;
+  popupImage.style.opacity = '0';
 
-    popupTrack.removeEventListener('transitionend', onEnd);
+  setTimeout(() => {
+    popupIndex = wrapPopupIndex(popupIndex + direction);
 
-    /*
-      애니메이션이 끝난 뒤에만 인덱스/이미지 교체.
-      따라서 움직이는 도중 선택되지 않은 사진이 확대되는 현상이 없음.
-    */
-    popupIndex = popupIndexWrap(popupIndex + direction);
-    setPopupImageSources();
-    resetCurrentImageTransform();
+    popupImage.src = GALLERY_IMAGES[popupIndex];
 
-    /* 새 중앙 사진 위치로 즉시 복귀 */
-    setTrackX(middleX, 0);
+    /* 새 사진은 반대편 화면 밖에서 준비 */
+    const inX = direction === 1 ? width : -width;
+
+    popupImage.style.transition = 'none';
+    popupImage.style.opacity = '1';
+    popupImage.style.transform =
+      `translate3d(${inX}px,0,0) scale(1)`;
+
+    popupScale = 1;
+    popupX = 0;
+    popupY = 0;
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        popupSliding = false;
+        /* 새 사진이 중앙으로 스르륵 들어옴 */
+        popupImage.style.transition =
+          `transform ${SLIDE_DURATION}ms cubic-bezier(0.22,1,0.36,1)`;
+
+        popupImage.style.transform =
+          'translate3d(0,0,0) scale(1)';
+
+        setTimeout(() => {
+          popupImage.style.transition = '';
+          popupChanging = false;
+          preloadNeighborImages();
+        }, SLIDE_DURATION);
       });
     });
-  }, { once:true });
+  }, SLIDE_DURATION);
 }
 
-/* 버튼은 기본 배율에서만 슬라이드 */
-popupPrevBtn.addEventListener('click', (event) => {
-  event.stopPropagation();
+function returnPopupPhoto(){
+  popupImage.classList.remove('is-dragging');
+  popupImage.style.transition =
+    'transform 230ms cubic-bezier(0.22,1,0.36,1)';
+  popupImage.style.transform =
+    'translate3d(0,0,0) scale(1)';
 
-  if(popupScale === 1 && !popupSliding){
-    slidePopup(-1);
-  }
-});
+  setTimeout(() => {
+    popupImage.style.transition = '';
+  }, 230);
+}
 
-popupNextBtn.addEventListener('click', (event) => {
-  event.stopPropagation();
-
-  if(popupScale === 1 && !popupSliding){
-    slidePopup(1);
-  }
-});
-
-popupCloseBtn.addEventListener('click', (event) => {
-  event.stopPropagation();
-  closePhotoPopup();
-});
-
-/* 터치/마우스 시작 */
 photoPopup.addEventListener('pointerdown', (event) => {
-  if(event.target.closest('.popup-nav') || event.target.closest('.popup-close')) return;
-  if(popupSliding) return;
+  if(popupChanging) return;
 
-  activePointers.set(event.pointerId, {
+  popupPointers.set(event.pointerId, {
     x:event.clientX,
     y:event.clientY
   });
 
   photoPopup.setPointerCapture(event.pointerId);
 
-  if(activePointers.size === 1){
+  if(popupPointers.size === 1){
     startX = event.clientX;
     startY = event.clientY;
-    deltaX = 0;
-    deltaY = 0;
-    moved = false;
+    moveX = 0;
+    moveY = 0;
+    hasMoved = false;
 
-    panBaseX = popupX;
-    panBaseY = popupY;
+    panStartX = popupX;
+    panStartY = popupY;
   }
 
-  if(activePointers.size === 2){
-    const points = [...activePointers.values()];
+  if(popupPointers.size === 2){
+    const points = [...popupPointers.values()];
 
-    pinchBaseDistance = Math.hypot(
+    pinchStartDistance = Math.hypot(
       points[0].x - points[1].x,
       points[0].y - points[1].y
     );
 
-    pinchBaseScale = popupScale;
-    moved = true;
+    pinchStartScale = popupScale;
+    hasMoved = true;
   }
 });
 
-/* 터치/마우스 이동 */
 photoPopup.addEventListener('pointermove', (event) => {
-  if(!activePointers.has(event.pointerId)) return;
+  if(!popupPointers.has(event.pointerId)) return;
 
-  activePointers.set(event.pointerId, {
+  popupPointers.set(event.pointerId, {
     x:event.clientX,
     y:event.clientY
   });
 
-  /* 두 손가락: 현재 중앙 사진만 핀치 확대 */
-  if(activePointers.size === 2){
-    const points = [...activePointers.values()];
+  /* 두 손가락 핀치: 현재 사진만 200%까지 확대 */
+  if(popupPointers.size === 2){
+    const points = [...popupPointers.values()];
 
     const distance = Math.hypot(
       points[0].x - points[1].x,
       points[0].y - points[1].y
     );
 
-    if(pinchBaseDistance > 0){
+    if(pinchStartDistance > 0){
       popupScale = Math.min(
         POPUP_MAX_SCALE,
-        Math.max(1, pinchBaseScale * (distance / pinchBaseDistance))
+        Math.max(1, pinchStartScale * (distance / pinchStartDistance))
       );
 
-      applyCurrentImageTransform(false);
+      applyPopupImageTransform(false);
     }
 
     return;
   }
 
-  deltaX = event.clientX - startX;
-  deltaY = event.clientY - startY;
+  moveX = event.clientX - startX;
+  moveY = event.clientY - startY;
 
-  if(Math.hypot(deltaX, deltaY) > 6){
-    moved = true;
+  if(Math.hypot(moveX, moveY) > 6){
+    hasMoved = true;
   }
 
-  /* 확대된 상태에서는 현재 사진 이동만 허용 */
+  /* 확대 상태면 사진 이동 */
   if(popupScale > 1){
-    popupX = panBaseX + deltaX;
-    popupY = panBaseY + deltaY;
-    applyCurrentImageTransform(false);
+    popupX = panStartX + moveX;
+    popupY = panStartY + moveY;
+    applyPopupImageTransform(false);
     return;
   }
 
-  /* 1배율 상태에서는 사진 슬라이드 */
-  setTrackX(getMiddleX() + deltaX, 0);
+  /* 기본 상태면 사진이 손가락을 따라 좌우로 이동 */
+  popupImage.classList.add('is-dragging');
+  popupImage.style.transform =
+    `translate3d(${moveX}px,0,0) scale(1)`;
 });
 
-/* 터치/마우스 종료 */
 function endPopupPointer(event){
-  activePointers.delete(event.pointerId);
+  popupPointers.delete(event.pointerId);
 
-  if(activePointers.size > 0) return;
+  if(popupPointers.size > 0) return;
 
-  /* 확대 상태에서는 다음 사진으로 넘기지 않음 */
+  /* 확대 상태에서는 넘기지 않고 사진 위치만 유지 */
   if(popupScale > 1){
-    if(!moved) handlePopupTap();
     return;
   }
 
-  const width = getPopupWidth();
-  const ratio = Math.abs(deltaX) / width;
+  const width = popupStage.clientWidth || window.innerWidth * 0.92;
+  const swipeRatio = Math.abs(moveX) / width;
 
-  /* 반보다 훨씬 적은 18%만 움직여도 사진 전환 */
-  if(ratio >= SWIPE_RATIO){
-    slidePopup(deltaX > 0 ? -1 : 1);
+  /* 18%만 움직여도 사진 전환 */
+  if(swipeRatio >= SWIPE_RATIO){
+    changePopupPhoto(moveX < 0 ? 1 : -1);
   }else{
-    slidePopup(0, 240);
-
-    if(!moved){
-      handlePopupTap();
-    }
+    returnPopupPhoto();
   }
 
-  deltaX = 0;
-  deltaY = 0;
+  moveX = 0;
+  moveY = 0;
 }
 
 photoPopup.addEventListener('pointerup', endPopupPointer);
 photoPopup.addEventListener('pointercancel', endPopupPointer);
-
-/*
-  한 번 탭은 닫기.
-  300ms 이내 더블탭은 확대/축소.
-*/
-function handlePopupTap(){
-  const now = Date.now();
-
-  if(now - lastTapAt < 300){
-    clearTimeout(closeTimer);
-    lastTapAt = 0;
-
-    if(popupScale > 1){
-      resetCurrentImageTransform();
-    }else{
-      popupScale = POPUP_MAX_SCALE;
-      popupX = 0;
-      popupY = 0;
-      applyCurrentImageTransform(true);
-    }
-    return;
-  }
-
-  lastTapAt = now;
-
-  closeTimer = setTimeout(() => {
-    closePhotoPopup();
-  }, 300);
-}
 </script>
 </body>
 </html>
