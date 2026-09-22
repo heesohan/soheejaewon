@@ -1127,9 +1127,29 @@ function wrapIndex(i){
   return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
 }
 function setPopupImages(){
+  // 현재 / 이전 / 다음 사진을 동시에 세팅.
+  // 팝업이 열려 있을 때 항상 3장을 DOM에 유지해서 다음 장이 즉시 옆에 붙어 보임.
   imgPrevEl.src = GALLERY_IMAGES[wrapIndex(popupIndex - 1)];
   imgCurEl.src  = GALLERY_IMAGES[wrapIndex(popupIndex)];
   imgNextEl.src = GALLERY_IMAGES[wrapIndex(popupIndex + 1)];
+
+  // 바로 다음에 필요할 2장까지 브라우저 디코딩을 미리 요청.
+  // decode()를 지원하지 않는 브라우저에서는 조용히 무시됨.
+  const preloadIndexes = [
+    wrapIndex(popupIndex - 2),
+    wrapIndex(popupIndex + 2)
+  ];
+
+  preloadIndexes.forEach(index => {
+    const preload = new Image();
+    preload.src = GALLERY_IMAGES[index];
+    if(preload.decode) preload.decode().catch(() => {});
+  });
+
+  // 이미 DOM에 들어간 앞/현재/다음 3장도 디코드 요청.
+  [imgPrevEl, imgCurEl, imgNextEl].forEach(img => {
+    if(img.decode) img.decode().catch(() => {});
+  });
 }
 function resetZoom(){
   popupScale = 1; popupPanX = 0; popupPanY = 0;
@@ -1137,16 +1157,27 @@ function resetZoom(){
   imgCurEl.style.transform = 'translate(0px,0px) scale(1)';
   requestAnimationFrame(() => imgCurEl.classList.remove('no-transition'));
 }
-function openPhotoPopup(imgIdx){
+async function openPhotoPopup(imgIdx){
   popupIndex = imgIdx;
   popupAnimating = false;
   setPopupImages();
+
+  // 이전·현재·다음 사진이 브라우저에 준비될 때까지 대기.
+  // 캐시된 사진은 거의 즉시 끝나고, 처음 열 때의 빈 사진 현상을 막아줌.
+  const visibleImages = [imgPrevEl, imgCurEl, imgNextEl];
+  await Promise.all(
+    visibleImages.map(img => img.decode ? img.decode().catch(() => {}) : Promise.resolve())
+  );
+
   resetZoom();
   popupTrack.classList.add('no-transition');
   popupTrack.style.transform = 'translate3d(-100vw,0,0)';
-  requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
+  });
 }
 function closePhotoPopup(){
   photoPopup.classList.remove('active');
@@ -1169,16 +1200,22 @@ function settleSwipe(direction, durationMs){
   popupTrack.addEventListener('transitionend', function handler(){
     popupTrack.removeEventListener('transitionend', handler);
     popupIndex = wrapIndex(popupIndex + direction);
-    setPopupImages();
-    resetZoom();
-    popupTrack.classList.add('no-transition');
-    popupTrack.style.transform = 'translate3d(-100vw,0,0)';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        popupTrack.classList.remove('no-transition');
-        popupAnimating = false;
-      });
-    });
+
+// 여기서는 다음 세트를 먼저 채움.
+// 새 현재/양옆 이미지가 이미 decode 요청되어 있어서
+// 원점으로 리셋되는 프레임에 바로 다음 사진이 보임.
+setPopupImages();
+resetZoom();
+
+popupTrack.classList.add('no-transition');
+popupTrack.style.transform = 'translate3d(-100vw,0,0)';
+
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    popupTrack.classList.remove('no-transition');
+    popupAnimating = false;
+  });
+});
   }, { once: true });
 }
 
