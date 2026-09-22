@@ -319,8 +319,9 @@ section.section{padding:64px 24px; position:relative;}
   display:flex;
   width:300vw;
   height:100%;
-  transform:translateX(-100vw); /* 가운데(현재 사진) 슬라이드를 기본으로 보여줌 */
-  transition:transform 0.32s cubic-bezier(0.22,1,0.36,1);
+  transform:translate3d(-100vw,0,0);
+  transition:transform 0.34s cubic-bezier(0.25,0.8,0.35,1);
+  will-change:transform; /* GPU 가속으로 끊김 없이 슬라이드되게 함 */
 }
 .popup-track.no-transition{ transition:none; } /* 드래그 중엔 즉시 반응하도록 transition 끔 */
 
@@ -1164,6 +1165,7 @@ let pinchStartDist = 0, pinchStartScale = 1;
 let dragStartX = 0, dragStartY = 0, dragDX = 0, dragDY = 0, tapMoved = false;
 let panBaseX = 0, panBaseY = 0;
 let lastTapTime = 0, tapCloseTimer = null;
+let popupAnimating = false; // 슬라이드 애니메이션 진행 중이면 true (중복 입력으로 인한 끊김 방지)
 
 function wrapIndex(i){
   return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
@@ -1181,10 +1183,11 @@ function resetZoom(){
 }
 function openPhotoPopup(imgIdx){
   popupIndex = imgIdx;
+  popupAnimating = false;
   setPopupImages();
   resetZoom();
   popupTrack.classList.add('no-transition');
-  popupTrack.style.transform = 'translateX(-100vw)';
+  popupTrack.style.transform = 'translate3d(-100vw,0,0)';
   requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1197,16 +1200,25 @@ function closePhotoPopup(){
 // direction: -1 이전 사진, 0 원위치 복귀, 1 다음 사진
 function settleSwipe(direction){
   const target = direction === -1 ? '0vw' : direction === 1 ? '-200vw' : '-100vw';
-  popupTrack.style.transform = `translateX(${target})`;
+  popupAnimating = direction !== 0; // 실제로 사진이 넘어갈 때만 애니메이션 잠금
+  popupTrack.style.transform = `translate3d(${target},0,0)`;
   if(direction === 0) return;
+
   popupTrack.addEventListener('transitionend', function handler(){
     popupTrack.removeEventListener('transitionend', handler);
     popupIndex = wrapIndex(popupIndex + direction);
     setPopupImages();
     resetZoom();
     popupTrack.classList.add('no-transition');
-    popupTrack.style.transform = 'translateX(-100vw)';
-    requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
+    popupTrack.style.transform = 'translate3d(-100vw,0,0)';
+    // 리셋된 위치가 화면에 실제로 반영된 뒤에 transition을 다시 켜야
+    // 브라우저가 리셋 자체를 애니메이션으로 잡아채서 튀는 걸 방지함 (rAF 두 번)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popupTrack.classList.remove('no-transition');
+        popupAnimating = false;
+      });
+    });
   }, { once: true });
 }
 
@@ -1216,6 +1228,7 @@ popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhoto
 
 photoPopup.addEventListener('pointerdown', (e) => {
   if(e.target.closest('.popup-nav') || e.target.closest('.popup-close')) return;
+  if(popupAnimating) return; // 슬라이드 애니메이션이 끝나기 전엔 새 입력을 받지 않음 (끊김 방지)
   popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
   photoPopup.setPointerCapture(e.pointerId);
 
@@ -1255,7 +1268,8 @@ photoPopup.addEventListener('pointermove', (e) => {
     imgCurEl.classList.add('no-transition');
     imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
   } else {
-    popupTrack.style.transform = `translateX(calc(-100vw + ${dragDX}px))`;
+    // 1배율: 좌우 드래그는 다음/이전 사진 스와이프
+    popupTrack.style.transform = `translate3d(calc(-100vw + ${dragDX}px),0,0)`;
   }
 });
 
