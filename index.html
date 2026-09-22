@@ -323,6 +323,35 @@ section.section{padding:64px 24px; position:relative;}
   user-select:none;
   -webkit-user-drag:none;
 }
+	
+	.popup-close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:310;
+
+  width:36px;
+  height:36px;
+  padding:0;
+
+  border:0;
+  border-radius:50%;
+  background:rgba(0,0,0,0.22);
+  color:rgba(255,255,255,0.9);
+
+  font-family:Arial,sans-serif;
+  font-size:28px;
+  font-weight:300;
+  line-height:34px;
+  text-align:center;
+
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.popup-close:active{
+  background:rgba(0,0,0,0.38);
+}
 
 /* 스와이프 중에는 손가락을 즉시 따라감 */
 .popup-image.is-dragging{
@@ -333,6 +362,8 @@ section.section{padding:64px 24px; position:relative;}
 .popup-image.is-fading{
   opacity:0;
 }
+	
+	
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
@@ -801,6 +832,12 @@ footer{ text-align:center; padding:24px 24px 60px; }
 <div class="toast" id="toast"></div>
 <!-- 사진 팝업 -->
 <div class="photo-popup" id="photoPopup">
+  <button
+    type="button"
+    class="popup-close"
+    id="popupClose"
+    aria-label="사진 팝업 닫기">×</button>
+
   <div class="popup-stage" id="popupStage">
     <img
       class="popup-image"
@@ -808,7 +845,6 @@ footer{ text-align:center; padding:24px 24px 60px; }
       src="https://heesohan.github.io/soheejaewon/1.jpg"
       alt="웨딩 사진">
   </div>
-</div>
 	
 <script>
 /* ---------- modal ---------- */
@@ -1123,6 +1159,7 @@ renderStack();
 const photoPopup = document.getElementById('photoPopup');
 const popupStage = document.getElementById('popupStage');
 const popupImage = document.getElementById('popupImage');
+const popupCloseButton = document.getElementById('popupClose');
 
 const POPUP_MAX_SCALE = 2;
 const SWIPE_RATIO = 0.18;
@@ -1198,7 +1235,10 @@ function closePhotoPopup(){
   popupChanging = false;
   resetPopupImage();
 }
-
+popupCloseButton.addEventListener('click', (event) => {
+  event.stopPropagation();
+  closePhotoPopup();
+});
 /*
   direction:
   1  = 다음 사진 (왼쪽 스와이프)
@@ -1358,12 +1398,12 @@ photoPopup.addEventListener('pointermove', (event) => {
 function endPopupPointer(event){
   popupPointers.delete(event.pointerId);
 
-  if(popupPointers.size > 0) return;
-
-  /* 확대 상태에서는 넘기지 않고 사진 위치만 유지 */
-  if(popupScale > 1){
-    return;
+if(popupScale > 1){
+  if(!hasMoved){
+    closePhotoPopup();
   }
+  return;
+}
 
   const width = popupStage.clientWidth || window.innerWidth * 0.92;
   const swipeRatio = Math.abs(moveX) / width;
@@ -1378,7 +1418,16 @@ function endPopupPointer(event){
   moveX = 0;
   moveY = 0;
 }
+if(swipeRatio >= SWIPE_RATIO){
+  changePopupPhoto(moveX < 0 ? 1 : -1);
+}else{
+  returnPopupPhoto();
 
+  if(!hasMoved){
+    closePhotoPopup();
+  }
+}
+	
 photoPopup.addEventListener('pointerup', endPopupPointer);
 photoPopup.addEventListener('pointercancel', endPopupPointer);
 </script>
