@@ -282,6 +282,29 @@ section.section{padding:64px 24px; position:relative;}
 }
 .card-counter .count-num{ color:var(--accent); font-weight:700; }
 
+.photo-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:300;
+  overflow:hidden;
+  touch-action:none; /* 핀치/팬을 JS로 직접 처리하기 위해 브라우저 기본 동작 차단 */
+}
+.photo-popup.active{ display:flex; }
+.photo-popup img{
+  max-width:92%;
+  max-height:92%;
+  object-fit:contain;
+  transform-origin:center center;
+  transition:transform 0.2s ease;
+  will-change:transform;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.photo-popup img.no-transition{ transition:none; } /* 드래그/핀치 중엔 애니메이션 끔(끊김 방지) */
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
@@ -775,7 +798,10 @@ footer{ text-align:center; padding:24px 24px 60px; }
 </div>
 
 <div class="toast" id="toast"></div>
-
+<!-- 사진 확대 팝업 -->
+<div class="photo-popup" id="photoPopup">
+  <img id="photoPopupImg" src="" alt="">
+</div>
 <script>
 /* ---------- modal ---------- */
 function openModal(){ document.getElementById('contactModal').classList.add('active'); }
@@ -1015,20 +1041,25 @@ function attachDrag(card){
     if(rafId === null) rafId = requestAnimationFrame(applyDragTransform);
   }
   function onUp(){
-    if(!dragging) return;
-    dragging = false;
-    card.classList.remove('dragging');
-    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  if(!dragging) return;
+  dragging = false;
+  card.classList.remove('dragging');
+  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
 
-    const dist = Math.hypot(curX, curY);
-    if(dist > THROW_THRESHOLD){
-      throwCard(card, curX, curY);
-    } else {
-      card.style.transform = card.dataset.baseTransform;
-      card.style.opacity = '1';
-    }
-    curX = 0; curY = 0;
+  const dist = Math.hypot(curX, curY);
+  if(dist > THROW_THRESHOLD){
+    throwCard(card, curX, curY);
+  } else if(dist < TAP_THRESHOLD){
+    // 거의 안 움직였으면 스와이프가 아니라 '클릭'으로 보고 팝업 오픈
+    card.style.transform = card.dataset.baseTransform;
+    card.style.opacity = '1';
+    openPhotoPopup(GALLERY_IMAGES[cardOrder[0]]);
+  } else {
+    card.style.transform = card.dataset.baseTransform;
+    card.style.opacity = '1';
   }
+  curX = 0; curY = 0;
+}
 
   card.addEventListener('pointerdown', onDown);
   card.addEventListener('pointermove', onMove);
@@ -1058,6 +1089,109 @@ function throwCard(card, x, y){
 }
 
 renderStack();
+/* ==========================================================
+   사진 확대 팝업
+   - 카드 탭 -> 팝업 오픈
+   - 더블탭 또는 두 손가락 핀치 -> 최대 200%(scale 2)까지 확대
+   - 확대된 상태에서 한 손가락 드래그 -> 이미지 팬(이동)
+   - 이동 없는 탭 한 번 -> 어디를 눌러도 팝업 종료
+   ========================================================== */
+   const photoPopup = document.getElementById('photoPopup');
+const photoPopupImg = document.getElementById('photoPopupImg');
+
+let popupScale = 1, popupX = 0, popupY = 0;
+const POPUP_MAX_SCALE = 2; // 200%
+const popupPointers = new Map();
+let pinchStartDist = 0, pinchStartScale = 1;
+let panStartX = 0, panStartY = 0, panBaseX = 0, panBaseY = 0;
+let tapMoved = false, tapStartX = 0, tapStartY = 0;
+let lastTapTime = 0, tapCloseTimer = null;
+
+function openPhotoPopup(src){
+  photoPopupImg.src = src;
+  popupScale = 1; popupX = 0; popupY = 0;
+  applyPopupTransform(false);
+  photoPopup.classList.add('active');
+  document.body.style.overflow = 'hidden'; // 팝업 열려있는 동안 배경 스크롤 방지
+}
+function closePhotoPopup(){
+  photoPopup.classList.remove('active');
+  document.body.style.overflow = '';
+}
+function applyPopupTransform(animated){
+  photoPopupImg.classList.toggle('no-transition', !animated);
+  photoPopupImg.style.transform = `translate(${popupX}px, ${popupY}px) scale(${popupScale})`;
+}
+function clampPan(){
+  const maxOffset = (popupScale - 1) * 160; // 확대된 배율만큼만 이동 허용
+  popupX = Math.max(-maxOffset, Math.min(maxOffset, popupX));
+  popupY = Math.max(-maxOffset, Math.min(maxOffset, popupY));
+}
+function popupDist(p1, p2){ return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
+
+photoPopup.addEventListener('pointerdown', (e) => {
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  photoPopup.setPointerCapture(e.pointerId);
+
+  if(popupPointers.size === 1){
+    tapStartX = e.clientX; tapStartY = e.clientY; tapMoved = false;
+    panBaseX = popupX; panBaseY = popupY;
+    panStartX = e.clientX; panStartY = e.clientY;
+  }
+  if(popupPointers.size === 2){
+    const pts = [...popupPointers.values()];
+    pinchStartDist = popupDist(pts[0], pts[1]);
+    pinchStartScale = popupScale;
+  }
+});
+
+photoPopup.addEventListener('pointermove', (e) => {
+  if(!popupPointers.has(e.pointerId)) return;
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+
+  if(popupPointers.size === 2){
+    const pts = [...popupPointers.values()];
+    const d = popupDist(pts[0], pts[1]);
+    popupScale = Math.min(POPUP_MAX_SCALE, Math.max(1, pinchStartScale * (d / pinchStartDist)));
+    applyPopupTransform(false);
+  } else if(popupPointers.size === 1){
+    const dx = e.clientX - tapStartX, dy = e.clientY - tapStartY;
+    if(Math.hypot(dx, dy) > 6) tapMoved = true;
+    if(popupScale > 1){
+      popupX = panBaseX + (e.clientX - panStartX);
+      popupY = panBaseY + (e.clientY - panStartY);
+      clampPan();
+      applyPopupTransform(false);
+    }
+  }
+});
+
+function popupPointerEnd(e){
+  popupPointers.delete(e.pointerId);
+  if(popupPointers.size > 0) return; // 다른 손가락이 남아있으면 아직 판단 안 함
+
+  if(tapMoved) return; // 팬이나 핀치였으면 탭으로 취급하지 않음
+
+  const now = Date.now();
+  if(now - lastTapTime < 300){
+    // 더블탭 -> 확대/축소 토글
+    clearTimeout(tapCloseTimer);
+    lastTapTime = 0;
+    if(popupScale > 1){
+      popupScale = 1; popupX = 0; popupY = 0;
+    } else {
+      popupScale = POPUP_MAX_SCALE;
+    }
+    applyPopupTransform(true);
+  } else {
+    lastTapTime = now;
+    // 300ms 안에 두번째 탭이 안 오면 '한 번 탭'으로 확정 -> 종료
+    tapCloseTimer = setTimeout(() => { closePhotoPopup(); }, 300);
+  }
+}
+photoPopup.addEventListener('pointerup', popupPointerEnd);
+photoPopup.addEventListener('pointercancel', popupPointerEnd);
+
 
 </script>
 </body>
