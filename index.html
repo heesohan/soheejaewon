@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- 네이버 지도 API -->
-<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ufk7afdc7d"></script>
-<!-- 카카오 SDK -->
+<!-- 카카오 SDK (공유하기/로그인용) : YOUR_KAKAO_JS_KEY를 발급받은 JavaScript 키로 교체 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<!-- 카카오맵 SDK (지도용, 위와 같은 JS 키 사용) : libraries=services 는 주소->좌표 변환(Geocoder)에 필수 -->
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JS_KEY&libraries=services"></script>
 
 <style>
 :root{
@@ -65,7 +65,7 @@ section.section{padding:64px 24px; position:relative;}
   to{ opacity:1; transform:translateY(0); }
 }
 
-/* 1. HERO */
+/* ===================== 1. HERO ===================== */
 #hero{
   height:100vh;
   min-height:520px;
@@ -106,7 +106,7 @@ section.section{padding:64px 24px; position:relative;}
   50%{transform:rotate(45deg) translate(6px,6px); opacity:1;}
 }
 
-/* 2. INVITATION CARD */
+/* ===================== 2. INVITATION CARD ===================== */
 #invitation{ text-align:center; background:transparent; }
 #invitation .symbol{ font-size:22px; color:var(--accent); margin-bottom:18px; letter-spacing:0.3em;}
 #invitation .names{
@@ -130,7 +130,7 @@ section.section{padding:64px 24px; position:relative;}
   color:rgba(255,255,255,0.7);
 }
 
-/* 3. CONTACT */
+/* ===================== 3. CONTACT ===================== */
 #contact{ text-align:center; }
 .section-title{
   font-family:'Gowun Batang',serif;
@@ -222,28 +222,58 @@ section.section{padding:64px 24px; position:relative;}
 }
 .person-card .icons a:hover{ background:var(--accent-hover); }
 
-/* 4. GALLERY */
+/* ===================== 4. GALLERY ===================== */
 #gallery{ padding:64px 0; }
 #gallery .section-title{ text-align:center; padding:0 24px; }
-.carousel{
-  display:flex;
-  overflow-x:auto;
-  gap:12px;
-  padding:0 24px;
-  scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-}
-.carousel::-webkit-scrollbar{ display:none; }
-.carousel img{
-  scroll-snap-align:center;
-  width:78%;
-  flex-shrink:0;
-  height:360px;
-  object-fit:cover;
-  border-radius:14px;
-}
+/* ===================== 4. GALLERY (카드 스택 스와이프) =====================
+   - card-stack-wrap: 카드가 놓일 무대. 세로 3:4 비율 고정
+   - photo-card: 절대 위치, 뒤쪽 카드일수록 작고 살짝 기울고 아래로 내려가서
+     "자연스럽게 겹친 사진 뭉치" 느낌을 냄
+   - dragging: 드래그 중엔 transition 끔 (손가락 따라 즉시 움직여야 함)
+   - flying: 던져질 때만 transition 켜서 부드럽게 날아가며 페이드아웃
+*/
+#gallery{ padding:64px 24px 40px; }
+#gallery .section-title{ text-align:center; margin-bottom:32px; }
 
-/* 5. DATE & COUNTDOWN */
+.card-stack-wrap{
+  position:relative;
+  width:78%;
+  max-width:300px;
+  aspect-ratio:3/4;
+  margin:0 auto;
+}
+.card-stack{ position:relative; width:100%; height:100%; }
+
+.photo-card{
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  overflow:hidden;
+  background:#222;
+  box-shadow:0 10px 26px rgba(0,0,0,0.4);
+  touch-action:none;      /* 드래그 중 화면 스크롤 방지 */
+  cursor:grab;
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
+}
+.photo-card img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  pointer-events:none;    /* 이미지가 드래그 이벤트를 가로채지 않도록 */
+}
+.photo-card.dragging{ transition:none; cursor:grabbing; }
+.photo-card.flying{ transition:transform 0.5s ease, opacity 0.5s ease; }
+
+.card-counter{
+  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,255,255,0.7);
+  letter-spacing:0.05em;
+}
+.card-counter .count-num{ color:var(--accent); font-weight:700; }
+
+/* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
   font-family:'Gowun Batang',serif;
@@ -288,7 +318,11 @@ section.section{padding:64px 24px; position:relative;}
   font-weight:700;
 }
 
-/* 6. LOCATION */
+/* ===================== 6. LOCATION =====================
+   - 네이버맵 SDK 제거, 카카오맵 하나만 임베드
+   - 좌표는 카카오 지오코더로 VENUE_ADDRESS를 실시간 변환해서 사용
+   - 길찾기 버튼 3개(카카오맵/네이버지도/티맵)는 지오코딩 성공 후 JS가 href를 채움
+*/
 #location{ text-align:center; }
 .map-wrap{
   border-radius:14px;
@@ -297,32 +331,27 @@ section.section{padding:64px 24px; position:relative;}
   height:220px;
   background:#3a3a3a;
 }
-#naverMapEl, #kakaoMapEl{ width:100%; height:100%; }
-.map-tabs{ display:flex; gap:8px; margin-bottom:12px; justify-content:center; }
-.map-tabs button{
-  padding:6px 16px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:transparent;
-  color:var(--text-white);
-  font-size:12px;
-  cursor:pointer;
-}
-.map-tabs button.active{ background:var(--accent); border-color:var(--accent); }
+#kakaoMapEl{ width:100%; height:100%; }
 .address{ font-size:14px; margin-bottom:16px; line-height:1.6; }
-.directions-btn{
-  display:inline-block;
-  padding:12px 30px;
+.route-btns{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin-bottom:32px;
+}
+.route-btns a{
+  flex:1;
+  max-width:140px;
+  padding:11px 0;
   background:var(--btn-light);
   color:var(--btn-light-text);
   border-radius:30px;
-  font-size:13px;
+  font-size:12px;
   font-weight:500;
   text-decoration:none;
-  margin-bottom:32px;
   transition:opacity 0.2s ease;
 }
-.directions-btn:hover{ opacity:0.85; }
+.route-btns a:hover{ opacity:0.85; }
 .info-block{
   text-align:left;
   background:rgba(255,255,255,0.04);
@@ -340,7 +369,13 @@ section.section{padding:64px 24px; position:relative;}
 .info-block .info-text{ font-size:13px; line-height:1.7; color:rgba(255,255,255,0.9); white-space:pre-line;}
 .info-block .info-text b{ color:var(--accent); }
 
-/* 7. ACCOUNT ACCORDION */
+/* ===================== 7. ACCOUNT ACCORDION =====================
+   변경사항 (이번 요청):
+   - 신랑/신부 본인 계좌만 있던 걸 연락처 모달과 동일하게
+     본인 + 아버지 + 어머니, 총 3명씩 카드로 추가
+   - 카드 개수가 늘어나서 acc-body의 max-height를 220px -> 420px로 늘림
+     (카드를 더 추가하면 이 값도 같이 늘려야 잘리지 않음)
+*/
 #account{ text-align:center; }
 .accordion{ text-align:left; }
 .acc-item{
@@ -365,7 +400,7 @@ section.section{padding:64px 24px; position:relative;}
   overflow:hidden;
   transition:max-height 0.3s ease;
 }
-.acc-item.open .acc-body{ max-height:220px; }
+.acc-item.open .acc-body{ max-height:420px; } /* 카드 3개 기준으로 넉넉하게 늘림 */
 .acc-body-inner{ padding:0 18px 18px; }
 .acct-card{
   display:flex;
@@ -389,10 +424,8 @@ section.section{padding:64px 24px; position:relative;}
 }
 .copy-btn{ background:rgba(255,255,255,0.15); color:#fff; }
 .copy-btn.copied{ background:var(--success); color:#2d2d2d; }
-.kakaopay-btn{ background:#FEE500; color:#3c1e1e; font-weight:600; }
 
-
-/* 공유하기 섹션 */
+/* ===================== 8. 공유하기 ===================== */
 #sec-share{ text-align:center; padding:56px 24px; }
 .share-btn-wrap{ display:flex; gap:12px; justify-content:center; }
 .btn-copy-link, .btn-kakao{
@@ -433,7 +466,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
 <body>
 <div class="site" id="site">
 
-  <!-- 1. 히어로 -->
+  <!-- ===================== 1. 히어로 ===================== -->
   <section id="hero" class="section">
     <img src="https://heesohan.github.io/soheejaewon/4.jpg">
     <div class="scroll-indicator">
@@ -444,7 +477,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- 2. 초대장 카드 -->
+  <!-- ===================== 2. 초대장 카드 ===================== -->
   <section id="invitation" class="section fade-in">
     <div class="symbol">𓇼</div>
     <div class="names serif">
@@ -462,42 +495,21 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- 3. 연락처 -->
-  <section id="contact" class="section fade-in">
-    <div class="section-title serif">연락하기</div>
-    <button class="contact-btn" onclick="openModal()">연락하기</button>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- 4. 포토 갤러리 -->
+  <!-- ===================== 4. 포토 갤러리 ===================== -->
   <section id="gallery" class="section fade-in">
-    <div class="section-title serif">우리의 순간들</div>
-    <div class="carousel">
-      <img src="https://heesohan.github.io/soheejaewon/1.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/2.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/3.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/4.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/5.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/6.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/7.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/8.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/9.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/10.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/11.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/12.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/13.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/14.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/15.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/16.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/17.jpg">
-      <img src="https://heesohan.github.io/soheejaewon/18.jpg">
-    </div>
+    <div class="section-title serif">photo</div>
+<!-- 카드 스택: JS가 GALLERY_IMAGES 배열로 카드를 동적 생성함 -->
+<div class="card-stack-wrap">
+  <div class="card-stack" id="cardStack"></div>
+</div>
+<div class="card-counter">
+  <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
+</div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- 5. 날짜 & 카운트다운 -->
+  <!-- ===================== 5. 날짜 & 카운트다운 ===================== -->
   <section id="datecount" class="section fade-in">
     <div class="dday-text serif">
       최재원 <span class="heart">♥</span> 한소희의 결혼식이<br>
@@ -517,19 +529,21 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- 6. 오시는 길 -->
+  <!-- ===================== 6. 오시는 길 =====================
+       TODO: VENUE_ADDRESS가 실제 도로명주소와 정확히 일치하는지 꼭 재확인
+  -->
   <section id="location" class="section fade-in">
     <div class="section-title serif">오시는 길</div>
-    <div class="map-tabs">
-      <button class="active" onclick="switchMap('naver')">네이버지도</button>
-      <button onclick="switchMap('kakao')">카카오맵</button>
-    </div>
     <div class="map-wrap">
-      <div id="naverMapEl"></div>
-      <div id="kakaoMapEl" style="display:none;"></div>
+      <div id="kakaoMapEl"></div>
     </div>
     <div class="address">경기 안양시 동안구 관양로 305</div>
-    <a class="directions-btn" href="https://map.kakao.com/link/search/경기 안양시 동안구 관양로 305" target="_blank">길찾기</a>
+
+    <div class="route-btns">
+      <a id="btnKakaoMap" href="#" target="_blank">카카오맵</a>
+      <a id="btnNaverMap" href="#" target="_blank">네이버지도</a>
+      <a id="btnTmap" href="#">티맵</a>
+    </div>
 
     <div class="info-block">
       <div class="mini-icon">🚗</div>
@@ -559,53 +573,114 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- 7. 축의금 계좌 -->
+  <!-- ===================== 7. 축의금 계좌 =====================
+       신랑측/신부측 각각 본인 + 아버지 + 어머니 3명씩 카드 추가함.
+       ⚠️ 부모님 계좌번호는 실제 값을 몰라서 임시 placeholder로 채워놨어.
+          "은행명" / "계좌번호입력" 부분을 실제 정보로 반드시 교체해줘.
+  -->
   <section id="account" class="section fade-in">
     <div class="section-title serif">마음 전하는 곳</div>
     <div class="accordion">
+
       <div class="acc-item" id="groomAcc">
         <div class="acc-header" onclick="toggleAcc('groomAcc')">
           <span>신랑측 계좌번호</span><span class="chevron">▾</span>
         </div>
         <div class="acc-body">
           <div class="acc-body-inner">
+
             <div class="acct-card">
               <div>
-                <span class="acct-name">최재원 · 카카오뱅크</span>
+                <span class="acct-name">신랑 최재원 · 카카오뱅크</span>
                 <span class="acct-bank">3333-07-9419395</span>
               </div>
               <div class="acc-actions">
                 <button class="copy-btn" onclick="acctCopy(this)">복사</button>
-                <button class="kakaopay-btn" onclick="kakaoPaySend('최재원')">카카오페이</button>
               </div>
             </div>
+
+            <!-- TODO: 신랑 아버지 실제 계좌 정보로 교체 -->
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">신랑 아버지 최창균 · 국민은행</span>
+                <span class="acct-bank">819-21-0170-606</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+              </div>
+            </div>
+
+            <!-- TODO: 신랑 어머니 실제 계좌 정보로 교체 -->
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">신랑 어머니 김원경 · 국민은행</span>
+                <span class="acct-bank">819-21-0290-072</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
+
       <div class="acc-item" id="brideAcc">
         <div class="acc-header" onclick="toggleAcc('brideAcc')">
           <span>신부측 계좌번호</span><span class="chevron">▾</span>
         </div>
         <div class="acc-body">
           <div class="acc-body-inner">
+
             <div class="acct-card">
               <div>
-                <span class="acct-name">한소희 · 카카오뱅크</span>
+                <span class="acct-name">신부 한소희 · 카카오뱅크</span>
                 <span class="acct-bank">3333-37-4090797</span>
               </div>
               <div class="acc-actions">
                 <button class="copy-btn" onclick="acctCopy(this)">복사</button>
-                <button class="kakaopay-btn" onclick="kakaoPaySend('한소희')">카카오페이</button>
               </div>
             </div>
+
+            <!-- TODO: 신부 아버지 실제 계좌 정보로 교체 -->
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">신부 아버지 한상필 · 신협</span>
+                <span class="acct-bank">132-093-097712</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+              </div>
+            </div>
+
+            <!-- TODO: 신부 어머니 실제 계좌 정보로 교체 -->
+            <div class="acct-card">
+              <div>
+                <span class="acct-name">신부 어머니 최지윤 · 농협</span>
+                <span class="acct-bank">044-12-164655</span>
+              </div>
+              <div class="acc-actions">
+                <button class="copy-btn" onclick="acctCopy(this)">복사</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
+    <!-- ===================== 연락처 (임시 비노출) =====================
+       지우지 않고 display:none으로만 숨겨둠.
+       다시 보이게 하려면 style="display:none;" 만 지우면 됨.
+  -->
+  <section id="contact" class="section fade-in" style="display:none;">
+    <div class="section-title serif">연락하기</div>
+    <button class="contact-btn" onclick="openModal()">연락하기</button>
+  </section>
 
-  <!-- 9. 공유하기 -->
+  <!-- ===================== 8. 공유하기 ===================== -->
   <section id="sec-share" class="section fade-in" style="background:transparent;">
     <div class="section-title serif">공유하기</div>
     <div class="share-btn-wrap">
@@ -740,49 +815,41 @@ function buildCalendar(){
 }
 buildCalendar();
 
-/* ---------- 네이버 지도 초기화 ---------- */
-const VENUE_LAT = 37.3908;
-const VENUE_LNG = 126.9767;
+/* ==========================================================
+   지도: 카카오맵 하나만 사용, 주소 -> 좌표는 Geocoder로 자동 변환
+   ========================================================== */
+const VENUE_NAME = '서울중앙교회';
+const VENUE_ADDRESS = '경기 안양시 동안구 관양로 305'; // TODO: 정확한 도로명주소 재확인
 
-function initNaverMap(){
-  if(!window.naver || !naver.maps){ return; }
-  const map = new naver.maps.Map('naverMapEl', {
-    center: new naver.maps.LatLng(VENUE_LAT, VENUE_LNG),
-    zoom: 16
-  });
-  new naver.maps.Marker({
-    position: new naver.maps.LatLng(VENUE_LAT, VENUE_LNG),
-    map: map,
-    title: '서울중앙교회'
-  });
-}
-window.addEventListener('load', initNaverMap);
-
-/* ---------- 카카오맵 초기화 ---------- */
 function initKakaoMap(){
-  if(!window.kakao || !kakao.maps){ return; }
-  const container = document.getElementById('kakaoMapEl');
-  const map = new kakao.maps.Map(container, {
-    center: new kakao.maps.LatLng(VENUE_LAT, VENUE_LNG),
-    level: 4
-  });
-  new kakao.maps.Marker({
-    position: new kakao.maps.LatLng(VENUE_LAT, VENUE_LNG),
-    map: map
-  });
-}
-
-let kakaoMapInitialized = false;
-function switchMap(type){
-  document.getElementById('naverMapEl').style.display = type==='naver' ? 'block':'none';
-  document.getElementById('kakaoMapEl').style.display = type==='kakao' ? 'block':'none';
-  document.querySelectorAll('.map-tabs button').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  if(type==='kakao' && !kakaoMapInitialized){
-    initKakaoMap();
-    kakaoMapInitialized = true;
+  if(!window.kakao || !kakao.maps || !kakao.maps.services){
+    console.warn('카카오맵 SDK가 로드되지 않았습니다. appkey를 확인하세요.');
+    return;
   }
+  const container = document.getElementById('kakaoMapEl');
+  const geocoder = new kakao.maps.services.Geocoder();
+
+  geocoder.addressSearch(VENUE_ADDRESS, function(result, status){
+    if(status !== kakao.maps.services.Status.OK){
+      container.innerHTML = '<p style="padding:20px;font-size:12px;color:#ccc;">지도를 불러오지 못했습니다. 주소를 다시 확인해주세요.</p>';
+      return;
+    }
+    const lat = result[0].y;
+    const lng = result[0].x;
+    const coords = new kakao.maps.LatLng(lat, lng);
+
+    const map = new kakao.maps.Map(container, { center: coords, level: 4 });
+    new kakao.maps.Marker({ position: coords, map: map, title: VENUE_NAME });
+
+    document.getElementById('btnKakaoMap').href =
+      `https://map.kakao.com/link/to/${encodeURIComponent(VENUE_NAME)},${lat},${lng}`;
+    document.getElementById('btnNaverMap').href =
+      `https://map.naver.com/p/search/${encodeURIComponent(VENUE_ADDRESS)}`;
+    document.getElementById('btnTmap').href =
+      `tmap://route?goalx=${lng}&goaly=${lat}&goalname=${encodeURIComponent(VENUE_NAME)}`;
+  });
 }
+window.addEventListener('load', initKakaoMap);
 
 /* ---------- accordion ---------- */
 function toggleAcc(id){
@@ -813,14 +880,9 @@ function acctCopy(el){
   _copy(bank.trim(), '계좌번호가 복사되었습니다 ✓');
 }
 
-/* ---------- kakao pay ---------- */
-function kakaoPaySend(person){
-  alert(person + ' 님에게 카카오페이 송금 (실서비스 연동 시 Kakao Pay Partner API 키 필요)');
-}
-
-/* ---------- Kakao SDK 초기화 ---------- */
+/* ---------- Kakao SDK 초기화 (공유하기용) ---------- */
 if(window.Kakao && !Kakao.isInitialized()){
-  Kakao.init('YOUR_KAKAO_JS_KEY');
+  Kakao.init('YOUR_KAKAO_JS_KEY'); // TODO: 실제 JS 키로 교체
 }
 
 function copyLink(){
@@ -834,7 +896,7 @@ function shareKakao(){
       content:{
         title:'최재원 ♥ 한소희 결혼합니다',
         description:'2026.11.28 (토) 12:00',
-        imageUrl: location.href,
+        imageUrl: location.href, // TODO: 실제 이미지 파일(jpg/png) URL로 교체해야 썸네일이 뜸
         link:{ mobileWebUrl: location.href, webUrl: location.href }
       },
       buttons:[{
@@ -846,44 +908,132 @@ function shareKakao(){
     showToast('카카오 JS 키 연동 후 사용 가능합니다');
   }
 }
+/* ==========================================================
+   갤러리 카드 스택 스와이프
+   - order: 현재 스택 순서(이미지 인덱스 배열), order[0]이 맨 위 카드
+   - 스와이프해서 던지면 그 카드를 order 맨 뒤로 보내고 다시 렌더링
+   - VISIBLE_COUNT장만 실제로 DOM에 그려서 성능 확보 (전체를 다 그리지 않음)
+   ========================================================== */
+   const GALLERY_IMAGES = [
+  'https://heesohan.github.io/soheejaewon/1.jpg',
+  'https://heesohan.github.io/soheejaewon/2.jpg',
+  'https://heesohan.github.io/soheejaewon/3.jpg',
+  'https://heesohan.github.io/soheejaewon/4.jpg',
+  'https://heesohan.github.io/soheejaewon/5.jpg',
+  'https://heesohan.github.io/soheejaewon/6.jpg',
+  'https://heesohan.github.io/soheejaewon/7.jpg',
+  'https://heesohan.github.io/soheejaewon/8.jpg',
+  'https://heesohan.github.io/soheejaewon/9.jpg',
+  'https://heesohan.github.io/soheejaewon/10.jpg',
+  'https://heesohan.github.io/soheejaewon/11.jpg',
+  'https://heesohan.github.io/soheejaewon/12.jpg',
+  'https://heesohan.github.io/soheejaewon/13.jpg',
+  'https://heesohan.github.io/soheejaewon/14.jpg',
+  'https://heesohan.github.io/soheejaewon/15.jpg',
+  'https://heesohan.github.io/soheejaewon/16.jpg',
+  'https://heesohan.github.io/soheejaewon/17.jpg',
+  'https://heesohan.github.io/soheejaewon/18.jpg'
+];
 
-/* ---------- RSVP form -> Supabase(Lovable Cloud) ---------- */
-const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+const VISIBLE_COUNT = 3;   // 동시에 겹쳐 보이는 카드 수
+const THROW_THRESHOLD = 90; // 이 거리(px) 이상 드래그해야 "던짐"으로 인정
 
-document.getElementById('rsvpForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const btn = document.getElementById('rsvpSubmitBtn');
-  const msg = document.getElementById('rsvpMsg');
-  const payload = {
-    name: document.getElementById('rsvpName').value,
-    phone: document.getElementById('rsvpPhone').value,
-    attendance: document.querySelector('input[name="attendance"]:checked').value,
-    guest_count: parseInt(document.getElementById('rsvpGuests').value || '1',10),
-    meal_preference: document.getElementById('rsvpMeal').value,
-    message: document.getElementById('rsvpMessage').value
-  };
-  try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rsvp_submissions`, {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Prefer':'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    });
-    if(!res.ok) throw new Error('submit failed');
-    btn.classList.add('success');
-    btn.textContent='전달 완료 ✓';
-    msg.classList.add('show');
-    document.getElementById('rsvpForm').reset();
-  } catch(err){
-    showToast('전달 중 오류 - Supabase URL/키 연결이 필요합니다');
-    console.error(err);
+let cardOrder = GALLERY_IMAGES.map((_, i) => i);
+let shownCount = 1; // 카운터 표시용 (1부터 시작, 계속 순환)
+
+const stackEl = document.getElementById('cardStack');
+
+function renderStack(){
+  stackEl.innerHTML = '';
+  const visible = cardOrder.slice(0, VISIBLE_COUNT);
+
+  visible.forEach((imgIdx, pos) => {
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+    card.style.zIndex = VISIBLE_COUNT - pos;
+
+    // 뒤쪽 카드일수록 작아지고, 좌우로 살짝 기울고, 아래로 내려감
+    const scale = 1 - pos * 0.06;
+    const rotate = pos === 0 ? 0 : (pos % 2 === 0 ? 1 : -1) * pos * 5;
+    const translateY = pos * 12;
+    const baseTransform = `translate(0px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`;
+    card.style.transform = baseTransform;
+    card.style.opacity = pos === 0 ? '1' : String(1 - pos * 0.18);
+    card.dataset.baseTransform = baseTransform;
+
+    const img = document.createElement('img');
+    img.src = GALLERY_IMAGES[imgIdx];
+    img.loading = 'lazy';
+    card.appendChild(img);
+
+    if(pos === 0) attachDrag(card); // 맨 위 카드만 드래그 가능
+    stackEl.appendChild(card);
+  });
+
+  document.getElementById('cardCurrent').textContent =
+    ((shownCount - 1) % GALLERY_IMAGES.length) + 1;
+}
+
+function attachDrag(card){
+  let startX = 0, startY = 0, curX = 0, curY = 0, dragging = false;
+
+  function onDown(e){
+    dragging = true;
+    card.classList.add('dragging');
+    startX = e.clientX;
+    startY = e.clientY;
+    card.setPointerCapture(e.pointerId);
   }
-});
+  function onMove(e){
+    if(!dragging) return;
+    curX = e.clientX - startX;
+    curY = e.clientY - startY;
+    const rotate = curX * 0.06;
+    card.style.transform = `translate(${curX}px, ${curY}px) rotate(${rotate}deg)`;
+    card.style.opacity = String(Math.max(1 - Math.hypot(curX, curY) / 260, 0.35));
+  }
+  function onUp(){
+    if(!dragging) return;
+    dragging = false;
+    card.classList.remove('dragging');
+
+    const dist = Math.hypot(curX, curY);
+    if(dist > THROW_THRESHOLD){
+      throwCard(card, curX, curY);
+    } else {
+      // 살짝만 움직였으면 원래 자리로 스프링백
+      card.style.transform = card.dataset.baseTransform;
+      card.style.opacity = '1';
+    }
+    curX = 0; curY = 0;
+  }
+
+  card.addEventListener('pointerdown', onDown);
+  card.addEventListener('pointermove', onMove);
+  card.addEventListener('pointerup', onUp);
+  card.addEventListener('pointercancel', onUp);
+}
+
+function throwCard(card, x, y){
+  const angle = Math.atan2(y, x);
+  const flyDist = 900;
+  const flyX = Math.cos(angle) * flyDist;
+  const flyY = Math.sin(angle) * flyDist;
+
+  card.classList.add('flying');
+  card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
+  card.style.opacity = '0';
+
+  card.addEventListener('transitionend', function handler(){
+    card.removeEventListener('transitionend', handler);
+    cardOrder.push(cardOrder.shift()); // 맨 위 카드를 스택 맨 뒤로 순환
+    shownCount++;
+    renderStack(); // 다음 카드가 자연스럽게 맨 위로 올라옴
+  }, { once: true });
+}
+
+renderStack();
+
 </script>
 </body>
 </html>
