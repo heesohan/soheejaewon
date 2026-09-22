@@ -222,16 +222,7 @@ section.section{padding:64px 24px; position:relative;}
 }
 .person-card .icons a:hover{ background:var(--accent-hover); }
 
-/* ===================== 4. GALLERY ===================== */
-#gallery{ padding:64px 0; }
-#gallery .section-title{ text-align:center; padding:0 24px; }
-/* ===================== 4. GALLERY (카드 스택 스와이프) =====================
-   - card-stack-wrap: 카드가 놓일 무대. 세로 3:4 비율 고정
-   - photo-card: 절대 위치, 뒤쪽 카드일수록 작고 살짝 기울고 아래로 내려가서
-     "자연스럽게 겹친 사진 뭉치" 느낌을 냄
-   - dragging: 드래그 중엔 transition 끔 (손가락 따라 즉시 움직여야 함)
-   - flying: 던져질 때만 transition 켜서 부드럽게 날아가며 페이드아웃
-*/
+/* ===================== 4. GALLERY (카드 스택 스와이프) ===================== */
 #gallery{ padding:64px 24px 40px; }
 #gallery .section-title{ text-align:center; margin-bottom:32px; }
 
@@ -251,13 +242,11 @@ section.section{padding:64px 24px; position:relative;}
   overflow:hidden;
   background:#222;
   box-shadow:0 10px 26px rgba(0,0,0,0.4);
-  touch-action:none;      /* 드래그 중 화면 스크롤 방지 */
+  touch-action:none;
   cursor:grab;
-  will-change:transform, opacity; /* 추가: GPU 가속으로 애니메이션 끊김 방지 */
+  will-change:transform, opacity;
   transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
 }
-
-/* 추가: 던져진 카드만 담기는 오버레이. 스택 위에 그대로 겹쳐서 위치는 안 바뀜 */
 .fly-layer{
   position:absolute;
   inset:0;
@@ -268,7 +257,7 @@ section.section{padding:64px 24px; position:relative;}
   width:100%; height:100%;
   object-fit:cover;
   display:block;
-  pointer-events:none;    /* 이미지가 드래그 이벤트를 가로채지 않도록 */
+  pointer-events:none;
 }
 .photo-card.dragging{ transition:none; cursor:grabbing; }
 .photo-card.flying{ transition:transform 0.5s ease, opacity 0.5s ease; }
@@ -284,7 +273,7 @@ section.section{padding:64px 24px; position:relative;}
 
 .photo-popup{
   position:fixed; inset:0;
-  background:rgba(45,45,45,0.5); /* --bg-dark 색상의 50% 반투명 */
+  background:rgba(45,45,45,0.5);
   display:none;
   align-items:center;
   justify-content:center;
@@ -320,7 +309,7 @@ section.section{padding:64px 24px; position:relative;}
   width:300vw;
   height:100%;
   transform:translate3d(-100vw,0,0);
-  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1); /* 더 길고 부드럽게 감속되는 곡선 */
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
   will-change:transform;
 }
 .popup-track.no-transition{ transition:none !important; }
@@ -330,10 +319,9 @@ section.section{padding:64px 24px; position:relative;}
   display:flex; align-items:center; justify-content:center;
 }
 .popup-slide img{
-  max-width:90vw;
-  max-height:85vh;
-  width:auto; height:auto;
-  object-fit:contain;      /* 원본 비율 유지, 화면을 억지로 채우지 않음 */
+  width:100vw;
+  height:100%;
+  object-fit:contain;
   transform-origin:center center;
   transition:transform 0.2s ease;
   user-select:none;
@@ -386,11 +374,7 @@ section.section{padding:64px 24px; position:relative;}
   font-weight:700;
 }
 
-/* ===================== 6. LOCATION =====================
-   - 네이버맵 SDK 제거, 카카오맵 하나만 임베드
-   - 좌표는 카카오 지오코더로 VENUE_ADDRESS를 실시간 변환해서 사용
-   - 길찾기 버튼 3개(카카오맵/네이버지도/티맵)는 지오코딩 성공 후 JS가 href를 채움
-*/
+/* ===================== 6. LOCATION ===================== */
 #location{ text-align:center; }
 .map-wrap{
   border-radius:14px;
@@ -437,13 +421,7 @@ section.section{padding:64px 24px; position:relative;}
 .info-block .info-text{ font-size:13px; line-height:1.7; color:rgba(255,255,255,0.9); white-space:pre-line;}
 .info-block .info-text b{ color:var(--accent); }
 
-/* ===================== 7. ACCOUNT ACCORDION =====================
-   변경사항 (이번 요청):
-   - 신랑/신부 본인 계좌만 있던 걸 연락처 모달과 동일하게
-     본인 + 아버지 + 어머니, 총 3명씩 카드로 추가
-   - 카드 개수가 늘어나서 acc-body의 max-height를 220px -> 420px로 늘림
-     (카드를 더 추가하면 이 값도 같이 늘려야 잘리지 않음)
-*/
+/* ===================== 7. ACCOUNT ACCORDION ===================== */
 #account{ text-align:center; }
 .accordion{ text-align:left; }
 .acc-item{
@@ -468,7 +446,7 @@ section.section{padding:64px 24px; position:relative;}
   overflow:hidden;
   transition:max-height 0.3s ease;
 }
-.acc-item.open .acc-body{ max-height:420px; } /* 카드 3개 기준으로 넉넉하게 늘림 */
+.acc-item.open .acc-body{ max-height:420px; }
 .acc-body-inner{ padding:0 18px 18px; }
 .acct-card{
   display:flex;
@@ -566,16 +544,13 @@ footer{ text-align:center; padding:24px 24px 60px; }
   <!-- ===================== 4. 포토 갤러리 ===================== -->
   <section id="gallery" class="section fade-in">
     <div class="section-title serif">photo</div>
-<!-- 카드 스택: JS가 GALLERY_IMAGES 배열로 카드를 동적 생성함 -->
-<div class="card-stack-wrap">
-  <div class="card-stack" id="cardStack"></div>
-  <div class="fly-layer" id="flyLayer"></div>
-</div>
-
-<div class="card-counter">
-  <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
-</div>
-
+    <div class="card-stack-wrap">
+      <div class="card-stack" id="cardStack"></div>
+      <div class="fly-layer" id="flyLayer"></div>
+    </div>
+    <div class="card-counter">
+      <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
+    </div>
   </section>
 
   <div class="divider"></div>
@@ -600,9 +575,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- ===================== 6. 오시는 길 =====================
-       TODO: VENUE_ADDRESS가 실제 도로명주소와 정확히 일치하는지 꼭 재확인
-  -->
+  <!-- ===================== 6. 오시는 길 ===================== -->
   <section id="location" class="section fade-in">
     <div class="section-title serif">오시는 길</div>
     <div class="map-wrap">
@@ -644,11 +617,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
 
   <div class="divider"></div>
 
-  <!-- ===================== 7. 축의금 계좌 =====================
-       신랑측/신부측 각각 본인 + 아버지 + 어머니 3명씩 카드 추가함.
-       ⚠️ 부모님 계좌번호는 실제 값을 몰라서 임시 placeholder로 채워놨어.
-          "은행명" / "계좌번호입력" 부분을 실제 정보로 반드시 교체해줘.
-  -->
+  <!-- ===================== 7. 축의금 계좌 ===================== -->
   <section id="account" class="section fade-in">
     <div class="section-title serif">마음 전하는 곳</div>
     <div class="accordion">
@@ -670,7 +639,6 @@ footer{ text-align:center; padding:24px 24px 60px; }
               </div>
             </div>
 
-            <!-- TODO: 신랑 아버지 실제 계좌 정보로 교체 -->
             <div class="acct-card">
               <div>
                 <span class="acct-name">신랑 아버지 최창균 · 국민은행</span>
@@ -681,7 +649,6 @@ footer{ text-align:center; padding:24px 24px 60px; }
               </div>
             </div>
 
-            <!-- TODO: 신랑 어머니 실제 계좌 정보로 교체 -->
             <div class="acct-card">
               <div>
                 <span class="acct-name">신랑 어머니 김원경 · 국민은행</span>
@@ -713,7 +680,6 @@ footer{ text-align:center; padding:24px 24px 60px; }
               </div>
             </div>
 
-            <!-- TODO: 신부 아버지 실제 계좌 정보로 교체 -->
             <div class="acct-card">
               <div>
                 <span class="acct-name">신부 아버지 한상필 · 신협</span>
@@ -724,7 +690,6 @@ footer{ text-align:center; padding:24px 24px 60px; }
               </div>
             </div>
 
-            <!-- TODO: 신부 어머니 실제 계좌 정보로 교체 -->
             <div class="acct-card">
               <div>
                 <span class="acct-name">신부 어머니 최지윤 · 농협</span>
@@ -742,10 +707,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
     </div>
   </section>
 
-    <!-- ===================== 연락처 (임시 비노출) =====================
-       지우지 않고 display:none으로만 숨겨둠.
-       다시 보이게 하려면 style="display:none;" 만 지우면 됨.
-  -->
+  <!-- ===================== 연락처 (임시 비노출) ===================== -->
   <section id="contact" class="section fade-in" style="display:none;">
     <div class="section-title serif">연락하기</div>
     <button class="contact-btn" onclick="openModal()">연락하기</button>
@@ -844,6 +806,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
     <div class="popup-slide"><img id="popupImgNext" src="" alt=""></div>
   </div>
 </div>
+
 <script>
 /* ---------- modal ---------- */
 function openModal(){ document.getElementById('contactModal').classList.add('active'); }
@@ -989,13 +952,11 @@ function shareKakao(){
     showToast('카카오 JS 키 연동 후 사용 가능합니다');
   }
 }
+
 /* ==========================================================
    갤러리 카드 스택 스와이프
-   - order: 현재 스택 순서(이미지 인덱스 배열), order[0]이 맨 위 카드
-   - 스와이프해서 던지면 그 카드를 order 맨 뒤로 보내고 다시 렌더링
-   - VISIBLE_COUNT장만 실제로 DOM에 그려서 성능 확보 (전체를 다 그리지 않음)
    ========================================================== */
-   const GALLERY_IMAGES = [
+const GALLERY_IMAGES = [
   'https://heesohan.github.io/soheejaewon/1.jpg',
   'https://heesohan.github.io/soheejaewon/2.jpg',
   'https://heesohan.github.io/soheejaewon/3.jpg',
@@ -1016,9 +977,8 @@ function shareKakao(){
   'https://heesohan.github.io/soheejaewon/18.jpg'
 ];
 
-// 추가: 페이지 로드 시 전체 이미지를 브라우저 캐시에 미리 태워둠
-// -> 카드가 스택 맨 위로 올라올 때 디코딩 지연이 없어짐
 GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+
 const CARD_TILTS = [
   6, -8, 5, -9, 7, -4, 8, -6, 4,
   -9, 6, -5, 8, -7, 5, -8, 6, -4
@@ -1044,8 +1004,6 @@ function renderStack(){
     card.style.zIndex = VISIBLE_COUNT - pos;
 
     const scale = 1 - pos * 0.06;
-    // pos(스택 위치)가 아니라 imgIdx(사진 번호)를 기준으로 기울기를 정해서
-    // 같은 자리(pos)라도 어떤 사진이 오느냐에 따라 좌우 기울기가 달라지게 함
     const rotate = pos === 0 ? 0 : CARD_TILTS[imgIdx % CARD_TILTS.length] * pos * 0.7;
     const translateY = pos * 12;
     const baseTransform = `translate(0px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`;
@@ -1054,7 +1012,7 @@ function renderStack(){
     card.dataset.baseTransform = baseTransform;
 
     const img = document.createElement('img');
-    img.src = GALLERY_IMAGES[imgIdx]; // 이미 프리로드돼있어서 즉시 표시됨
+    img.src = GALLERY_IMAGES[imgIdx];
     card.appendChild(img);
 
     if(pos === 0) attachDrag(card);
@@ -1086,29 +1044,27 @@ function attachDrag(card){
     if(!dragging) return;
     curX = e.clientX - startX;
     curY = e.clientY - startY;
-    // 추가: pointermove가 너무 자주 오는 걸 rAF로 한 프레임에 한 번만 반영 (끊김 방지)
     if(rafId === null) rafId = requestAnimationFrame(applyDragTransform);
   }
   function onUp(){
-  if(!dragging) return;
-  dragging = false;
-  card.classList.remove('dragging');
-  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+    if(!dragging) return;
+    dragging = false;
+    card.classList.remove('dragging');
+    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
 
-  const dist = Math.hypot(curX, curY);
-  if(dist > THROW_THRESHOLD){
-    throwCard(card, curX, curY);
-  } else if(dist < TAP_THRESHOLD){
-    // 거의 안 움직였으면 스와이프가 아니라 '클릭'으로 보고 팝업 오픈
-    card.style.transform = card.dataset.baseTransform;
-    card.style.opacity = '1';
-    openPhotoPopup(cardOrder[0]); // 이제 src가 아니라 사진 인덱스를 넘김
-  } else {
-    card.style.transform = card.dataset.baseTransform;
-    card.style.opacity = '1';
+    const dist = Math.hypot(curX, curY);
+    if(dist > THROW_THRESHOLD){
+      throwCard(card, curX, curY);
+    } else if(dist < TAP_THRESHOLD){
+      card.style.transform = card.dataset.baseTransform;
+      card.style.opacity = '1';
+      openPhotoPopup(cardOrder[0]);
+    } else {
+      card.style.transform = card.dataset.baseTransform;
+      card.style.opacity = '1';
+    }
+    curX = 0; curY = 0;
   }
-  curX = 0; curY = 0;
-}
 
   card.addEventListener('pointerdown', onDown);
   card.addEventListener('pointermove', onMove);
@@ -1122,7 +1078,6 @@ function throwCard(card, x, y){
   const flyX = Math.cos(angle) * flyDist;
   const flyY = Math.sin(angle) * flyDist;
 
-  // 던져진 카드를 별도 레이어로 옮겨서 스택과 독립적으로 날아가게 함
   card.classList.add('flying');
   flyLayer.appendChild(card);
   requestAnimationFrame(() => {
@@ -1131,7 +1086,6 @@ function throwCard(card, x, y){
   });
   card.addEventListener('transitionend', () => card.remove(), { once: true });
 
-  // 핵심 수정: 애니메이션 끝날 때까지 기다리지 않고 즉시 다음 카드로 넘어감
   cardOrder.push(cardOrder.shift());
   shownCount++;
   renderStack();
@@ -1140,7 +1094,12 @@ function throwCard(card, x, y){
 renderStack();
 
 /* ==========================================================
-   사진 확대 팝업 (캐러셀 방식)
+   사진 확대 팝업 (캐러셀 방식) — 이 블록이 팝업 관련 코드의 유일한 버전임
+   - 화면 너비의 18%만 밀어도 다음/이전 사진으로 넘어감
+   - 손을 놓았을 때 이미 이동한 만큼은 그대로 이어서 마무리 (남은 거리에 비례한 시간)
+     -> 튕기듯 던져지는 느낌 없이 드래그가 자연스럽게 이어짐
+   - 핀치/더블탭으로 최대 200% 확대, 확대 중엔 드래그가 팬(이동)
+   - 이동 없는 탭 한 번 또는 X 버튼 -> 종료
    ========================================================== */
 const photoPopup    = document.getElementById('photoPopup');
 const popupTrack    = document.getElementById('popupTrack');
@@ -1151,8 +1110,9 @@ const popupCloseBtn = document.getElementById('popupClose');
 const popupPrevBtn  = document.getElementById('popupPrev');
 const popupNextBtn  = document.getElementById('popupNext');
 
-const POPUP_MAX_SCALE   = 2;     // 200%
-const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감 (반까지 안 가도 됨)
+const POPUP_MAX_SCALE    = 2;    // 200%
+const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
+const BASE_SETTLE_MS     = 420;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
 
 let popupIndex = 0;
 let popupScale = 1, popupPanX = 0, popupPanY = 0;
@@ -1194,12 +1154,16 @@ function closePhotoPopup(){
 }
 
 // direction: -1 이전 사진, 0 원위치 복귀, 1 다음 사진
-function settleSwipe(direction){
+// durationMs: 이 전환에 걸릴 시간(ms) — 남은 거리에 비례해서 호출부에서 계산해서 넘김
+function settleSwipe(direction, durationMs){
   const target = direction === -1 ? '0vw' : direction === 1 ? '-200vw' : '-100vw';
   popupAnimating = direction !== 0;
+  popupTrack.style.transitionDuration = `${durationMs}ms`;
+  popupTrack.style.transitionTimingFunction = 'cubic-bezier(0.22,1,0.36,1)';
   popupTrack.style.transform = `translate3d(${target},0,0)`;
+
   if(direction === 0){
-    setTimeout(() => { popupAnimating = false; }, 450);
+    setTimeout(() => { popupAnimating = false; }, durationMs);
     return;
   }
   popupTrack.addEventListener('transitionend', function handler(){
@@ -1218,8 +1182,8 @@ function settleSwipe(direction){
   }, { once: true });
 }
 
-popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(-1); });
-popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(1); });
+popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS); });
+popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(1, BASE_SETTLE_MS); });
 popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhotoPopup(); });
 
 photoPopup.addEventListener('pointerdown', (e) => {
@@ -1264,6 +1228,7 @@ photoPopup.addEventListener('pointermove', (e) => {
     imgCurEl.classList.add('no-transition');
     imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
   } else {
+    popupTrack.style.transitionDuration = '0ms';
     popupTrack.style.transform = `translate3d(calc(-100vw + ${dragDX}px),0,0)`;
   }
 });
@@ -1277,12 +1242,15 @@ function popupPointerEnd(e){
   if(popupScale === 1){
     popupTrack.classList.remove('no-transition');
     const widthPx = photoPopup.clientWidth || window.innerWidth;
-    const ratio = Math.abs(dragDX) / widthPx;
+    const ratio = Math.min(Math.abs(dragDX) / widthPx, 1);
 
     if(ratio > SWIPE_COMMIT_RATIO){
-      settleSwipe(dragDX > 0 ? -1 : 1);
+      const direction = dragDX > 0 ? -1 : 1;
+      const duration = Math.max(120, BASE_SETTLE_MS * (1 - ratio));
+      settleSwipe(direction, duration);
     } else {
-      settleSwipe(0);
+      const duration = Math.max(150, BASE_SETTLE_MS * (0.6 + ratio));
+      settleSwipe(0, duration);
       if(!tapMoved) handleTap();
     }
   } else if(!tapMoved){
