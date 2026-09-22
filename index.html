@@ -271,28 +271,68 @@ section.section{padding:64px 24px; position:relative;}
 }
 .card-counter .count-num{ color:var(--accent); font-weight:700; }
 
+/* ===================== 사진 팝업 ===================== */
+
 .photo-popup{
-  position:fixed; inset:0;
-  background:rgba(45,45,45,0.5);
+  position:fixed;
+  inset:0;
+  z-index:300;
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:300;
   overflow:hidden;
-  touch-action:none;
-}
-.photo-popup.active{ display:flex; }
 
+  /* 사진 외 배경: 사이트 배경색 50% 반투명 */
+  background:rgba(45,45,45,0.5);
+
+  touch-action:none;
+  overscroll-behavior:contain;
+}
+
+.photo-popup.active{
+  display:flex;
+}
+
+/*
+  사진이 실제로 표시되는 영역.
+  화면보다 작게 두어 바깥 반투명 배경이 계속 보이도록 함.
+*/
+.popup-stage{
+  position:relative;
+  width:92vw;
+  height:86vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* 현재 팝업 사진 */
 .popup-image{
-  max-width:90vw;
-  max-height:85vh;
+  display:block;
+  max-width:100%;
+  max-height:100%;
   width:auto;
   height:auto;
-  object-fit:contain; /* 사진 원본 비율 유지 */
+  object-fit:contain;
+  transform:translate3d(0,0,0) scale(1);
+  transform-origin:center center;
+  transition:transform 0.25s ease, opacity 0.24s ease;
+  will-change:transform, opacity;
+  pointer-events:none;
   user-select:none;
   -webkit-user-drag:none;
 }
 
+/* 스와이프 중에는 손가락을 즉시 따라감 */
+.popup-image.is-dragging{
+  transition:none;
+}
+
+/* 다음/이전 이미지로 바뀌기 직전 페이드아웃 */
+.popup-image.is-fading{
+  opacity:0;
+}
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
@@ -759,11 +799,17 @@ footer{ text-align:center; padding:24px 24px 60px; }
 </div>
 
 <div class="toast" id="toast"></div>
-<!-- 사진 팝업: 사진을 탭하면 닫힘 -->
+<!-- 사진 팝업 -->
 <div class="photo-popup" id="photoPopup">
-  <img class="popup-image" id="popupImage" src="" alt="">
+  <div class="popup-stage" id="popupStage">
+    <img
+      class="popup-image"
+      id="popupImage"
+      src="https://heesohan.github.io/soheejaewon/1.jpg"
+      alt="웨딩 사진">
+  </div>
 </div>
-
+	
 <script>
 /* ---------- modal ---------- */
 function openModal(){ document.getElementById('contactModal').classList.add('active'); }
@@ -1053,25 +1099,308 @@ renderStack();
 
 /* ==========================================================
    사진 팝업
-   - 카드 탭: 해당 사진을 원본 비율로 팝업에 표시
-   - 팝업 안 사진/배경 어디든 한 번 탭: 닫기
    ========================================================== */
 const photoPopup = document.getElementById('photoPopup');
+const popupStage = document.getElementById('popupStage');
 const popupImage = document.getElementById('popupImage');
 
-function openPhotoPopup(imgIdx){
-  popupImage.src = GALLERY_IMAGES[imgIdx];
+const POPUP_MAX_SCALE = 2;
+const SWIPE_COMMIT_RATIO = 0.18;
+const SWIPE_RETURN_DURATION = 260;
+const SWIPE_FINISH_DURATION = 260;
+
+let popupIndex = 0;
+let popupScale = 1;
+let popupPanX = 0;
+let popupPanY = 0;
+
+let pointerStartX = 0;
+let pointerStartY = 0;
+let pointerMoveX = 0;
+let pointerMoveY = 0;
+let pointerMoved = false;
+
+let panStartX = 0;
+let panStartY = 0;
+
+const popupPointers = new Map();
+let pinchStartDistance = 0;
+let pinchStartScale = 1;
+
+let popupChanging = false;
+let lastTapTime = 0;
+let tapCloseTimer = null;
+
+function wrapGalleryIndex(index){
+  return ((index % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+}
+
+/* 현재 이미지의 확대/이동 상태 반영 */
+function applyPopupTransform(animated = true){
+  popupImage.classList.toggle('is-dragging', !animated);
+  popupImage.style.transform =
+    `translate3d(${popupPanX}px,${popupPanY}px,0) scale(${popupScale})`;
+}
+
+/* 확대/이동값 초기화 */
+function resetPopupTransform(animated = false){
+  popupScale = 1;
+  popupPanX = 0;
+  popupPanY = 0;
+  applyPopupTransform(animated);
+}
+
+/* 이전/다음 이미지 브라우저 캐시 미리 로드 */
+function preloadPopupNeighbors(){
+  const previous = new Image();
+  const next = new Image();
+
+  previous.src = GALLERY_IMAGES[wrapGalleryIndex(popupIndex - 1)];
+  next.src = GALLERY_IMAGES[wrapGalleryIndex(popupIndex + 1)];
+}
+
+/* 카드에서 선택한 정확한 사진으로 팝업 열기 */
+function openPhotoPopup(imageIndex){
+  popupIndex = Number(imageIndex);
+  popupChanging = false;
+
+  popupImage.src = GALLERY_IMAGES[popupIndex];
+  resetPopupTransform(false);
+  preloadPopupNeighbors();
+
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
+/* 팝업 닫기 */
 function closePhotoPopup(){
   photoPopup.classList.remove('active');
-  popupImage.src = '';
   document.body.style.overflow = '';
+
+  popupPointers.clear();
+  popupChanging = false;
+  resetPopupTransform(false);
 }
 
-photoPopup.addEventListener('click', closePhotoPopup);
+/*
+  슬라이드 완료 처리
+  - 사진을 드래그한 방향으로 자연스럽게 화면 밖까지 보냄
+  - 새 사진을 반대편에서 시작시켜 중앙으로 가져옴
+*/
+function changePopupImage(direction){
+  if(popupChanging) return;
+
+  popupChanging = true;
+
+  const stageWidth = popupStage.clientWidth || window.innerWidth * 0.92;
+  const outgoingX = direction === 1 ? -stageWidth : stageWidth;
+
+  popupImage.classList.remove('is-dragging');
+  popupImage.style.transition =
+    `transform ${SWIPE_FINISH_DURATION}ms cubic-bezier(0.22,1,0.36,1), opacity ${SWIPE_FINISH_DURATION}ms ease`;
+
+  /* 현재 사진을 드래그 방향으로 끝까지 이동 */
+  popupImage.style.transform =
+    `translate3d(${outgoingX}px,0,0) scale(1)`;
+  popupImage.style.opacity = '0';
+
+  setTimeout(() => {
+    /*
+      direction 1: 왼쪽으로 넘김 -> 다음 사진
+      direction -1: 오른쪽으로 넘김 -> 이전 사진
+    */
+    popupIndex = wrapGalleryIndex(popupIndex + direction);
+
+    popupImage.src = GALLERY_IMAGES[popupIndex];
+    popupImage.style.transition = 'none';
+
+    /* 다음 사진을 반대쪽 바깥에서 준비 */
+    const incomingX = direction === 1 ? stageWidth : -stageWidth;
+    popupImage.style.opacity = '1';
+    popupImage.style.transform =
+      `translate3d(${incomingX}px,0,0) scale(1)`;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popupImage.style.transition =
+          `transform ${SWIPE_FINISH_DURATION}ms cubic-bezier(0.22,1,0.36,1), opacity ${SWIPE_FINISH_DURATION}ms ease`;
+
+        /* 새 사진을 중앙으로 부드럽게 이동 */
+        popupImage.style.transform =
+          'translate3d(0,0,0) scale(1)';
+
+        setTimeout(() => {
+          popupImage.style.transition = '';
+          popupChanging = false;
+          resetPopupTransform(false);
+          preloadPopupNeighbors();
+        }, SWIPE_FINISH_DURATION);
+      });
+    });
+  }, SWIPE_FINISH_DURATION);
+}
+
+/* 스와이프가 기준에 못 미친 경우 원래 자리로 자연스럽게 돌아감 */
+function returnPopupImage(){
+  popupImage.classList.remove('is-dragging');
+  popupImage.style.transition =
+    `transform ${SWIPE_RETURN_DURATION}ms cubic-bezier(0.22,1,0.36,1)`;
+
+  popupImage.style.transform =
+    'translate3d(0,0,0) scale(1)';
+
+  setTimeout(() => {
+    popupImage.style.transition = '';
+  }, SWIPE_RETURN_DURATION);
+}
+
+/* 더블탭은 확대/축소, 한 번 탭은 닫기 */
+function handlePopupTap(){
+  const now = Date.now();
+
+  if(now - lastTapTime < 300){
+    clearTimeout(tapCloseTimer);
+    lastTapTime = 0;
+
+    if(popupScale > 1){
+      resetPopupTransform(true);
+    }else{
+      popupScale = POPUP_MAX_SCALE;
+      popupPanX = 0;
+      popupPanY = 0;
+      applyPopupTransform(true);
+    }
+    return;
+  }
+
+  lastTapTime = now;
+
+  tapCloseTimer = setTimeout(() => {
+    closePhotoPopup();
+  }, 300);
+}
+
+/* 터치/마우스 시작 */
+photoPopup.addEventListener('pointerdown', (event) => {
+  if(popupChanging) return;
+
+  popupPointers.set(event.pointerId, {
+    x:event.clientX,
+    y:event.clientY
+  });
+
+  photoPopup.setPointerCapture(event.pointerId);
+
+  if(popupPointers.size === 1){
+    pointerStartX = event.clientX;
+    pointerStartY = event.clientY;
+    pointerMoveX = 0;
+    pointerMoveY = 0;
+    pointerMoved = false;
+
+    panStartX = popupPanX;
+    panStartY = popupPanY;
+  }
+
+  if(popupPointers.size === 2){
+    const points = [...popupPointers.values()];
+
+    pinchStartDistance = Math.hypot(
+      points[0].x - points[1].x,
+      points[0].y - points[1].y
+    );
+
+    pinchStartScale = popupScale;
+    pointerMoved = true;
+  }
+});
+
+/* 터치/마우스 이동 */
+photoPopup.addEventListener('pointermove', (event) => {
+  if(!popupPointers.has(event.pointerId)) return;
+
+  popupPointers.set(event.pointerId, {
+    x:event.clientX,
+    y:event.clientY
+  });
+
+  /* 두 손가락 핀치: 현재 사진만 확대 */
+  if(popupPointers.size === 2){
+    const points = [...popupPointers.values()];
+
+    const currentDistance = Math.hypot(
+      points[0].x - points[1].x,
+      points[0].y - points[1].y
+    );
+
+    if(pinchStartDistance > 0){
+      popupScale = Math.min(
+        POPUP_MAX_SCALE,
+        Math.max(1, pinchStartScale * (currentDistance / pinchStartDistance))
+      );
+
+      applyPopupTransform(false);
+    }
+
+    return;
+  }
+
+  pointerMoveX = event.clientX - pointerStartX;
+  pointerMoveY = event.clientY - pointerStartY;
+
+  if(Math.hypot(pointerMoveX, pointerMoveY) > 6){
+    pointerMoved = true;
+  }
+
+  /* 확대 상태: 현재 사진만 팬 이동 */
+  if(popupScale > 1){
+    popupPanX = panStartX + pointerMoveX;
+    popupPanY = panStartY + pointerMoveY;
+
+    applyPopupTransform(false);
+    return;
+  }
+
+  /* 기본 상태: 사진이 손가락을 따라 좌우로 움직임 */
+  popupImage.classList.add('is-dragging');
+  popupImage.style.transform =
+    `translate3d(${pointerMoveX}px,0,0) scale(1)`;
+});
+
+/* 터치/마우스 종료 */
+function onPopupPointerEnd(event){
+  popupPointers.delete(event.pointerId);
+
+  if(popupPointers.size > 0) return;
+
+  if(popupScale > 1){
+    if(!pointerMoved) handlePopupTap();
+    return;
+  }
+
+  const stageWidth = popupStage.clientWidth || window.innerWidth * 0.92;
+  const swipeRatio = Math.abs(pointerMoveX) / stageWidth;
+
+  if(swipeRatio >= SWIPE_COMMIT_RATIO){
+    /*
+      왼쪽으로 밀면 다음 사진(direction 1)
+      오른쪽으로 밀면 이전 사진(direction -1)
+    */
+    changePopupImage(pointerMoveX < 0 ? 1 : -1);
+  }else{
+    returnPopupImage();
+
+    if(!pointerMoved){
+      handlePopupTap();
+    }
+  }
+
+  pointerMoveX = 0;
+  pointerMoveY = 0;
+}
+
+photoPopup.addEventListener('pointerup', onPopupPointerEnd);
+photoPopup.addEventListener('pointercancel', onPopupPointerEnd);
 </script>
 </body>
 </html>
