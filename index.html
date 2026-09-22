@@ -532,15 +532,14 @@ footer{ text-align:center; padding:24px 24px 60px; }
     <div class="section-title serif">photo</div>
 <!-- 카드 스택: JS가 GALLERY_IMAGES 배열로 카드를 동적 생성함 -->
 <div class="card-stack-wrap">
-    <div class="card-stack" id="cardStack"></div>
-    <div class="fly-layer" id="flyLayer"></div>
-    <!-- 던져진 카드가 이 레이어 안에서 독립적으로 날아가며 사라짐 -->
-  </div>
   <div class="card-stack" id="cardStack"></div>
+  <div class="fly-layer" id="flyLayer"></div>
 </div>
+
 <div class="card-counter">
   <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
 </div>
+
   </section>
 
   <div class="divider"></div>
@@ -980,6 +979,7 @@ GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
 
 const VISIBLE_COUNT = 3;
 const THROW_THRESHOLD = 90;
+const TAP_THRESHOLD = 12;
 
 let cardOrder = GALLERY_IMAGES.map((_, i) => i);
 let shownCount = 1;
