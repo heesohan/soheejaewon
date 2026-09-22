@@ -283,51 +283,15 @@ section.section{padding:64px 24px; position:relative;}
 }
 .photo-popup.active{ display:flex; }
 
-.popup-close{
-  position:absolute; top:20px; right:20px;
-  width:36px; height:36px;
-  border:none; border-radius:50%;
-  background:rgba(0,0,0,0.4);
-  color:#fff; font-size:18px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:310;
-}
-.popup-nav{
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:40px; height:40px;
-  border:none; border-radius:50%;
-  background:rgba(0,0,0,0.35);
-  color:#fff; font-size:22px;
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:310;
-}
-.popup-prev{ left:14px; }
-.popup-next{ right:14px; }
-
-.popup-track{
-  display:flex;
-  width:300vw;
-  height:100%;
-  transform:translate3d(-100vw,0,0);
-  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
-  will-change:transform;
-}
-.popup-track.no-transition{ transition:none !important; }
-
-.popup-slide{
-  width:100vw; height:100%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-}
-.popup-slide img{
-  width:100vw;
-  height:100%;
-  object-fit:contain;
-  transform-origin:center center;
-  transition:transform 0.2s ease;
+.popup-image{
+  max-width:90vw;
+  max-height:85vh;
+  width:auto;
+  height:auto;
+  object-fit:contain; /* 사진 원본 비율 유지 */
   user-select:none;
   -webkit-user-drag:none;
 }
-.popup-slide img.no-transition{ transition:none; }
 
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
@@ -795,16 +759,9 @@ footer{ text-align:center; padding:24px 24px 60px; }
 </div>
 
 <div class="toast" id="toast"></div>
-<!-- 사진 확대 팝업 -->
+<!-- 사진 팝업: 사진을 탭하면 닫힘 -->
 <div class="photo-popup" id="photoPopup">
-  <button class="popup-close" id="popupClose" aria-label="닫기">✕</button>
-  <button class="popup-nav popup-prev" id="popupPrev" aria-label="이전 사진">‹</button>
-  <button class="popup-nav popup-next" id="popupNext" aria-label="다음 사진">›</button>
-  <div class="popup-track" id="popupTrack">
-    <div class="popup-slide"><img id="popupImgPrev" src="" alt=""></div>
-    <div class="popup-slide"><img id="popupImgCur"  src="" alt=""></div>
-    <div class="popup-slide"><img id="popupImgNext" src="" alt=""></div>
-  </div>
+  <img class="popup-image" id="popupImage" src="" alt="">
 </div>
 
 <script>
@@ -1093,187 +1050,28 @@ function throwCard(card, x, y){
 
 renderStack();
 
+
 /* ==========================================================
-   사진 확대 팝업 (캐러셀 방식) — 이 블록이 팝업 관련 코드의 유일한 버전임
-   - 화면 너비의 18%만 밀어도 다음/이전 사진으로 넘어감
-   - 손을 놓았을 때 이미 이동한 만큼은 그대로 이어서 마무리 (남은 거리에 비례한 시간)
-     -> 튕기듯 던져지는 느낌 없이 드래그가 자연스럽게 이어짐
-   - 핀치/더블탭으로 최대 200% 확대, 확대 중엔 드래그가 팬(이동)
-   - 이동 없는 탭 한 번 또는 X 버튼 -> 종료
+   사진 팝업
+   - 카드 탭: 해당 사진을 원본 비율로 팝업에 표시
+   - 팝업 안 사진/배경 어디든 한 번 탭: 닫기
    ========================================================== */
-const photoPopup    = document.getElementById('photoPopup');
-const popupTrack    = document.getElementById('popupTrack');
-const imgPrevEl     = document.getElementById('popupImgPrev');
-const imgCurEl      = document.getElementById('popupImgCur');
-const imgNextEl     = document.getElementById('popupImgNext');
-const popupCloseBtn = document.getElementById('popupClose');
-const popupPrevBtn  = document.getElementById('popupPrev');
-const popupNextBtn  = document.getElementById('popupNext');
+const photoPopup = document.getElementById('photoPopup');
+const popupImage = document.getElementById('popupImage');
 
-const POPUP_MAX_SCALE    = 2;    // 200%
-const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
-const BASE_SETTLE_MS     = 420;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
-
-let popupIndex = 0;
-let popupScale = 1, popupPanX = 0, popupPanY = 0;
-const popupPointers = new Map();
-let pinchStartDist = 0, pinchStartScale = 1;
-let dragStartX = 0, dragStartY = 0, dragDX = 0, dragDY = 0, tapMoved = false;
-let panBaseX = 0, panBaseY = 0;
-let lastTapTime = 0, tapCloseTimer = null;
-let popupAnimating = false;
-
-function wrapIndex(i){
-  return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
-}
-function setPopupImages(){
-  imgPrevEl.src = GALLERY_IMAGES[wrapIndex(popupIndex - 1)];
-  imgCurEl.src  = GALLERY_IMAGES[wrapIndex(popupIndex)];
-  imgNextEl.src = GALLERY_IMAGES[wrapIndex(popupIndex + 1)];
-}
-function resetZoom(){
-  popupScale = 1; popupPanX = 0; popupPanY = 0;
-  imgCurEl.classList.add('no-transition');
-  imgCurEl.style.transform = 'translate(0px,0px) scale(1)';
-  requestAnimationFrame(() => imgCurEl.classList.remove('no-transition'));
-}
 function openPhotoPopup(imgIdx){
-  popupIndex = imgIdx;
-  popupAnimating = false;
-  setPopupImages();
-  resetZoom();
-  popupTrack.classList.add('no-transition');
-  popupTrack.style.transform = 'translate3d(-100vw,0,0)';
-  requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
+  popupImage.src = GALLERY_IMAGES[imgIdx];
   photoPopup.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
+
 function closePhotoPopup(){
   photoPopup.classList.remove('active');
+  popupImage.src = '';
   document.body.style.overflow = '';
 }
 
-// direction: -1 이전 사진, 0 원위치 복귀, 1 다음 사진
-// durationMs: 이 전환에 걸릴 시간(ms) — 남은 거리에 비례해서 호출부에서 계산해서 넘김
-function settleSwipe(direction, durationMs){
-  const target = direction === -1 ? '0vw' : direction === 1 ? '-200vw' : '-100vw';
-  popupAnimating = direction !== 0;
-  popupTrack.style.transitionDuration = `${durationMs}ms`;
-  popupTrack.style.transitionTimingFunction = 'cubic-bezier(0.22,1,0.36,1)';
-  popupTrack.style.transform = `translate3d(${target},0,0)`;
-
-  if(direction === 0){
-    setTimeout(() => { popupAnimating = false; }, durationMs);
-    return;
-  }
-  popupTrack.addEventListener('transitionend', function handler(){
-    popupTrack.removeEventListener('transitionend', handler);
-    popupIndex = wrapIndex(popupIndex + direction);
-    setPopupImages();
-    resetZoom();
-    popupTrack.classList.add('no-transition');
-    popupTrack.style.transform = 'translate3d(-100vw,0,0)';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        popupTrack.classList.remove('no-transition');
-        popupAnimating = false;
-      });
-    });
-  }, { once: true });
-}
-
-popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS); });
-popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(1, BASE_SETTLE_MS); });
-popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhotoPopup(); });
-
-photoPopup.addEventListener('pointerdown', (e) => {
-  if(e.target.closest('.popup-nav') || e.target.closest('.popup-close')) return;
-  if(popupAnimating) return;
-  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
-  photoPopup.setPointerCapture(e.pointerId);
-
-  if(popupPointers.size === 1){
-    dragStartX = e.clientX; dragStartY = e.clientY;
-    dragDX = 0; dragDY = 0; tapMoved = false;
-    panBaseX = popupPanX; panBaseY = popupPanY;
-    popupTrack.classList.add('no-transition');
-  }
-  if(popupPointers.size === 2){
-    const pts = [...popupPointers.values()];
-    pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-    pinchStartScale = popupScale;
-  }
-});
-
-photoPopup.addEventListener('pointermove', (e) => {
-  if(!popupPointers.has(e.pointerId)) return;
-  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
-
-  if(popupPointers.size === 2){
-    const pts = [...popupPointers.values()];
-    const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-    popupScale = Math.min(POPUP_MAX_SCALE, Math.max(1, pinchStartScale * (d / pinchStartDist)));
-    imgCurEl.classList.add('no-transition');
-    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
-    return;
-  }
-
-  dragDX = e.clientX - dragStartX;
-  dragDY = e.clientY - dragStartY;
-  if(Math.hypot(dragDX, dragDY) > 6) tapMoved = true;
-
-  if(popupScale > 1){
-    popupPanX = panBaseX + dragDX;
-    popupPanY = panBaseY + dragDY;
-    imgCurEl.classList.add('no-transition');
-    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
-  } else {
-    popupTrack.style.transitionDuration = '0ms';
-    popupTrack.style.transform = `translate3d(calc(-100vw + ${dragDX}px),0,0)`;
-  }
-});
-
-function popupPointerEnd(e){
-  popupPointers.delete(e.pointerId);
-  if(popupPointers.size > 0) return;
-
-  imgCurEl.classList.remove('no-transition');
-
-  if(popupScale === 1){
-    popupTrack.classList.remove('no-transition');
-    const widthPx = photoPopup.clientWidth || window.innerWidth;
-    const ratio = Math.min(Math.abs(dragDX) / widthPx, 1);
-
-    if(ratio > SWIPE_COMMIT_RATIO){
-      const direction = dragDX > 0 ? -1 : 1;
-      const duration = Math.max(120, BASE_SETTLE_MS * (1 - ratio));
-      settleSwipe(direction, duration);
-    } else {
-      const duration = Math.max(150, BASE_SETTLE_MS * (0.6 + ratio));
-      settleSwipe(0, duration);
-      if(!tapMoved) handleTap();
-    }
-  } else if(!tapMoved){
-    handleTap();
-  }
-  dragDX = 0; dragDY = 0;
-}
-photoPopup.addEventListener('pointerup', popupPointerEnd);
-photoPopup.addEventListener('pointercancel', popupPointerEnd);
-
-function handleTap(){
-  const now = Date.now();
-  if(now - lastTapTime < 300){
-    clearTimeout(tapCloseTimer);
-    lastTapTime = 0;
-    if(popupScale > 1){ popupScale = 1; popupPanX = 0; popupPanY = 0; }
-    else{ popupScale = POPUP_MAX_SCALE; }
-    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
-  } else {
-    lastTapTime = now;
-    tapCloseTimer = setTimeout(() => { closePhotoPopup(); }, 300);
-  }
-}
+photoPopup.addEventListener('click', closePhotoPopup);
 </script>
 </body>
 </html>
