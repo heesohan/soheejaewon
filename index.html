@@ -253,7 +253,16 @@ section.section{padding:64px 24px; position:relative;}
   box-shadow:0 10px 26px rgba(0,0,0,0.4);
   touch-action:none;      /* 드래그 중 화면 스크롤 방지 */
   cursor:grab;
+  will-change:transform, opacity; /* 추가: GPU 가속으로 애니메이션 끊김 방지 */
   transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
+}
+
+/* 추가: 던져진 카드만 담기는 오버레이. 스택 위에 그대로 겹쳐서 위치는 안 바뀜 */
+.fly-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:50;
 }
 .photo-card img{
   width:100%; height:100%;
@@ -500,6 +509,10 @@ footer{ text-align:center; padding:24px 24px 60px; }
     <div class="section-title serif">photo</div>
 <!-- 카드 스택: JS가 GALLERY_IMAGES 배열로 카드를 동적 생성함 -->
 <div class="card-stack-wrap">
+    <div class="card-stack" id="cardStack"></div>
+    <div class="fly-layer" id="flyLayer"></div>
+    <!-- 던져진 카드가 이 레이어 안에서 독립적으로 날아가며 사라짐 -->
+  </div>
   <div class="card-stack" id="cardStack"></div>
 </div>
 <div class="card-counter">
@@ -935,13 +948,18 @@ function shareKakao(){
   'https://heesohan.github.io/soheejaewon/18.jpg'
 ];
 
-const VISIBLE_COUNT = 3;   // 동시에 겹쳐 보이는 카드 수
-const THROW_THRESHOLD = 90; // 이 거리(px) 이상 드래그해야 "던짐"으로 인정
+// 추가: 페이지 로드 시 전체 이미지를 브라우저 캐시에 미리 태워둠
+// -> 카드가 스택 맨 위로 올라올 때 디코딩 지연이 없어짐
+GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+
+const VISIBLE_COUNT = 3;
+const THROW_THRESHOLD = 90;
 
 let cardOrder = GALLERY_IMAGES.map((_, i) => i);
-let shownCount = 1; // 카운터 표시용 (1부터 시작, 계속 순환)
+let shownCount = 1;
 
 const stackEl = document.getElementById('cardStack');
+const flyLayer = document.getElementById('flyLayer');
 
 function renderStack(){
   stackEl.innerHTML = '';
@@ -952,7 +970,6 @@ function renderStack(){
     card.className = 'photo-card';
     card.style.zIndex = VISIBLE_COUNT - pos;
 
-    // 뒤쪽 카드일수록 작아지고, 좌우로 살짝 기울고, 아래로 내려감
     const scale = 1 - pos * 0.06;
     const rotate = pos === 0 ? 0 : (pos % 2 === 0 ? 1 : -1) * pos * 5;
     const translateY = pos * 12;
@@ -962,11 +979,10 @@ function renderStack(){
     card.dataset.baseTransform = baseTransform;
 
     const img = document.createElement('img');
-    img.src = GALLERY_IMAGES[imgIdx];
-    img.loading = 'lazy';
+    img.src = GALLERY_IMAGES[imgIdx]; // 이미 프리로드돼있어서 즉시 표시됨
     card.appendChild(img);
 
-    if(pos === 0) attachDrag(card); // 맨 위 카드만 드래그 가능
+    if(pos === 0) attachDrag(card);
     stackEl.appendChild(card);
   });
 
@@ -975,7 +991,14 @@ function renderStack(){
 }
 
 function attachDrag(card){
-  let startX = 0, startY = 0, curX = 0, curY = 0, dragging = false;
+  let startX = 0, startY = 0, curX = 0, curY = 0, dragging = false, rafId = null;
+
+  function applyDragTransform(){
+    const rotate = curX * 0.06;
+    card.style.transform = `translate(${curX}px, ${curY}px) rotate(${rotate}deg)`;
+    card.style.opacity = String(Math.max(1 - Math.hypot(curX, curY) / 260, 0.35));
+    rafId = null;
+  }
 
   function onDown(e){
     dragging = true;
@@ -988,20 +1011,19 @@ function attachDrag(card){
     if(!dragging) return;
     curX = e.clientX - startX;
     curY = e.clientY - startY;
-    const rotate = curX * 0.06;
-    card.style.transform = `translate(${curX}px, ${curY}px) rotate(${rotate}deg)`;
-    card.style.opacity = String(Math.max(1 - Math.hypot(curX, curY) / 260, 0.35));
+    // 추가: pointermove가 너무 자주 오는 걸 rAF로 한 프레임에 한 번만 반영 (끊김 방지)
+    if(rafId === null) rafId = requestAnimationFrame(applyDragTransform);
   }
   function onUp(){
     if(!dragging) return;
     dragging = false;
     card.classList.remove('dragging');
+    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
 
     const dist = Math.hypot(curX, curY);
     if(dist > THROW_THRESHOLD){
       throwCard(card, curX, curY);
     } else {
-      // 살짝만 움직였으면 원래 자리로 스프링백
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
     }
@@ -1020,16 +1042,19 @@ function throwCard(card, x, y){
   const flyX = Math.cos(angle) * flyDist;
   const flyY = Math.sin(angle) * flyDist;
 
+  // 던져진 카드를 별도 레이어로 옮겨서 스택과 독립적으로 날아가게 함
   card.classList.add('flying');
-  card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
-  card.style.opacity = '0';
+  flyLayer.appendChild(card);
+  requestAnimationFrame(() => {
+    card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
+    card.style.opacity = '0';
+  });
+  card.addEventListener('transitionend', () => card.remove(), { once: true });
 
-  card.addEventListener('transitionend', function handler(){
-    card.removeEventListener('transitionend', handler);
-    cardOrder.push(cardOrder.shift()); // 맨 위 카드를 스택 맨 뒤로 순환
-    shownCount++;
-    renderStack(); // 다음 카드가 자연스럽게 맨 위로 올라옴
-  }, { once: true });
+  // 핵심 수정: 애니메이션 끝날 때까지 기다리지 않고 즉시 다음 카드로 넘어감
+  cardOrder.push(cardOrder.shift());
+  shownCount++;
+  renderStack();
 }
 
 renderStack();
