@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>최재원, 한소희 결혼합니다</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@300;400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!--
+  ==================== 폰트 빠른 수정 안내 ====================
+  1) 아래 Google Fonts 링크에 새 폰트 family를 추가해야 웹에서 해당 폰트가 로드됩니다.
+  2) 봉투 플랩 이름 폰트: CSS의 .envelope-name > font-family
+  3) 예식 일시·장소 폰트: CSS의 .envelope-date > font-family
+  4) 초대 문구(부모님 성함·본문) 폰트: #invitation .names / #invitation .message
+  5) 서명(최재원 · 한소희 드림) 폰트: #invitation .signature
+-->
+
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Unicase&family=Special+Elite:wght@300;400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <!-- 카카오 SDK (공유하기/로그인용) : YOUR_KAKAO_JS_KEY를 발급받은 JavaScript 키로 교체 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
@@ -14,14 +23,8 @@
 
 
 <!--
-  ==================== 빠른 수정 안내 ====================
-  1) 메인 이름을 위·아래로 이동: CSS의 --name-offset-y 값 수정
-     예) 12px → 20px : 이름만 8px 더 아래로 이동
-         12px → 0px  : 원래 위치로 이동
-         12px → -8px : 이름을 위로 이동
-  2) 메인 사진 크기: --photo-width 값 수정 (현재 60%)
-  3) 사진 뒤 흰 종이 테두리: --paper-border 값 수정 (현재 2px)
-  4) 하트 움직임을 없애려면 .heart-rain span의 animation 줄을 삭제하거나
+  ========================================
+  하트 움직임을 없애려면 .heart-rain span의 animation 줄을 삭제하거나
      animation:none; 으로 변경
   아래 '메인 첫 화면' 영역의 CSS와 HTML에는 항목별 설명 주석이 있습니다.
 -->
@@ -42,8 +45,6 @@ html,body{
   font-family:'Noto Sans KR',sans-serif;
   color:var(--text-white);
   -webkit-font-smoothing:antialiased;
-  -webkit-text-size-adjust:100%; /* iOS 스크롤 중 자동 글자 확대 방지 */
-  text-size-adjust:100%;
 }
 .site{
   max-width:480px;
@@ -75,7 +76,7 @@ html,body{
 @media (min-width:481px){
   body{ display:flex; justify-content:center; background:#0f0f0f; }
 }
-.serif{font-family:'Gowun Batang',serif;}
+.serif{font-family:'Noto Sans KR',sans-serif;}
 .divider{
   width:60%;
   height:1px;
@@ -99,17 +100,21 @@ section.section{padding:64px 24px; position:relative;}
    1. 메인 첫 화면
    - 수정할 때는 아래 :root의 숫자만 먼저 조절해 보세요.
    ========================================================= */
-#main{
-  /* ===== 쉽게 수정하는 값 ===== */
-  --name-offset-y:16px; /* 이름만 아래로 내리는 거리. 숫자를 키우면 더 아래로 이동 */
-  --photo-width:60%; /* 사진 너비. 예: 55%, 65% */
-  --photo-max-width:290px; /* 큰 화면에서 사진의 최대 너비 */
-  --paper-border:2px; /* 사진 뒤 흰 종이가 사진 밖으로 보이는 두께 */
 
-  /* 첫 화면의 높이·안쪽 여백 */
-  min-height:100svh; /* 작은 화면 높이를 기준으로 고정: 스크롤 중 첫 화면이 커지지 않음 */
+/* =========================================================
+   1. 메인 첫 화면 — 봉투 인트로
+   ========================================================= */
+#main{
+  /* ---------- 위치·크기: 가장 자주 수정하는 값 ---------- */
+  --envelope-width:100%; /* 봉투 가로 크기. 예: 80%, 90%, 100% */
+  --envelope-max-width:480px; /* 큰 화면에서 봉투가 더 커지지 않는 최대 너비 */
+  --envelope-offset-y:-70px; /* 봉투·은 이름만 위/아래 이동. -20px=위로, 20px=아래로 */
+  --name-top:6%; /* 봉투 플랩 안 이름 위치. 숫자가 커질수록 아래로 내려감 */
+  --date-gap:-110px; /* 봉투와 예식 정보 사이 간격. 음수=봉투 위로 겹침, 양수=봉투 아래 */
+
+  min-height:100svh;
   height:auto;
-  padding:clamp(46px,10svh,84px) 24px clamp(46px,9svh,76px); /* svh 사용: 스크롤 중 브라우저 바가 접혀도 여백이 변하지 않음 */
+  padding:clamp(44px,9vh,78px) 20px 52px;
   position:relative;
   display:flex;
   align-items:center;
@@ -119,76 +124,126 @@ section.section{padding:64px 24px; position:relative;}
   /* 미색 종이 질감 배경 */
   background-color:#e8e4d9;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .11'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.72'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E"),
     radial-gradient(ellipse at 22% 15%,rgba(255,255,255,.68),transparent 48%),
-    radial-gradient(ellipse at 80% 92%,rgba(130,117,91,.11),transparent 56%),
-    linear-gradient(110deg,rgba(117,102,76,.045),transparent 42%,rgba(255,255,255,.30) 72%,rgba(117,102,76,.05));
-  background-size:180px 180px,100% 100%,100% 100%,100% 100%;
-  color:#28241f;
+    radial-gradient(ellipse at 80% 92%,rgba(130,117,91,.10),transparent 56%);
+  background-size:180px 180px,100% 100%,100% 100%;
 }
 
-/* 종이 카드 가장자리의 아주 옅은 이중 테두리 */
-#main::before{
-  content:"";
-  position:absolute;
-  inset:18px;
-  border:1px solid rgba(112,101,83,.14);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.23),0 0 0 1px rgba(255,255,255,.22);
-  border-radius:3px;
-  pointer-events:none;
-}
-
-/* 배경에서 떠다니는 하트 전체 영역 */
+/* ---------- 배경 하트: 위치·크기 변경은 nth-child 숫자에서 수정 ---------- */
 .heart-rain{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-/* 개별 하트: 하단 끝이 둥근 흰색 음각 SVG 하트 */
 .heart-rain span{position:absolute;width:clamp(13px,4vw,21px);aspect-ratio:1/1;background-repeat:no-repeat;background-position:center;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 30'%3E%3Cpath d='M16 27.5C13.3 25.4 3 18.1 3 10.4 3 6.5 6 3.8 9.8 3.8c2.7 0 5.1 1.5 6.2 3.7 1.1-2.2 3.5-3.7 6.2-3.7 3.8 0 6.8 2.7 6.8 6.6 0 7.7-10.3 15-13 17.1Z' fill='%23eeece4' stroke='%23ffffff' stroke-opacity='.9' stroke-width='.7'/%3E%3C/svg%3E");filter:drop-shadow(1px 1px .6px rgba(123,111,93,.25));animation:heartFloat 4.8s ease-in-out infinite alternate;}
-/* 각 하트의 위치·크기·움직임 시작 시점 */
 .heart-rain span:nth-child(1){left:7%;top:12%;animation-delay:-1.8s}.heart-rain span:nth-child(2){left:85%;top:9%;width:10px;animation-delay:-.6s}.heart-rain span:nth-child(3){left:13%;top:32%;width:12px;animation-delay:-3.4s}.heart-rain span:nth-child(4){left:91%;top:37%;width:13px;animation-delay:-2.3s}.heart-rain span:nth-child(5){left:5%;top:57%;width:10px;animation-delay:-4.1s}.heart-rain span:nth-child(6){left:87%;top:61%;width:12px;animation-delay:-1.3s}.heart-rain span:nth-child(7){left:18%;top:76%;width:11px;animation-delay:-.2s}.heart-rain span:nth-child(8){left:78%;top:81%;width:12px;animation-delay:-3s}.heart-rain span:nth-child(9){left:44%;top:7%;width:11px;animation-delay:-2.7s}.heart-rain span:nth-child(10){left:3%;top:88%;width:11px;animation-delay:-.8s}
-/* 하트가 아주 천천히 위로 떠오르는 애니메이션 */
 @keyframes heartFloat{from{transform:translate3d(0,0,0) rotate(-7deg);opacity:.4}to{transform:translate3d(5px,-15px,0) rotate(7deg);opacity:.85}}
 
-/* 이름·사진·예식 정보를 세로 중앙으로 모아 두는 컨테이너 */
-.main-paper-intro{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
-/* jaewon sohee: Sacramento + 종이에 눌린 양각 효과 */
-/* 신랑·신부 영문 이름: Cormorant Unicase + 종이에 눌린 양각 효과 */
-.main-names{
-  margin:0 0 clamp(44px,8vh,76px);
-  position:relative;
-  top:var(--name-offset-y);
-
-  font-family:'Cormorant Unicase',serif;
-  font-size:17pt;
-  font-weight:500;
-  line-height:1;
-  letter-spacing:.035em;
-
-  color:#e5e0d4;
-  white-space:nowrap;
-  text-shadow:
-    -1px -1px 1px rgba(255,255,255,.92),
-    1px 1px 1px rgba(117,104,84,.37),
-    0 1px 2px rgba(105,92,72,.12);
+/* ---------- 봉투·이름·예식 정보 전체 정렬 ---------- */
+.envelope-intro{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;}
+/* 봉투와 금박 이름을 함께 이동하는 박스. 날짜는 함께 이동하지 않음 */
+.envelope-wrap{position:relative;width:var(--envelope-width);max-width:var(--envelope-max-width);line-height:0;
+	  transform:translateY(var(--envelope-offset-y));
 }
-/* 사진과 사진 뒤 2px 흰 종이 레이어를 함께 감싸는 영역 */
-.main-photo-wrap{position:relative;z-index:0;width:var(--photo-width);max-width:var(--photo-max-width);isolation:isolate;}
-/* 사진과 동일 위치이며 사방 2px 크게 보이는 흰 종이 */
-.main-photo-wrap::before{content:"";position:absolute;z-index:-1;inset:calc(var(--paper-border) * -1);background:#fbfaf6;box-shadow:0 5px 10px rgba(53,42,30,.11);}
-/* 실제 메인 사진: 세로는 원본 비율로 자동 유지 */
-.main-photo{display:block;width:100%;height:auto;object-fit:contain;filter:sepia(.12) saturate(.82) contrast(.95) brightness(.99);}
-/* 사진 아래 예식 일시·장소 */
-.main-wedding-info{margin:clamp(35px,7vh,62px) 0 0;font-family:'Jeju Gothic','Noto Sans KR',sans-serif;font-size:12px;font-weight:400;line-height:2.05;letter-spacing:.025em;color:#332e27;}
-.main-wedding-info span{display:block;}
-.main-wedding-info .venue{margin-top:2px;font-size:11px;letter-spacing:.015em;}
+/* ===== 봉투 이미지 주소 자리 =====
+   실제 이미지 주소는 HTML의 <img class="envelope-image" src="여기">에서 수정합니다. */
+.envelope-image{display:block;width:100%;height:auto;}
+
+/* ---------- 봉투 플랩 위 금박 이름 ---------- */
+.envelope-name{
+  position:absolute;
+  z-index:2;
+  top:var(--name-top);
+  left:50%;
+  width:calc(100% - 24px); /* 봉투 좌우 끝에서 12px씩 여유 */
+margin:0;
+padding:10px 14px;       /* 필기체의 긴 위·아래 획이 잘리지 않도록 공간 확보 */
+overflow:visible;        /* 글자 장식 획이 영역 밖으로 나가도 표시 */
+
+transform:translateX(-50%);
+text-align:center;
+white-space:nowrap;
+
+/* Champignon이 로드되지 않았을 때도 필기체로 대체 */
+font-family:'arabella',cursive;
+
+/* 마지막 32px은 모바일에서의 최대 글자 크기 */
+font-size:clamp(15px,7vw,32px);
+font-weight:400;
+line-height:1.35;        /* 위·아래로 뻗는 필기체 획이 잘리지 않게 함 */
+letter-spacing:.01em;
 
 
-/* '동작 줄이기' 설정 사용자는 하트 움직임을 멈춤 */
+  /* ===== 은박 색상 ===== */
+  background:linear-gradient(
+    105deg,
+    #6f7375 0%,
+    #f7f7f4 18%,
+    #aeb2b3 36%,
+    #ffffff 52%,
+    #85898b 72%,
+    #dedfda 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+
+  /* 은박의 옅은 입체 그림자 */
+  filter:drop-shadow(0 1px .5px rgba(74,78,78,.48));
+}
+
+/* ---------- 봉투 아래 예식 일시·장소 ---------- */
+.envelope-date{
+  position:relative;
+  z-index:5; /* 봉투와 겹쳐도 날짜·장소가 항상 맨 앞에 나타남 */
+  margin:var(--date-gap) 0 0;
+  text-align:center;
+
+  /* ===== 날짜·장소 ===== */
+  font-family:'Special Elite',monospace;
+  font-size:12px;
+  font-weight:400;
+  line-height:2.05;
+  letter-spacing:.025em;
+
+  /* 종이에 눌린 양각 글자 효과 */
+  color:#ded9cd;
+  /* 얇고 섬세한 양각 */
+text-shadow:
+  -.6px -.6px 1px rgba(255,255,255,.85),
+   .6px  .6px 1px rgba(110,98,80,.32),
+   0     1px 1px rgba(102,89,69,.08);
+}
+.envelope-date span{display:block;}
+/* 장소 줄만 따로: 글자 크기와 위쪽 간격 */
+.envelope-date .venue{margin-top:2px;font-size:11px;letter-spacing:.015em;}
+/* 사용자가 '동작 줄이기'를 선택한 기기에서는 하트 애니메이션을 멈춤 */
 @media (prefers-reduced-motion:reduce){.heart-rain span{animation:none;}}
 
+	.envelope-bottom-text{
+  position:relative;
+  z-index:6; /* 봉투 이미지보다 항상 앞에 표시 */
+
+  /* ===== 위치 조절 ===== */
+  margin:40px 0 0; /* 봉투와의 세로 간격. 숫자가 클수록 아래로 이동 */
+  transform:translateX(0); /* 좌우 위치 조절 */
+
+  /* ===== 정렬 ===== */
+  width:100%;
+  text-align:center;
+
+  /* ===== 폰트 자리 ===== */
+  font-family:'Jeju Gothic','Noto Sans KR',sans-serif;
+  font-size:13px;
+  font-weight:400;
+  line-height:1.8;
+  letter-spacing:.03em;
+
+  /* ===== 글자색 자리 ===== */
+  color:#77736c;
+	}
 /* ===================== 2. INVITATION CARD ===================== */
 #invitation{ text-align:center; background:transparent; }
 #invitation .symbol{ font-size:22px; color:var(--accent); margin-bottom:18px; letter-spacing:0.3em;}
 #invitation .names{
-  font-family:'Gowun Batang',serif;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:15px;
   line-height:2.1;
   margin-bottom:28px;
@@ -196,7 +251,7 @@ section.section{padding:64px 24px; position:relative;}
 }
 #invitation .names b{ color:var(--accent); font-weight:700; }
 #invitation .message{
-  font-family:'Gowun Batang',serif;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:15px;
   line-height:2;
   color:rgba(255,255,255,0.9);
@@ -211,7 +266,7 @@ section.section{padding:64px 24px; position:relative;}
 /* ===================== 3. CONTACT ===================== */
 #contact{ text-align:center; }
 .section-title{
-  font-family:'Gowun Batang',serif;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:18px;
   margin-bottom:24px;
   letter-spacing:0.1em;
@@ -265,7 +320,7 @@ section.section{padding:64px 24px; position:relative;}
   font-size:20px; cursor:pointer;
   z-index:2;
 }
-.modal-title{ text-align:center; font-family:'Gowun Batang',serif; font-size:16px; margin-bottom:20px;}
+.modal-title{ text-align:center; font-family:'Noto Sans KR',sans-serif; font-size:16px; margin-bottom:20px;}
 .contact-columns{ display:flex; gap:12px; }
 .contact-col{ flex:1; }
 .contact-col h4{
@@ -410,7 +465,7 @@ section.section{padding:64px 24px; position:relative;}
 /* ===================== 5. DATE & COUNTDOWN ===================== */
 #datecount{ text-align:center; }
 .dday-text{
-  font-family:'Gowun Batang',serif;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:15px;
   margin-bottom:8px;
   line-height:1.8;
@@ -590,37 +645,39 @@ footer{ text-align:center; padding:24px 24px 60px; }
 <body>
 <div class="site" id="site">
 
-  <!-- ===================== 1. 메인 첫 화면 ===================== -->
+  <!-- ===================== 1. 새 봉투 인트로 ===================== -->
   <section id="main" class="section">
-    <!-- 배경에서 천천히 움직이는 음각 하트 10개 -->
+    <!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
     <div class="heart-rain" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
       <span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <!-- 이름 · 사진 · 예식 정보 -->
-    <div class="main-paper-intro">
-      <!-- 이름 문구를 바꾸려면 아래 텍스트만 수정 -->
-      <h1 class="main-names">Jaewon and Sohee</h1>
-
-      <!-- 사진을 바꾸려면 아래 src="..." 안의 이미지 주소만 교체 -->
-      <div class="main-photo-wrap">
-        <img class="main-photo" src="https://heesohan.github.io/soheejaewon/11.jpg" alt="최재원과 한소희의 웨딩 사진">
+    <div class="envelope-intro">
+      <!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
+      <div class="envelope-wrap">
+        <img class="envelope-image" src="https://heesohan.github.io/soheejaewon/envelope_.png" alt="봉투">
+        <!-- 봉투 플랩에 겹쳐지는 금박 필기체 이름 -->
+        <h1 class="envelope-name">Jaewon and Sohee</h1>
       </div>
 
-      <!-- 예식 일시·장소를 바꾸려면 아래 텍스트만 수정 -->
-      <p class="main-wedding-info">
-        <span>2026년 11월 28일 토요일 12시</span>
+      <!-- 봉투 아래 예식 정보. -->
+      <p class="envelope-date">
+        <span>261128</span>
+      </p>
+      <p class="envelope-bottom-text">
+        <span>2026년 11월 28일 토요일 12시</span><br>
         <span class="venue">서울중앙교회 교육원 6층 중강당</span>
       </p>
     </div>
   </section>
 
+  
+
   <div class="divider"></div>
 
   <!-- ===================== 2. 초대장 카드 ===================== -->
   <section id="invitation" class="section fade-in">
-    <div class="symbol">𓇼</div>
     <div class="names serif">
       <b>최창균</b>·<b>김원경</b>의 장남 <b>재원</b><br>
       <b>한상필</b>·<b>최지윤</b>의 장녀 <b>소희</b>
