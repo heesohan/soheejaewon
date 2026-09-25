@@ -14,7 +14,7 @@
   5) 서명(최재원 · 한소희 드림) 폰트: #invitation .signature
 -->
 
-<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Unicase&family=Gowun+Batang:wght@400;700&family=Imperial+Script&family=Noto+Sans+KR:wght@300;400;500;700&family=Special+Elite:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Unicase&family=Special+Elite:wght@300;400;500;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <!-- 카카오 SDK (공유하기/로그인용) : YOUR_KAKAO_JS_KEY를 발급받은 JavaScript 키로 교체 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
@@ -161,7 +161,8 @@ transform:translateX(-50%);
 text-align:center;
 white-space:nowrap;
 
-font-family:'Imperial Script','Allura',cursive;
+/* Champignon이 로드되지 않았을 때도 필기체로 대체 */
+font-family:'arabella',cursive;
 
 /* 마지막 32px은 모바일에서의 최대 글자 크기 */
 font-size:clamp(15px,7vw,32px);
@@ -229,7 +230,7 @@ text-shadow:
   text-align:center;
 
   /* ===== 폰트 자리 ===== */
-  font-family:'Jeju Gothic','Noto Sans KR',sans-serif;
+  font-family:'Noto Sans KR',sans-serif;
   font-size:13px;
   font-weight:400;
   line-height:1.8;
@@ -665,7 +666,7 @@ footer{ text-align:center; padding:24px 24px 60px; }
         <span>261128</span>
       </p>
       <p class="envelope-bottom-text">
-        <span>2026년 11월 28일 토요일 12시</span><br>
+        <span>2026년 11월 28일 토요일 12시</span>
         <span class="venue">서울중앙교회 교육원 6층 중강당</span>
       </p>
     </div>
@@ -678,12 +679,12 @@ footer{ text-align:center; padding:24px 24px 60px; }
   <!-- ===================== 2. 초대장 카드 ===================== -->
   <section id="invitation" class="section fade-in">
     <div class="names serif">
-      최창균·김원경의 장남 <b>재원</b><br>
-      한상필·최지윤의 장녀 <b>소희</b>
+      <b>최창균</b>·<b>김원경</b>의 장남 <b>재원</b><br>
+      <b>한상필</b>·<b>최지윤</b>의 장녀 <b>소희</b>
     </div>
     <div class="message serif">
       하나님의 은혜 안에서<br>
-      두 사람이 한 길을 걷고자 합니다.<br>
+      두 사람이 한 길을 걷고자 합니다.<br><br>
       저희의 새로운 시작을<br>
       함께 축복해 주세요.
     </div>
@@ -1161,6 +1162,8 @@ function renderStack(){
     card.style.transform = baseTransform;
     card.style.opacity = pos === 0 ? '1' : String(1 - pos * 0.18);
     card.dataset.baseTransform = baseTransform;
+    // 카드가 어떤 갤러리 사진인지 저장: 클릭 시 이전 사진이 아닌 이 번호를 팝업에 전달
+    card.dataset.imageIndex = String(imgIdx);
 
     const img = document.createElement('img');
     img.src = GALLERY_IMAGES[imgIdx];
@@ -1209,7 +1212,7 @@ function attachDrag(card){
     } else if(dist < TAP_THRESHOLD){
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
-      openPhotoPopup(cardOrder[0]);
+      openPhotoPopup(Number(card.dataset.imageIndex));
     } else {
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
@@ -1261,7 +1264,7 @@ const popupCloseBtn = document.getElementById('popupClose');
 const popupPrevBtn  = document.getElementById('popupPrev');
 const popupNextBtn  = document.getElementById('popupNext');
 
-const POPUP_MAX_SCALE    = 2;    // 200%
+const POPUP_MAX_SCALE    = 3;    // 최대 300%
 const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
 const BASE_SETTLE_MS     = 420;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
 
@@ -1350,6 +1353,8 @@ photoPopup.addEventListener('pointerdown', (e) => {
     popupTrack.classList.add('no-transition');
   }
   if(popupPointers.size === 2){
+    // 두 손가락 동작은 탭이 아니므로 손을 뗄 때 팝업을 닫지 않음
+    tapMoved = true;
     const pts = [...popupPointers.values()];
     pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
     pinchStartScale = popupScale;
@@ -1413,18 +1418,11 @@ photoPopup.addEventListener('pointerup', popupPointerEnd);
 photoPopup.addEventListener('pointercancel', popupPointerEnd);
 
 function handleTap(){
-  const now = Date.now();
-  if(now - lastTapTime < 300){
-    clearTimeout(tapCloseTimer);
-    lastTapTime = 0;
-    if(popupScale > 1){ popupScale = 1; popupPanX = 0; popupPanY = 0; }
-    else{ popupScale = POPUP_MAX_SCALE; }
-    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
-  } else {
-    lastTapTime = now;
-    tapCloseTimer = setTimeout(() => { closePhotoPopup(); }, 300);
-  }
+  // 팝업 사진을 한 번 탭하면 현재 팝업을 닫음.
+  // 확대는 두 손가락 핀치로 하며 최대 300%까지 가능.
+  closePhotoPopup();
 }
+
 </script>
 </body>
 </html>
