@@ -1161,7 +1161,7 @@ function renderStack(){
     card.style.transform = baseTransform;
     card.style.opacity = pos === 0 ? '1' : String(1 - pos * 0.18);
     card.dataset.baseTransform = baseTransform;
-
+	  card.dataset.imageIndex = String(imgIdx);
     const img = document.createElement('img');
     img.src = GALLERY_IMAGES[imgIdx];
     card.appendChild(img);
@@ -1209,7 +1209,8 @@ function attachDrag(card){
     } else if(dist < TAP_THRESHOLD){
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
-      openPhotoPopup(cardOrder[0]);
+      openPhotoPopup(Number(card.dataset.imageIndex));
+}
     } else {
       card.style.transform = card.dataset.baseTransform;
       card.style.opacity = '1';
@@ -1263,7 +1264,7 @@ const popupNextBtn  = document.getElementById('popupNext');
 
 const POPUP_MAX_SCALE    = 2;    // 200%
 const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
-const BASE_SETTLE_MS     = 420;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
+const BASE_SETTLE_MS     = 0;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
 
 let popupIndex = 0;
 let popupScale = 1, popupPanX = 0, popupPanY = 0;
@@ -1350,6 +1351,7 @@ photoPopup.addEventListener('pointerdown', (e) => {
     popupTrack.classList.add('no-transition');
   }
   if(popupPointers.size === 2){
+  tapMoved = true; /* 핀치 확대 중에는 탭 닫기 실행 방지 */
     const pts = [...popupPointers.values()];
     pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
     pinchStartScale = popupScale;
@@ -1412,18 +1414,10 @@ function popupPointerEnd(e){
 photoPopup.addEventListener('pointerup', popupPointerEnd);
 photoPopup.addEventListener('pointercancel', popupPointerEnd);
 
+/* 팝업 사진을 한 번 누르면 팝업 닫기
+   확대는 두 손가락 핀치로만 실행 */
 function handleTap(){
-  const now = Date.now();
-  if(now - lastTapTime < 300){
-    clearTimeout(tapCloseTimer);
-    lastTapTime = 0;
-    if(popupScale > 1){ popupScale = 1; popupPanX = 0; popupPanY = 0; }
-    else{ popupScale = POPUP_MAX_SCALE; }
-    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
-  } else {
-    lastTapTime = now;
-    tapCloseTimer = setTimeout(() => { closePhotoPopup(); }, 300);
-  }
+  closePhotoPopup();
 }
 </script>
 </body>
