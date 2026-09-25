@@ -42,6 +42,8 @@ html,body{
   font-family:'Noto Sans KR',sans-serif;
   color:var(--text-white);
   -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%; /* iOS 스크롤 중 자동 글자 확대 방지 */
+  text-size-adjust:100%;
 }
 .site{
   max-width:480px;
@@ -105,9 +107,9 @@ section.section{padding:64px 24px; position:relative;}
   --paper-border:2px; /* 사진 뒤 흰 종이가 사진 밖으로 보이는 두께 */
 
   /* 첫 화면의 높이·안쪽 여백 */
-  min-height:100svh;
+  min-height:100svh; /* 작은 화면 높이를 기준으로 고정: 스크롤 중 첫 화면이 커지지 않음 */
   height:auto;
-  padding:clamp(46px,10vh,84px) 24px clamp(46px,9vh,76px);
+  padding:clamp(46px,10svh,84px) 24px clamp(46px,9svh,76px); /* svh 사용: 스크롤 중 브라우저 바가 접혀도 여백이 변하지 않음 */
   position:relative;
   display:flex;
   align-items:center;
