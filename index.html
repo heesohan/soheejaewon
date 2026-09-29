@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
-  <title>Jaewon and Sohee</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap"
-    rel="stylesheet" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Jaewon and Sohee</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet"/>
+<style>
     :root {
       --bg: #2d2d2d;
       --card: #353535;
@@ -78,25 +76,28 @@
       padding-top: 54px
     }
 
-    .main-top {
-      font-size: 15px;
-      line-height: 2.05;
-      margin: 0 auto 25px
-    }
 
     .main-content {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: 520px;
-      object-fit: contain;
-      margin: 0 auto 24px
+      width: calc(100% + 35px);
+      margin-left: -15px;
+      margin-right: -15px;
     }
 
-    .main-signature {
-      font-size: 14px;
-      margin: 0
-    }
+   #main.main .main-image-wrap {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+}
+
+#main.main .main-content {
+  display: block !important;
+  width: 98% !important;
+  height: auto !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+}
+
+
 
     .datecount {
       text-align: center
@@ -645,30 +646,26 @@
     }
 
     .envelope-bottom-text {
-      position: relative;
-      z-index: 6;
-      /* 봉투 이미지보다 항상 앞에 표시 */
+  position: relative;
+  z-index: 6;
+  margin: 40px 0 0;
+  transform: translateX(0);
+  width: 100%;
+  text-align: center;
 
-      /* ===== 위치 조절 ===== */
-      margin: 40px 0 0;
-      /* 봉투와의 세로 간격. 숫자가 클수록 아래로 이동 */
-      transform: translateX(0);
-      /* 좌우 위치 조절 */
+  font-family: 'Jeju Gothic', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: .03em;
 
-      /* ===== 정렬 ===== */
-      width: 100%;
-      text-align: center;
-
-      /* ===== 폰트 자리 ===== */
-      font-family: 'Jeju Gothic', 'Noto Sans KR', sans-serif;
-      font-size: 13px;
-      font-weight: 400;
-      line-height: 1.8;
-      letter-spacing: .03em;
-
-      /* ===== 글자색 자리 ===== */
-      color: #77736c;
-    }
+  /* envelope-date와 같은 양각 효과 */
+  color: #ded9cd;
+  text-shadow:
+    -.6px -.6px 1px rgba(255, 255, 255, .85),
+     .6px  .6px 1px rgba(110, 98, 80, .32),
+     0 1px 1px rgba(102, 89, 69, .08);
+}
 
     /* momo-4 인트로: 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
     #intro.section {
@@ -854,185 +851,235 @@
       font-size: 18px;
       letter-spacing: .1em;
     }
-  </style>
+
+    /* 메인 사진 크기·서명 위치 조정: 마지막 규칙으로 적용 */
+   #main.main .main-content {
+  width: 98% !important;
+  margin: 0 auto 8px !important;
+}
+
+
+  
+/* 봉투: 시작에는 사진 완전 숨김, 10vh 스크롤 이후 열기 */
+#intro { --opening: 0; }
+#intro .envelope-wrap { z-index: 2; }
+#intro .envelope-photo {
+  display: block;
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 50%;
+  width: 84%;
+  height: auto;
+  max-height: 85%;
+  object-fit: contain;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(-50% + 25px)) scale(.93);
+  box-shadow: 0 12px 24px rgba(0,0,0,.2);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+#intro .envelope-flap {
+  position: absolute;
+  left: 8%;
+  top: 3%;
+  width: 84%;
+  height: 44%;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 0;
+  background: linear-gradient(165deg, #f6f2e9, #ddd6c5);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  will-change: transform;
+}
+#intro .envelope-name { opacity: calc(1 - var(--opening)); }
+#intro .envelope-date { opacity: calc(1 - var(--opening)); }
+@media (max-width: 699px) {
+  #intro { min-height: 150svh; align-items: flex-start; padding-top: 0; }
+  #intro .envelope-intro { position: sticky; top: 0; min-height: 100svh; justify-content: center; }
+  #intro .envelope-flap { opacity: var(--opening); transform: perspective(650px) rotateX(calc(-165deg * var(--opening))); }
+  #intro .envelope-photo.is-visible {
+    visibility: visible;
+    opacity: var(--opening);
+    transform: translate(-50%, calc(-50% + (1 - var(--opening)) * 25px)) scale(calc(.93 + .07 * var(--opening)));
+  }
+}
+@media (min-width: 700px) {
+  #intro .envelope-photo, #intro .envelope-flap { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #intro .envelope-flap { transform: none !important; }
+  #intro .envelope-photo { transform: translate(-50%,-50%) !important; }
+}
+</style>
 </head>
-
 <body>
-  <main class="site">
+<main class="site">
+<section class="section" id="intro">
+<!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
+<div aria-hidden="true" class="heart-rain">
+<span></span><span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span><span></span><span></span>
+</div>
+<div class="envelope-intro">
+<!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
+<div class="envelope-wrap">
+<img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png"/>
+<!-- 봉투 플랩에 겹쳐지는 은박 필기체 이름 -->
+<h1 class="envelope-name">Jaewon and Sohee</h1>
+<div aria-hidden="true" class="envelope-flap"></div><img alt="웨딩 사진" class="envelope-photo" loading="lazy" src="https://raw.githubusercontent.com/heesohan/soheejaewon/261128/011.jpg"/></div>
+<!-- 봉투 아래 로고. -->
+<p class="envelope-date">
+<span>2026.11.28 SAT 12:00PM</span>
+</p>
 
-    <section class="section" id="intro">
-      <!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
-      <div aria-hidden="true" class="heart-rain">
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-      <div class="envelope-intro">
-        <!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
-        <div class="envelope-wrap">
-          <img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png" />
-          <!-- 봉투 플랩에 겹쳐지는 은박 필기체 이름 -->
-          <h1 class="envelope-name">Jaewon and Sohee</h1>
-        </div>
-        <!-- 봉투 아래 로고. -->
-        <p class="envelope-date">
-          <span>2026.11.28 SAT 12:00PM</span>
-        </p>
-        <p class="envelope-bottom-text">
-          <span>신랑 최재원</span><br />
-          <span>신부 한소희</span>
-        </p>
-      </div>
-    </section>
-    <section class="section main" id="main">
-      <p class="main-top">최창균·김원경의 장남 재원<br />한상필·최지윤의 장녀 소희</p><img alt="청첩장 메인 이미지" class="main-content"
-        src="https://heesohan.github.io/soheejaewon/main.png" />
-      <p class="main-signature">최재원 · 한소희 드림</p>
-    </section>
-    <section class="section" id="gallery">
-      <div class="section-title serif">photo</div>
-      <div class="card-stack-wrap">
-        <div class="card-stack" id="cardStack"></div>
-        <div class="fly-layer" id="flyLayer"></div>
-      </div>
-      <div class="card-counter">
-        <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
-      </div>
-    </section>
-    <section class="section datecount" id="datecount">
-      <p class="dday-text">최재원 ♥ 한소희의 결혼식이<br /><span id="dday-num">00</span>일 남았습니다</p>
-      <div class="countdown">
-        <div class="unit">
-          <div class="num" id="cd-days">00</div>
-          <div class="lab">DAYS</div>
-        </div>
-        <div class="unit">
-          <div class="num" id="cd-hours">00</div>
-          <div class="lab">HOUR</div>
-        </div>
-        <div class="unit">
-          <div class="num" id="cd-mins">00</div>
-          <div class="lab">MIN</div>
-        </div>
-        <div class="unit">
-          <div class="num" id="cd-secs">00</div>
-          <div class="lab">SEC</div>
-        </div>
-      </div>
-      <div class="calendar">
-        <div class="calendar-grid" id="calendar-grid"></div>
-      </div>
-    </section>
-    <section class="section location" id="location">
-      <h2 class="section-title">Location</h2>
-      <p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p>
-      <div class="map-wrap kakao-map-wrap">
-        <!-- 카카오맵 지도 자리 -->
-        <div id="daumRoughmapContainer1790689993991" class="root_daum_roughmap root_daum_roughmap_landing">
-        </div>
-      </div>
-
-      <!-- 카카오맵 퍼가기 로더: -->
-      <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
-
-      <!-- 카카오맵 실행 -->
-      <script charset="UTF-8">
-	new daum.roughmap.Lander({
-		"timestamp" : "1790689993991",
-		"key" : "2f6jw53kbsn",
-		"mapWidth" : "640",
-		"mapHeight" : "360"
-	}).render();
-</script>
-      <p class="address">경기 안양시 동안구 관양로 305<br />서울중앙교회 교육원</p>
-      <div class="route-btns"><a
-          href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-          rel="noopener" target="_blank">네이버지도</a><a
-          href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-          rel="noopener" target="_blank">카카오맵</a>
-      </div>
-      <div class="info-block">
-        <div class="info-text"><b>자가용</b><br />주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료
+</div>
+</section>
+<section class="section main" id="main">
+<img alt="청첩장 메인 이미지" class="main-content" src="https://heesohan.github.io/soheejaewon/main.png"/>
+</section>
+<section class="section" id="gallery">
+<div class="section-title serif">photo</div>
+<div class="card-stack-wrap">
+<div class="card-stack" id="cardStack"></div>
+<div class="fly-layer" id="flyLayer"></div>
+</div>
+<div class="card-counter">
+<span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
+</div>
+</section>
+<section class="section datecount" id="datecount">
+<p class="dday-text">최재원 ♥ 한소희의 결혼식이<br/><span id="dday-num">00</span>일 남았습니다</p>
+<div class="countdown">
+<div class="unit">
+<div class="num" id="cd-days">00</div>
+<div class="lab">DAYS</div>
+</div>
+<div class="unit">
+<div class="num" id="cd-hours">00</div>
+<div class="lab">HOUR</div>
+</div>
+<div class="unit">
+<div class="num" id="cd-mins">00</div>
+<div class="lab">MIN</div>
+</div>
+<div class="unit">
+<div class="num" id="cd-secs">00</div>
+<div class="lab">SEC</div>
+</div>
+</div>
+<div class="calendar">
+<div class="calendar-grid" id="calendar-grid"></div>
+</div>
+</section>
+<section class="section location" id="location">
+<h2 class="section-title">Location</h2>
+<p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p>
+<div class="map-wrap kakao-map-wrap">
+<!-- 카카오맵 지도 자리 -->
+<div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
+</div>
+</div>
+<!-- 카카오맵 퍼가기 로더: -->
+<script charset="UTF-8" class="daum_roughmap_loader_script" src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
+<!-- 카카오맵 실행 -->
+<script charset="UTF-8">
+        new daum.roughmap.Lander({
+          "timestamp": "1790689993991",
+          "key": "2f6jw53kbsn",
+          "mapWidth": "640",
+          "mapHeight": "360"
+        }).render();
+      </script>
+<p class="address">경기 안양시 동안구 관양로 305<br/>서울중앙교회 교육원</p>
+<div class="route-btns"><a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">네이버지도</a><a href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">카카오맵</a>
+</div>
+<div class="info-block">
+<div class="info-text"><b>자가용</b><br/>주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료
           주차장, 인덕원 환승주차장] 교회당 주차 공간이 협소하므로 가급적 대중교통 이용을 부탁 드립니다.</div>
-      </div>
-      <div class="info-block">
-        <div class="info-text"><b>지하철</b><br />4호선 인덕원역 3번 출구 도보 5분</div>
-      </div>
-      <div class="info-block">
-        <div class="info-text"><b>버스</b><br />인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303,
+</div>
+<div class="info-block">
+<div class="info-text"><b>지하철</b><br/>4호선 인덕원역 3번 출구 도보 5분</div>
+</div>
+<div class="info-block">
+<div class="info-text"><b>버스</b><br/>인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303,
           777 간선: 441, 502, 540 마을: 마8, 12</div>
-      </div>
-    </section>
-    <section class="section detail" id="detail">
-      <h2 class="section-title">Detail</h2>
-      <p style="margin:-20px 0 10px">안내사항</p>
-      <div class="detail-track" id="detail-track"></div>
-      <div class="detail-controls"><button id="detail-prev" type="button">‹</button>
-        <div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button>
-      </div>
-    </section>
-    <section class="section account" id="account">
-      <h2 class="section-title">Gift</h2>
-      <p style="margin:-20px 0 28px">마음 전하실 곳</p>
-      <p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p>
-      <div class="accordion">
-        <div class="acc-item" id="groomAcc">
-          <div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div>
-          <div class="acc-body">
-            <div class="acc-body-inner">
-              <div class="acct-card">
-                <div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span>
-                </div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span>
-                </div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="acc-item" id="brideAcc">
-          <div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div>
-          <div class="acc-body">
-            <div class="acc-body-inner">
-              <div class="acct-card">
-                <div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <div class="photo-popup" id="photoPopup">
-    <button aria-label="닫기" class="popup-close" id="popupClose">✕</button>
-    <button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
-    <button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
-    <div class="popup-track" id="popupTrack">
-      <div class="popup-slide"><img alt="" id="popupImgPrev" src="" /></div>
-      <div class="popup-slide"><img alt="" id="popupImgCur" src="" /></div>
-      <div class="popup-slide"><img alt="" id="popupImgNext" src="" /></div>
-    </div>
-  </div>
-  <script>
+</div>
+</section>
+<section class="section detail" id="detail">
+<h2 class="section-title">Detail</h2>
+<p style="margin:-20px 0 10px">안내사항</p>
+<div class="detail-track" id="detail-track"></div>
+<div class="detail-controls"><button id="detail-prev" type="button">‹</button>
+<div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button>
+</div>
+</section>
+<section class="section account" id="account">
+<h2 class="section-title">Gift</h2>
+<p style="margin:-20px 0 28px">마음 전하실 곳</p>
+<p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p>
+<div class="accordion">
+<div class="acc-item" id="groomAcc">
+<div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div>
+<div class="acc-body">
+<div class="acc-body-inner">
+<div class="acct-card">
+<div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+<div class="acct-card">
+<div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span>
+</div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+<div class="acct-card">
+<div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span>
+</div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+</div>
+</div>
+</div>
+<div class="acc-item" id="brideAcc">
+<div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div>
+<div class="acc-body">
+<div class="acc-body-inner">
+<div class="acct-card">
+<div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+<div class="acct-card">
+<div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+<div class="acct-card">
+<div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div>
+<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div class="photo-popup" id="photoPopup">
+<button aria-label="닫기" class="popup-close" id="popupClose">✕</button>
+<button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
+<button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
+<div class="popup-track" id="popupTrack">
+<div class="popup-slide"><img alt="" id="popupImgPrev" src=""/></div>
+<div class="popup-slide"><img alt="" id="popupImgCur" src=""/></div>
+<div class="popup-slide"><img alt="" id="popupImgNext" src=""/></div>
+</div>
+</div>
+<script>
     /* momo-6: D-day, calendar, Detail, Gift unchanged */
-    const target = new Date('2026-11-28T12:00:00+09:00'); function updateCountdown() { const d = Math.max(0, target - Date.now()), days = Math.floor(d / 86400000), hours = Math.floor(d / 3600000) % 24, mins = Math.floor(d / 60000) % 60, secs = Math.floor(d / 1000) % 60; document.getElementById('dday-num').textContent = days;[['cd-days', days], ['cd-hours', hours], ['cd-mins', mins], ['cd-secs', secs]].forEach(([id, n]) => document.getElementById(id).textContent = String(n).padStart(2, '0')) } updateCountdown(); setInterval(updateCountdown, 1000); function buildCalendar() { const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => { const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el) }); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) { const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el) } } buildCalendar();
-    const detailSources = ['안내1.png', '안내2.png', '안내3.png', '안내4.png'], detailTrack = document.getElementById('detail-track'), detailDots = document.getElementById('detail-dots'); detailSources.forEach((src, i) => { const slide = document.createElement('div'); slide.className = 'detail-slide'; const card = document.createElement('div'); card.className = 'detail-card detail-placeholder'; card.style.transform = `rotate(${[3, 0, -3, 0][i]}deg)`; card.textContent = `안내${i + 1}.png`; const img = new Image(); img.onload = () => { card.className = 'detail-card'; card.innerHTML = ''; card.append(img) }; img.src = src; slide.append(card); detailTrack.append(slide); const dot = document.createElement('button'); dot.type = 'button'; dot.onclick = () => goDetail(i); detailDots.append(dot) }); let detailIndex = 0; function goDetail(i) { detailIndex = Math.max(0, Math.min(3, i)); detailTrack.scrollTo({ left: detailTrack.clientWidth * detailIndex, behavior: 'smooth' });[...detailDots.children].forEach((d, n) => d.classList.toggle('active', n === detailIndex)) } document.getElementById('detail-prev').onclick = () => goDetail(detailIndex - 1); document.getElementById('detail-next').onclick = () => goDetail(detailIndex + 1); let detailTimer; detailTrack.addEventListener('scroll', () => { clearTimeout(detailTimer); detailTimer = setTimeout(() => { detailIndex = Math.round(detailTrack.scrollLeft / detailTrack.clientWidth); goDetail(detailIndex) }, 80) }, { passive: true }); goDetail(0);
-    function toggleAcc(id) { document.getElementById(id).classList.toggle('open') } async function acctCopy(el) { const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try { await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500) } catch { el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500) } }
+    const target = new Date('2026-11-28T12:00:00+09:00'); function updateCountdown() {const d = Math.max(0, target - Date.now()), days = Math.floor(d / 86400000), hours = Math.floor(d / 3600000) % 24, mins = Math.floor(d / 60000) % 60, secs = Math.floor(d / 1000) % 60; document.getElementById('dday-num').textContent = days;[['cd-days', days], ['cd-hours', hours], ['cd-mins', mins], ['cd-secs', secs]].forEach(([id, n]) => document.getElementById(id).textContent = String(n).padStart(2, '0'))} updateCountdown(); setInterval(updateCountdown, 1000); function buildCalendar() {const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => {const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el)}); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) {const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el)} } buildCalendar();
+    const detailSources = ['안내1.png', '안내2.png', '안내3.png', '안내4.png'], detailTrack = document.getElementById('detail-track'), detailDots = document.getElementById('detail-dots'); detailSources.forEach((src, i) => {const slide = document.createElement('div'); slide.className = 'detail-slide'; const card = document.createElement('div'); card.className = 'detail-card detail-placeholder'; card.style.transform = `rotate(${[3, 0, -3, 0][i]}deg)`; card.textContent = `안내${i + 1}.png`; const img = new Image(); img.onload = () => {card.className = 'detail-card'; card.innerHTML = ''; card.append(img)}; img.src = src; slide.append(card); detailTrack.append(slide); const dot = document.createElement('button'); dot.type = 'button'; dot.onclick = () => goDetail(i); detailDots.append(dot)}); let detailIndex = 0; function goDetail(i) {detailIndex = Math.max(0, Math.min(3, i)); detailTrack.scrollTo({left: detailTrack.clientWidth * detailIndex, behavior: 'smooth'});[...detailDots.children].forEach((d, n) => d.classList.toggle('active', n === detailIndex))} document.getElementById('detail-prev').onclick = () => goDetail(detailIndex - 1); document.getElementById('detail-next').onclick = () => goDetail(detailIndex + 1); let detailTimer; detailTrack.addEventListener('scroll', () => {clearTimeout(detailTimer); detailTimer = setTimeout(() => {detailIndex = Math.round(detailTrack.scrollLeft / detailTrack.clientWidth); goDetail(detailIndex)}, 80)}, {passive: true}); goDetail(0);
+    function toggleAcc(id) {document.getElementById(id).classList.toggle('open')} async function acctCopy(el) {const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try {await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500)} catch {el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500)} }
 
     /* momo-4: card stack and photo viewer */
     const GALLERY_IMAGES = [
@@ -1056,7 +1103,7 @@
       'https://heesohan.github.io/soheejaewon/18.jpg'
     ];
 
-    GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+    GALLERY_IMAGES.forEach(src => {const im = new Image(); im.src = src;});
 
     const CARD_TILTS = [
       6, -8, 5, -9, 7, -4, 8, -6, 4,
@@ -1129,7 +1176,7 @@
         if (!dragging) return;
         dragging = false;
         card.classList.remove('dragging');
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        if (rafId) {cancelAnimationFrame(rafId); rafId = null;}
 
         const dist = Math.hypot(curX, curY);
         if (dist > THROW_THRESHOLD) {
@@ -1163,7 +1210,7 @@
         card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
         card.style.opacity = '0';
       });
-      card.addEventListener('transitionend', () => card.remove(), { once: true });
+      card.addEventListener('transitionend', () => card.remove(), {once: true});
 
       cardOrder.push(cardOrder.shift());
       shownCount++;
@@ -1242,7 +1289,7 @@
       popupTrack.style.transform = `translate3d(${target},0,0)`;
 
       if (direction === 0) {
-        setTimeout(() => { popupAnimating = false; }, durationMs);
+        setTimeout(() => {popupAnimating = false;}, durationMs);
         return;
       }
       popupTrack.addEventListener('transitionend', function handler() {
@@ -1258,17 +1305,17 @@
             popupAnimating = false;
           });
         });
-      }, { once: true });
+      }, {once: true});
     }
 
-    popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if (!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS); });
-    popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if (!popupAnimating) settleSwipe(1, BASE_SETTLE_MS); });
-    popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhotoPopup(); });
+    popupPrevBtn.addEventListener('click', (e) => {e.stopPropagation(); if (!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS);});
+    popupNextBtn.addEventListener('click', (e) => {e.stopPropagation(); if (!popupAnimating) settleSwipe(1, BASE_SETTLE_MS);});
+    popupCloseBtn.addEventListener('click', (e) => {e.stopPropagation(); closePhotoPopup();});
 
     photoPopup.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.popup-nav') || e.target.closest('.popup-close')) return;
       if (popupAnimating) return;
-      popupPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      popupPointers.set(e.pointerId, {x: e.clientX, y: e.clientY});
       photoPopup.setPointerCapture(e.pointerId);
 
       if (popupPointers.size === 1) {
@@ -1287,7 +1334,7 @@
 
     photoPopup.addEventListener('pointermove', (e) => {
       if (!popupPointers.has(e.pointerId)) return;
-      popupPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      popupPointers.set(e.pointerId, {x: e.clientX, y: e.clientY});
 
       if (popupPointers.size === 2) {
         const pts = [...popupPointers.values()];
@@ -1347,6 +1394,26 @@
       closePhotoPopup();
     }
   </script>
-</body>
-
+<script>
+(() => {
+  const intro = document.getElementById('intro');
+  const photo = intro.querySelector('.envelope-photo');
+  const mobile = window.matchMedia('(max-width: 699px)');
+  let scheduled = false;
+  function update() {
+    scheduled = false;
+    if (!mobile.matches) { intro.style.setProperty('--opening', '0'); photo.classList.remove('is-visible'); return; }
+    const scrolled = Math.max(0, -intro.getBoundingClientRect().top);
+    const start = window.innerHeight * .10;
+    const finish = window.innerHeight * .45;
+    const progress = Math.min(1, Math.max(0, (scrolled - start) / (finish - start)));
+    intro.style.setProperty('--opening', progress.toFixed(3));
+    photo.classList.toggle('is-visible', progress > 0);
+  }
+  function schedule() { if (!scheduled) { scheduled = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  update();
+})();
+</script></body>
 </html>
