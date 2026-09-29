@@ -1,35 +1,642 @@
 <!-- ver-2-5.html 수정본은 원본 구조를 유지한 상태에서 아래 변경을 반영할 수 있도록 구성했습니다. -->
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Jaewon and Sohee</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Gowun+Batang:wght@400;700&family=Imperial+Script&family=Noto+Sans+KR:wght@300;400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#2d2d2d;--card:#353535;--accent:#eac7d1;--text:#fff;--muted:rgba(255,255,255,.68);--cream:#fcf8fa;--pink:#ff6098}*{box-sizing:border-box}html,body{margin:0;background:#121212;color:var(--text);font-family:'Noto Sans KR',sans-serif}body{display:flex;justify-content:center}.site{width:100%;max-width:480px;min-height:100vh;background:var(--bg);overflow:hidden;box-shadow:0 0 50px #0008}.section{padding:64px 24px;position:relative}.divider{height:0;margin:0;border:0}.serif{font-family:'Gowun Batang',serif}.section-title{text-align:center;font-family:'Reenie Beanie',cursive;font-size:40px;font-weight:400;margin:0 0 28px}.intro{min-height:100svh;padding:44px 20px 52px;display:flex;align-items:center;justify-content:center;background:#e8e4d9 url('https://heesohan.github.io/soheejaewon/intro.png') center/cover no-repeat;position:relative}.envelope-intro{width:100%;display:flex;flex-direction:column;align-items:center}.envelope-wrap{position:relative;width:100%;line-height:0}.envelope-image{display:block;width:100%;height:auto}.envelope-name{position:absolute;top:6%;left:50%;transform:translateX(-50%);width:calc(100% - 24px);font-family:'Imperial Script',cursive;font-size:clamp(15px,7vw,32px);text-align:center;white-space:nowrap;color:#eef0ed;text-shadow:0 1px 2px #555}.envelope-date{position:relative;margin:70px 0 0;text-align:center;font-family:'Special Elite',monospace;font-size:12px;line-height:2.05;color:#ded9cd}.envelope-date span{display:block}.envelope-bottom-text{position:relative;margin:40px 0 0;text-align:center;font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:1.8;color:#77736c}.laser-line{display:block;min-height:1.8em}.laser-cursor{display:inline-block;width:1px;height:1em;background:#77736c;vertical-align:-.12em;margin-left:2px;animation:blink .7s steps(1) infinite}@keyframes blink{50%{opacity:0}}
-.main{background:url('https://heesohan.github.io/soheejaewon/bg.jpg') center/cover no-repeat;color:#363232;text-align:center;padding-top:54px}.main-top{font-size:15px;line-height:2.05;margin:0 auto 25px}.main-content{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;margin:0 auto 24px}.main-signature{font-size:14px;margin:0}.gallery{background:var(--bg);text-align:center}.gallery-stack{position:relative;width:min(78%,300px);aspect-ratio:3/4;margin:0 auto 20px}.photo-card{position:absolute;inset:0;border-radius:15px;overflow:hidden;background:#222;box-shadow:0 10px 26px #0007;transition:transform .35s,opacity .35s}.photo-card img{width:100%;height:100%;object-fit:cover;display:block}.gallery-strip{display:flex;gap:7px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 2px 7px;scrollbar-width:none}.gallery-strip::-webkit-scrollbar{display:none}.gallery-thumb{flex:0 0 calc((100% - 35px)/6);aspect-ratio:3/4;padding:0;border:2px solid transparent;background:#fff;scroll-snap-align:start;overflow:hidden;cursor:pointer}.gallery-thumb img{width:100%;height:100%;display:block;object-fit:cover}.gallery-thumb.active{border-color:var(--pink);box-shadow:0 0 0 2px var(--pink)}.gallery-count{font-size:12px;color:var(--muted);margin:15px 0 0}.datecount{text-align:center}.dday-text{font-size:15px;line-height:1.8;margin:0 0 8px}.countdown{display:flex;justify-content:center;gap:10px;margin:24px 0 32px}.countdown .unit{background:#ffffff0a;border-radius:12px;padding:12px 10px;min-width:58px}.countdown .num{font-size:20px;font-weight:700;color:var(--accent)}.countdown .lab{font-size:11px;color:var(--muted);margin-top:2px}.calendar{max-width:320px;margin:0 auto;background:#ffffff0a;border-radius:16px;padding:18px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:12px}.calendar-grid .dow{color:#ffffff66;padding-bottom:6px}.calendar-grid .day{padding:6px 0;border-radius:8px}.calendar-grid .day.highlight{background:#ec8db3;color:#2d2d2d;font-weight:700}.location{text-align:center}.map-wrap{width:calc(100% - 22px);height:220px;margin:0 auto 16px;border-radius:14px;overflow:hidden;background:#3a3a3a}.map-wrap iframe{width:100%;height:100%;border:0}.address{font-size:14px;line-height:1.7;margin:0 auto 16px;white-space:pre-line}.route-btns{width:calc(100% - 22px);margin:0 auto 32px;display:flex;gap:6px}.route-btns a{flex:1;padding:11px 0;background:#fdfdfc;color:#2d2d2d;border-radius:30px;font-size:11px;text-decoration:none}.info-block{text-align:left;background:#ffffff0a;border-radius:14px;padding:16px 18px;margin-bottom:14px}.info-text{font-size:13px;line-height:1.7;color:#ffffffe6;white-space:pre-line}.info-text b{color:var(--accent)}.info-block .mini-icon{display:none}.detail{text-align:center;background:#2d2d2d}.detail-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x}.detail-track::-webkit-scrollbar{display:none}.detail-slide{min-width:100%;scroll-snap-align:center;padding:18px 20px 25px;display:grid;place-items:center}.detail-card{width:100%;max-width:370px;filter:drop-shadow(2px 5px 6px #0005)}.detail-card img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}.detail-placeholder{min-height:360px;background:#fcf8fa;color:#363232;display:grid;place-items:center}.detail-controls{display:flex;justify-content:space-between;align-items:center;max-width:355px;margin:auto}.detail-controls button{width:44px;height:44px;border:0;background:none;color:#fff;font-size:29px}.detail-dots{display:flex;gap:7px;align-items:center}.detail-dots button{width:7px;height:7px;border:0;border-radius:20px;background:var(--accent);opacity:.45;padding:0}.detail-dots button.active{width:24px;opacity:1}.account{text-align:center}.accordion{text-align:left}.acc-item{background:#ffffff0a;border-radius:14px;margin-bottom:12px;overflow:hidden}.acc-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px}.acc-body{max-height:0;overflow:hidden;transition:max-height .3s}.acc-item.open .acc-body{max-height:420px}.acc-body-inner{padding:0 18px 18px}.acct-card{display:flex;justify-content:space-between;align-items:center;background:#ffffff0d;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px}.acct-name{display:block;color:#ffffffb3;font-size:12px;margin-bottom:2px}.acct-bank{font-size:13px}.acc-actions button{border:0;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer}.copy-btn{background:#ffffff26;color:#fff}.photo-popup[hidden]{display:none}.photo-popup{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:55px 12px max(18px,env(safe-area-inset-bottom));touch-action:none}.popup-close{position:absolute;right:18px;top:max(14px,env(safe-area-inset-top));width:36px;height:36px;border:0;background:none;color:#fff;font-size:30px;font-weight:200;z-index:301}.popup-main{width:100%;display:flex;align-items:center;justify-content:center;gap:3px;flex:1;min-height:0}.popup-main img{display:block;max-width:calc(100% - 56px);max-height:calc(100dvh - 200px);object-fit:contain}.popup-nav{width:30px;height:50px;flex:none;border:0;background:none;color:#fff;font-size:34px}.popup-thumbs{width:100%;display:flex;justify-content:center;gap:6px;overflow-x:auto;padding:12px 2px;scrollbar-width:none}.popup-thumbs::-webkit-scrollbar{display:none}.popup-thumb{flex:none;width:48px;height:58px;padding:0;background:#fff;border:2px solid transparent}.popup-thumb img{width:100%;height:100%;object-fit:cover}.popup-thumb.active{border-color:var(--pink);box-shadow:0 0 0 2px var(--pink)}@media(max-width:350px){.section{padding-left:17px;padding-right:17px}.gallery-thumb{flex-basis:calc((100% - 35px)/6)}}
+
+:root{--bg:#2d2d2d;--card:#353535;--accent:#eac7d1;--text:#fff;--muted:rgba(255,255,255,.68);--cream:#fcf8fa;--pink:#ff6098}*{box-sizing:border-box}html,body{margin:0;background:#121212;color:var(--text);font-family:'Noto Sans KR',sans-serif}body{display:flex;justify-content:center}.site{width:100%;max-width:480px;min-height:100vh;background:var(--bg);overflow:hidden;box-shadow:0 0 50px #0008}.section{padding:64px 24px;position:relative}.divider{height:0;margin:0;border:0}.serif{font-family:'Gowun Batang',serif}.section-title{text-align:center;font-family:'Reenie Beanie',cursive;font-size:40px;font-weight:400;margin:0 0 28px}.main{background:url('https://heesohan.github.io/soheejaewon/bg.jpg') center/cover no-repeat;color:#363232;text-align:center;padding-top:54px}.main-top{font-size:15px;line-height:2.05;margin:0 auto 25px}.main-content{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;margin:0 auto 24px}.main-signature{font-size:14px;margin:0}.datecount{text-align:center}.dday-text{font-size:15px;line-height:1.8;margin:0 0 8px}.countdown{display:flex;justify-content:center;gap:10px;margin:24px 0 32px}.countdown .unit{background:#ffffff0a;border-radius:12px;padding:12px 10px;min-width:58px}.countdown .num{font-size:20px;font-weight:700;color:var(--accent)}.countdown .lab{font-size:11px;color:var(--muted);margin-top:2px}.calendar{max-width:320px;margin:0 auto;background:#ffffff0a;border-radius:16px;padding:18px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:12px}.calendar-grid .dow{color:#ffffff66;padding-bottom:6px}.calendar-grid .day{padding:6px 0;border-radius:8px}.calendar-grid .day.highlight{background:#ec8db3;color:#2d2d2d;font-weight:700}.location{text-align:center}.map-wrap{width:calc(100% - 22px);height:220px;margin:0 auto 16px;border-radius:14px;overflow:hidden;background:#3a3a3a}.map-wrap iframe{width:100%;height:100%;border:0}.address{font-size:14px;line-height:1.7;margin:0 auto 16px;white-space:pre-line}.route-btns{width:calc(100% - 22px);margin:0 auto 32px;display:flex;gap:6px}.route-btns a{flex:1;padding:11px 0;background:#fdfdfc;color:#2d2d2d;border-radius:30px;font-size:11px;text-decoration:none}.info-block{text-align:left;background:#ffffff0a;border-radius:14px;padding:16px 18px;margin-bottom:14px}.info-text{font-size:13px;line-height:1.7;color:#ffffffe6;white-space:pre-line}.info-text b{color:var(--accent)}.info-block .mini-icon{display:none}.detail{text-align:center;background:#2d2d2d}.detail-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x}.detail-track::-webkit-scrollbar{display:none}.detail-slide{min-width:100%;scroll-snap-align:center;padding:18px 20px 25px;display:grid;place-items:center}.detail-card{width:100%;max-width:370px;filter:drop-shadow(2px 5px 6px #0005)}.detail-card img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}.detail-placeholder{min-height:360px;background:#fcf8fa;color:#363232;display:grid;place-items:center}.detail-controls{display:flex;justify-content:space-between;align-items:center;max-width:355px;margin:auto}.detail-controls button{width:44px;height:44px;border:0;background:none;color:#fff;font-size:29px}.detail-dots{display:flex;gap:7px;align-items:center}.detail-dots button{width:7px;height:7px;border:0;border-radius:20px;background:var(--accent);opacity:.45;padding:0}.detail-dots button.active{width:24px;opacity:1}.account{text-align:center}.accordion{text-align:left}.acc-item{background:#ffffff0a;border-radius:14px;margin-bottom:12px;overflow:hidden}.acc-header{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px}.acc-body{max-height:0;overflow:hidden;transition:max-height .3s}.acc-item.open .acc-body{max-height:420px}.acc-body-inner{padding:0 18px 18px}.acct-card{display:flex;justify-content:space-between;align-items:center;background:#ffffff0d;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px}.acct-name{display:block;color:#ffffffb3;font-size:12px;margin-bottom:2px}.acct-bank{font-size:13px}.acc-actions button{border:0;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer}.copy-btn{background:#ffffff26;color:#fff}
+
+/* ===== momo-4 원본: 인트로(배경/봉투/텍스트) ===== */
+#intro{
+  /* ---------- 위치·크기: 가장 자주 수정하는 값 ---------- */
+  --envelope-width:100%; /* 봉투 가로 크기. 예: 80%, 90%, 100% */
+  --envelope-max-width:480px; /* 큰 화면에서 봉투가 더 커지지 않는 최대 너비 */
+  --envelope-offset-y:-30px; /* 봉투·은 이름만 위/아래 이동. -20px=위로, 20px=아래로 */
+  --name-top:6%; /* 봉투 플랩 안 이름 위치. 숫자가 커질수록 아래로 내려감 */
+  --date-gap:-70px; /* 봉투와 예식 정보 사이 간격. 음수=봉투 위로 겹침, 양수=봉투 아래 */
+
+  min-height:100svh;
+  height:auto;
+  padding:clamp(44px,9vh,78px) 20px 52px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+
+  /* 미색 종이 질감 배경 */
+  background-color:#e8e4d9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 22% 15%,rgba(255,255,255,.68),transparent 48%),
+    radial-gradient(ellipse at 80% 92%,rgba(130,117,91,.10),transparent 56%);
+  background-size:180px 180px,100% 100%,100% 100%;
+}
+
+/* ---------- 배경 하트: 위치·크기 변경은 nth-child 숫자에서 수정 ---------- */
+.heart-rain{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.heart-rain span{position:absolute;width:clamp(13px,4vw,21px);aspect-ratio:1/1;background-repeat:no-repeat;background-position:center;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 30'%3E%3Cpath d='M16 27.5C13.3 25.4 3 18.1 3 10.4 3 6.5 6 3.8 9.8 3.8c2.7 0 5.1 1.5 6.2 3.7 1.1-2.2 3.5-3.7 6.2-3.7 3.8 0 6.8 2.7 6.8 6.6 0 7.7-10.3 15-13 17.1Z' fill='%23eeece4' stroke='%23ffffff' stroke-opacity='.9' stroke-width='.7'/%3E%3C/svg%3E");filter:drop-shadow(1px 1px .6px rgba(123,111,93,.25));animation:heartFloat 4.8s ease-in-out infinite alternate;}
+.heart-rain span:nth-child(1){left:7%;top:12%;animation-delay:-1.8s}.heart-rain span:nth-child(2){left:85%;top:9%;width:10px;animation-delay:-.6s}.heart-rain span:nth-child(3){left:13%;top:32%;width:12px;animation-delay:-3.4s}.heart-rain span:nth-child(4){left:91%;top:37%;width:13px;animation-delay:-2.3s}.heart-rain span:nth-child(5){left:5%;top:57%;width:10px;animation-delay:-4.1s}.heart-rain span:nth-child(6){left:87%;top:61%;width:12px;animation-delay:-1.3s}.heart-rain span:nth-child(7){left:18%;top:76%;width:11px;animation-delay:-.2s}.heart-rain span:nth-child(8){left:78%;top:81%;width:12px;animation-delay:-3s}.heart-rain span:nth-child(9){left:44%;top:7%;width:11px;animation-delay:-2.7s}.heart-rain span:nth-child(10){left:3%;top:88%;width:11px;animation-delay:-.8s}
+@keyframes heartFloat{from{transform:translate3d(0,0,0) rotate(-7deg);opacity:.4}to{transform:translate3d(5px,-15px,0) rotate(7deg);opacity:.85}}
+
+/* ---------- 봉투·이름·예식 정보 전체 정렬 ---------- */
+.envelope-intro{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;}
+/* 봉투와 금박 이름을 함께 이동하는 박스. 날짜는 함께 이동하지 않음 */
+.envelope-wrap{position:relative;width:var(--envelope-width);max-width:var(--envelope-max-width);line-height:0;
+	  transform:translateY(var(--envelope-offset-y));
+}
+/* ===== 봉투 이미지 주소 자리 =====
+   실제 이미지 주소는 HTML의 <img class="envelope-image" src="여기">에서 수정합니다. */
+.envelope-image{display:block;width:100%;height:auto;}
+
+/* ---------- 봉투 플랩 위 금박 이름 ---------- */
+.envelope-name{
+  position:absolute;
+  z-index:2;
+  top:var(--name-top);
+  left:50%;
+  width:calc(100% - 24px); /* 봉투 좌우 끝에서 12px씩 여유 */
+margin:0;
+padding:10px 14px;       /* 필기체의 긴 위·아래 획이 잘리지 않도록 공간 확보 */
+overflow:visible;        /* 글자 장식 획이 영역 밖으로 나가도 표시 */
+
+transform:translateX(-50%);
+text-align:center;
+white-space:nowrap;
+
+font-family:'Imperial Script','Allura',cursive;
+
+/* 마지막 32px은 모바일에서의 최대 글자 크기 */
+font-size:clamp(15px,7vw,32px);
+font-weight:400;
+line-height:1.35;        /* 위·아래로 뻗는 필기체 획이 잘리지 않게 함 */
+letter-spacing:.01em;
+
+
+  /* ===== 은박 색상 ===== */
+  background:linear-gradient(
+    105deg,
+    #6f7375 0%,
+    #f7f7f4 18%,
+    #aeb2b3 36%,
+    #ffffff 52%,
+    #85898b 72%,
+    #dedfda 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+
+  /* 은박의 옅은 입체 그림자 */
+  filter:drop-shadow(0 1px .5px rgba(74,78,78,.48));
+}
+
+/* ---------- 봉투 아래 예식 일시·장소 ---------- */
+.envelope-date{
+  position:relative;
+  z-index:5; /* 봉투와 겹쳐도 날짜·장소가 항상 맨 앞에 나타남 */
+  margin:var(--date-gap) 0 0;
+  text-align:center;
+
+  /* ===== 날짜·장소 ===== */
+  font-family:'Special Elite',monospace;
+  font-size:12px;
+  font-weight:400;
+  line-height:2.05;
+  letter-spacing:.025em;
+
+  /* 종이에 눌린 양각 글자 효과 */
+  color:#ded9cd;
+  /* 얇고 섬세한 양각 */
+text-shadow:
+  -.6px -.6px 1px rgba(255,255,255,.85),
+   .6px  .6px 1px rgba(110,98,80,.32),
+   0     1px 1px rgba(102,89,69,.08);
+}
+.envelope-date span{display:block;}
+/* 장소 줄만 따로: 글자 크기와 위쪽 간격 */
+.envelope-date .venue{margin-top:2px;font-size:11px;letter-spacing:.015em;}
+/* 사용자가 '동작 줄이기'를 선택한 기기에서는 하트 애니메이션을 멈춤 */
+@media (prefers-reduced-motion:reduce){.heart-rain span{animation:none;}}
+
+	.envelope-bottom-text{
+  position:relative;
+  z-index:6; /* 봉투 이미지보다 항상 앞에 표시 */
+
+  /* ===== 위치 조절 ===== */
+  margin:40px 0 0; /* 봉투와의 세로 간격. 숫자가 클수록 아래로 이동 */
+  transform:translateX(0); /* 좌우 위치 조절 */
+
+  /* ===== 정렬 ===== */
+  width:100%;
+  text-align:center;
+
+  /* ===== 폰트 자리 ===== */
+  font-family:'Jeju Gothic','Noto Sans KR',sans-serif;
+  font-size:13px;
+  font-weight:400;
+  line-height:1.8;
+  letter-spacing:.03em;
+
+  /* ===== 글자색 자리 ===== */
+  color:#77736c;
+	}
+
+/* momo-4 인트로: 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
+#intro.section{padding:clamp(44px,9vh,78px) 20px 52px;}
+
+
+/* ===== momo-4 원본: 갤러리(스택/스와이프/뷰어) ===== */
+/* ===================== 4. GALLERY (카드 스택 스와이프) ===================== */
+#gallery{ padding:64px 24px 40px; }
+#gallery .section-title{ text-align:center; margin-bottom:32px; }
+
+.card-stack-wrap{
+  position:relative;
+  width:78%;
+  max-width:300px;
+  aspect-ratio:3/4;
+  margin:0 auto;
+}
+.card-stack{ position:relative; width:100%; height:100%; }
+
+.photo-card{
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  overflow:hidden;
+  background:#222;
+  box-shadow:0 10px 26px rgba(0,0,0,0.4);
+  touch-action:none;
+  cursor:grab;
+  will-change:transform, opacity;
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
+}
+.fly-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:50;
+}
+.photo-card img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  pointer-events:none;
+}
+.photo-card.dragging{ transition:none; cursor:grabbing; }
+.photo-card.flying{ transition:transform 0.5s ease, opacity 0.5s ease; }
+
+.card-counter{
+  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,255,255,0.7);
+  letter-spacing:0.05em;
+}
+.card-counter .count-num{ color:var(--accent); font-weight:700; }
+
+.photo-popup{
+  position:fixed; inset:0;
+  background:rgba(45,45,45,0.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:300;
+  overflow:hidden;
+  touch-action:none;
+}
+.photo-popup.active{ display:flex; }
+
+.popup-close{
+  position:absolute; top:20px; right:20px;
+  width:36px; height:36px;
+  border:none; border-radius:50%;
+  background:rgba(0,0,0,0.4);
+  color:#fff; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:310;
+}
+.popup-nav{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:40px; height:40px;
+  border:none; border-radius:50%;
+  background:rgba(0,0,0,0.35);
+  color:#fff; font-size:22px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:310;
+}
+.popup-prev{ left:14px; }
+.popup-next{ right:14px; }
+
+.popup-track{
+  display:flex;
+  width:300vw;
+  height:100%;
+  transform:translate3d(-100vw,0,0);
+  transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);
+  will-change:transform;
+}
+.popup-track.no-transition{ transition:none !important; }
+
+.popup-slide{
+  width:100vw; height:100%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.popup-slide img{
+  width:100vw;
+  height:100%;
+  object-fit:contain;
+  transform-origin:center center;
+  transition:transform 0.2s ease;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.popup-slide img.no-transition{ transition:none; }
+
+
+/* momo-4 갤러리 제목·카드 스택 우선 적용 */
+#gallery .section-title{font-family:'Noto Sans KR',sans-serif;font-size:18px;letter-spacing:.1em;}
+
 </style>
 </head>
 <body>
 <main class="site">
-<section id="intro" class="section intro"><div class="envelope-intro"><div class="envelope-wrap"><img class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png" alt="청첩장 봉투"></div><h1 class="envelope-name">Jaewon and Sohee</h1><p class="envelope-date"><span>2026.11.28 SAT 12:00PM</span><span>서울중앙교회 교육원 중강당</span></p><p class="envelope-bottom-text"><span class="laser-line" data-text="신랑 최재원"></span><span class="laser-line" data-text="신부 한소희"></span></p></div></section>
-<section id="main" class="section main"><p class="main-top">최창균·김원경의 장남 재원<br>한상필·최지윤의 장녀 소희</p><img class="main-content" src="https://heesohan.github.io/soheejaewon/main.png" alt="청첩장 메인 이미지"><p class="main-signature">최재원 · 한소희 드림</p></section>
-<section id="gallery" class="section gallery"><h2 class="section-title">Gallery</h2><div class="gallery-stack" id="gallery-stack"></div><div class="gallery-strip" id="gallery-strip"></div><p class="gallery-count"><span id="gallery-current">1</span> / 18</p></section>
-<section id="datecount" class="section datecount"><p class="dday-text">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</p><div class="countdown"><div class="unit"><div class="num" id="cd-days">00</div><div class="lab">DAYS</div></div><div class="unit"><div class="num" id="cd-hours">00</div><div class="lab">HOUR</div></div><div class="unit"><div class="num" id="cd-mins">00</div><div class="lab">MIN</div></div><div class="unit"><div class="num" id="cd-secs">00</div><div class="lab">SEC</div></div></div><div class="calendar"><div class="calendar-grid" id="calendar-grid"></div></div></section>
-<section id="location" class="section location"><h2 class="section-title">Location</h2><p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p><div class="map-wrap"><iframe title="티맵 예식장 위치" src="https://tmap.life/search?name=%EC%84%9C%EC%9A%B8%EC%A4%91%EC%95%99%EA%B5%90%ED%9A%8C%20%EA%B5%90%EC%9C%A1%EC%9B%90" loading="lazy"></iframe></div><p class="address">경기 안양시 동안구 관양로 305<br>서울중앙교회 교육원 중강당 6층</p><div class="route-btns"><a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" target="_blank" rel="noopener">네이버지도</a><a href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" target="_blank" rel="noopener">카카오맵</a><a href="https://tmap.life/search?name=%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" target="_blank" rel="noopener">티맵</a></div><div class="info-block"><div class="info-text"><b>자가용</b><br>주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료 주차장, 인덕원 환승주차장] 교회당 주차 공간이 협소하므로 가급적 대중교통 이용을 부탁 드립니다.</div></div><div class="info-block"><div class="info-text"><b>지하철</b><br>4호선 인덕원역 3번 출구 도보 5분</div></div><div class="info-block"><div class="info-text"><b>버스</b><br>인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303, 777 간선: 441, 502, 540 마을: 마8, 12</div></div></section>
-<section id="detail" class="section detail"><h2 class="section-title">Detail</h2><p style="margin:-20px 0 10px">안내사항</p><div class="detail-track" id="detail-track"></div><div class="detail-controls"><button id="detail-prev" type="button">‹</button><div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button></div></section>
-<section id="account" class="section account"><h2 class="section-title">Gift</h2><p style="margin:-20px 0 28px">마음 전하실 곳</p><p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p><div class="accordion"><div class="acc-item" id="groomAcc"><div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div><div class="acc-body"><div class="acc-body-inner"><div class="acct-card"><div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div></div></div></div><div class="acc-item" id="brideAcc"><div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div><div class="acc-body"><div class="acc-body-inner"><div class="acct-card"><div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div></div></div></div></div></section>
+
+<section class="section" id="intro">
+<!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
+<div aria-hidden="true" class="heart-rain">
+<span></span><span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span><span></span><span></span>
+</div>
+<div class="envelope-intro">
+<!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
+<div class="envelope-wrap">
+<img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png"/>
+<!-- 봉투 플랩에 겹쳐지는 은박 필기체 이름 -->
+<h1 class="envelope-name">Jaewon and Sohee</h1>
+</div>
+<!-- 봉투 아래 로고. -->
+<p class="envelope-date">
+<span>2026.11.28 SAT 12:00PM</span>
+</p>
+<p class="envelope-bottom-text">
+<span>신랑 최재원</span><br/>
+<span>신부 한소희</span>
+</p>
+</div>
+</section>
+<section class="section main" id="main"><p class="main-top">최창균·김원경의 장남 재원<br/>한상필·최지윤의 장녀 소희</p><img alt="청첩장 메인 이미지" class="main-content" src="https://heesohan.github.io/soheejaewon/main.png"/><p class="main-signature">최재원 · 한소희 드림</p></section>
+<section class="section" id="gallery">
+<div class="section-title serif">photo</div>
+<div class="card-stack-wrap">
+<div class="card-stack" id="cardStack"></div>
+<div class="fly-layer" id="flyLayer"></div>
+</div>
+<div class="card-counter">
+<span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
+</div>
+</section>
+<section class="section datecount" id="datecount"><p class="dday-text">최재원 ♥ 한소희의 결혼식이<br/><span id="dday-num">00</span>일 남았습니다</p><div class="countdown"><div class="unit"><div class="num" id="cd-days">00</div><div class="lab">DAYS</div></div><div class="unit"><div class="num" id="cd-hours">00</div><div class="lab">HOUR</div></div><div class="unit"><div class="num" id="cd-mins">00</div><div class="lab">MIN</div></div><div class="unit"><div class="num" id="cd-secs">00</div><div class="lab">SEC</div></div></div><div class="calendar"><div class="calendar-grid" id="calendar-grid"></div></div></section>
+<section class="section location" id="location"><h2 class="section-title">Location</h2><p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p><div class="map-wrap"><iframe loading="lazy" src="https://tmap.life/search?name=%EC%84%9C%EC%9A%B8%EC%A4%91%EC%95%99%EA%B5%90%ED%9A%8C%20%EA%B5%90%EC%9C%A1%EC%9B%90" title="티맵 예식장 위치"></iframe></div><p class="address">경기 안양시 동안구 관양로 305<br/>서울중앙교회 교육원 중강당 6층</p><div class="route-btns"><a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">네이버지도</a><a href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">카카오맵</a><a href="https://tmap.life/search?name=%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">티맵</a></div><div class="info-block"><div class="info-text"><b>자가용</b><br/>주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료 주차장, 인덕원 환승주차장] 교회당 주차 공간이 협소하므로 가급적 대중교통 이용을 부탁 드립니다.</div></div><div class="info-block"><div class="info-text"><b>지하철</b><br/>4호선 인덕원역 3번 출구 도보 5분</div></div><div class="info-block"><div class="info-text"><b>버스</b><br/>인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303, 777 간선: 441, 502, 540 마을: 마8, 12</div></div></section>
+<section class="section detail" id="detail"><h2 class="section-title">Detail</h2><p style="margin:-20px 0 10px">안내사항</p><div class="detail-track" id="detail-track"></div><div class="detail-controls"><button id="detail-prev" type="button">‹</button><div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button></div></section>
+<section class="section account" id="account"><h2 class="section-title">Gift</h2><p style="margin:-20px 0 28px">마음 전하실 곳</p><p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p><div class="accordion"><div class="acc-item" id="groomAcc"><div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div><div class="acc-body"><div class="acc-body-inner"><div class="acct-card"><div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div></div></div></div><div class="acc-item" id="brideAcc"><div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div><div class="acc-body"><div class="acc-body-inner"><div class="acct-card"><div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div><div class="acct-card"><div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div><div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div></div></div></div></div></div></section>
 </main>
-<div class="photo-popup" id="photo-popup" hidden><button class="popup-close" id="popup-close" aria-label="닫기">×</button><div class="popup-main"><button class="popup-nav" id="popup-prev" aria-label="이전 사진">‹</button><img id="popup-image" alt="확대된 갤러리 사진"><button class="popup-nav" id="popup-next" aria-label="다음 사진">›</button></div><div class="popup-thumbs" id="popup-thumbs"></div></div>
+<div class="photo-popup" id="photoPopup">
+<button aria-label="닫기" class="popup-close" id="popupClose">✕</button>
+<button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
+<button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
+<div class="popup-track" id="popupTrack">
+<div class="popup-slide"><img alt="" id="popupImgPrev" src=""/></div>
+<div class="popup-slide"><img alt="" id="popupImgCur" src=""/></div>
+<div class="popup-slide"><img alt="" id="popupImgNext" src=""/></div>
+</div>
+</div>
 <script>
-const galleryUrls=Array.from({length:18},(_,i)=>`https://heesohan.github.io/soheejaewon/${i+1}.jpg`);const stack=document.getElementById('gallery-stack'),strip=document.getElementById('gallery-strip'),popup=document.getElementById('photo-popup'),popupImage=document.getElementById('popup-image'),popupThumbs=document.getElementById('popup-thumbs');let galleryIndex=0;const tilts=[6,-8,5,-9,7,-4,8,-6,4,-9,6,-5,8,-7,5,-8,6,-4];function imageReady(src){return new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(true);img.onerror=()=>resolve(false);img.src=src})}function renderStack(){stack.innerHTML='';galleryUrls.slice(galleryIndex,galleryIndex+3).reverse().forEach((src,reverseIndex)=>{const pos=2-reverseIndex,card=document.createElement('div');card.className='photo-card';card.style.zIndex=3-pos;card.style.transform=`translateY(${pos*12}px) rotate(${pos?tilts[(galleryIndex+pos)%18]:0}deg) scale(${1-pos*.06})`;card.style.opacity=String(1-pos*.18);const img=document.createElement('img');img.src=src;img.alt=`갤러리 ${galleryIndex+pos+1}`;card.append(img);stack.append(card)})}function renderStrip(){strip.innerHTML='';galleryUrls.forEach((src,i)=>{const b=document.createElement('button');b.className='gallery-thumb'+(i===galleryIndex?' active':'');b.type='button';b.onclick=()=>openPopup(i);const img=document.createElement('img');img.src=src;img.alt=`갤러리 사진 ${i+1}`;b.append(img);strip.append(b)})}function renderThumbs(){popupThumbs.innerHTML='';galleryUrls.forEach((src,i)=>{const b=document.createElement('button');b.className='popup-thumb'+(i===galleryIndex?' active':'');b.type='button';const img=document.createElement('img');img.src=src;img.alt='';b.append(img);b.onclick=()=>showGallery(i);popupThumbs.append(b)})}function showGallery(i){galleryIndex=(i+18)%18;renderStack();renderStrip();renderThumbs();document.getElementById('gallery-current').textContent=galleryIndex+1;if(!popup.hidden){popupImage.src=galleryUrls[galleryIndex];popupThumbs.children[galleryIndex]?.scrollIntoView({inline:'center',block:'nearest'})}}function openPopup(i){popup.hidden=false;document.body.style.overflow='hidden';showGallery(i);document.getElementById('popup-close').focus()}function closePopup(){popup.hidden=true;document.body.style.overflow=''}document.getElementById('popup-close').onclick=closePopup;document.getElementById('popup-prev').onclick=()=>showGallery(galleryIndex-1);document.getElementById('popup-next').onclick=()=>showGallery(galleryIndex+1);popup.addEventListener('click',e=>{if(e.target===popup)closePopup()});document.addEventListener('keydown',e=>{if(popup.hidden)return;if(e.key==='Escape')closePopup();if(e.key==='ArrowLeft')showGallery(galleryIndex-1);if(e.key==='ArrowRight')showGallery(galleryIndex+1)});let touchX=0;popupImage.addEventListener('touchstart',e=>touchX=e.changedTouches[0].screenX,{passive:true});popupImage.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-touchX;if(Math.abs(d)>45)showGallery(galleryIndex+(d<0?1:-1))},{passive:true});showGallery(0);
+/* momo-6: D-day, calendar, Detail, Gift unchanged */
 const target=new Date('2026-11-28T12:00:00+09:00');function updateCountdown(){const d=Math.max(0,target-Date.now()),days=Math.floor(d/86400000),hours=Math.floor(d/3600000)%24,mins=Math.floor(d/60000)%60,secs=Math.floor(d/1000)%60;document.getElementById('dday-num').textContent=days;[['cd-days',days],['cd-hours',hours],['cd-mins',mins],['cd-secs',secs]].forEach(([id,n])=>document.getElementById(id).textContent=String(n).padStart(2,'0'))}updateCountdown();setInterval(updateCountdown,1000);function buildCalendar(){const grid=document.getElementById('calendar-grid');['일','월','화','수','목','금','토'].forEach(x=>{const el=document.createElement('div');el.className='dow';el.textContent=x;grid.append(el)});const first=new Date(2026,10,1).getDay();for(let i=0;i<first;i++)grid.append(document.createElement('div'));for(let d=1;d<=30;d++){const el=document.createElement('div');el.className='day'+(d===28?' highlight':'');el.textContent=d;grid.append(el)}}buildCalendar();
 const detailSources=['안내1.png','안내2.png','안내3.png','안내4.png'],detailTrack=document.getElementById('detail-track'),detailDots=document.getElementById('detail-dots');detailSources.forEach((src,i)=>{const slide=document.createElement('div');slide.className='detail-slide';const card=document.createElement('div');card.className='detail-card detail-placeholder';card.style.transform=`rotate(${[3,0,-3,0][i]}deg)`;card.textContent=`안내${i+1}.png`;const img=new Image();img.onload=()=>{card.className='detail-card';card.innerHTML='';card.append(img)};img.src=src;slide.append(card);detailTrack.append(slide);const dot=document.createElement('button');dot.type='button';dot.onclick=()=>goDetail(i);detailDots.append(dot)});let detailIndex=0;function goDetail(i){detailIndex=Math.max(0,Math.min(3,i));detailTrack.scrollTo({left:detailTrack.clientWidth*detailIndex,behavior:'smooth'});[...detailDots.children].forEach((d,n)=>d.classList.toggle('active',n===detailIndex))}document.getElementById('detail-prev').onclick=()=>goDetail(detailIndex-1);document.getElementById('detail-next').onclick=()=>goDetail(detailIndex+1);let detailTimer;detailTrack.addEventListener('scroll',()=>{clearTimeout(detailTimer);detailTimer=setTimeout(()=>{detailIndex=Math.round(detailTrack.scrollLeft/detailTrack.clientWidth);goDetail(detailIndex)},80)},{passive:true});goDetail(0);
 function toggleAcc(id){document.getElementById(id).classList.toggle('open')}async function acctCopy(el){const value=el.closest('.acct-card').querySelector('.acct-bank').textContent.trim();try{await navigator.clipboard.writeText(value);el.textContent='복사됨';setTimeout(()=>el.textContent='복사',1500)}catch{el.textContent='복사 실패';setTimeout(()=>el.textContent='복사',1500)}}
-function typeLaser(){document.querySelectorAll('.laser-line').forEach((line,index)=>{const text=line.dataset.text;let n=0;const cursor=document.createElement('span');cursor.className='laser-cursor';line.append(cursor);function type(){if(n<text.length){cursor.before(document.createTextNode(text[n++]));setTimeout(type,95+Math.random()*80)}else cursor.remove()}setTimeout(type,index*500)})}typeLaser();
+
+/* momo-4: card stack and photo viewer */
+const GALLERY_IMAGES = [
+  'https://heesohan.github.io/soheejaewon/1.jpg',
+  'https://heesohan.github.io/soheejaewon/2.jpg',
+  'https://heesohan.github.io/soheejaewon/3.jpg',
+  'https://heesohan.github.io/soheejaewon/4.jpg',
+  'https://heesohan.github.io/soheejaewon/5.jpg',
+  'https://heesohan.github.io/soheejaewon/6.jpg',
+  'https://heesohan.github.io/soheejaewon/7.jpg',
+  'https://heesohan.github.io/soheejaewon/8.jpg',
+  'https://heesohan.github.io/soheejaewon/9.jpg',
+  'https://heesohan.github.io/soheejaewon/10.jpg',
+  'https://heesohan.github.io/soheejaewon/11.jpg',
+  'https://heesohan.github.io/soheejaewon/12.jpg',
+  'https://heesohan.github.io/soheejaewon/13.jpg',
+  'https://heesohan.github.io/soheejaewon/14.jpg',
+  'https://heesohan.github.io/soheejaewon/15.jpg',
+  'https://heesohan.github.io/soheejaewon/16.jpg',
+  'https://heesohan.github.io/soheejaewon/17.jpg',
+  'https://heesohan.github.io/soheejaewon/18.jpg'
+];
+
+GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+
+const CARD_TILTS = [
+  6, -8, 5, -9, 7, -4, 8, -6, 4,
+  -9, 6, -5, 8, -7, 5, -8, 6, -4
+];
+
+const VISIBLE_COUNT = 3;
+const THROW_THRESHOLD = 90;
+const TAP_THRESHOLD = 12;
+
+let cardOrder = GALLERY_IMAGES.map((_, i) => i);
+let shownCount = 1;
+
+const stackEl = document.getElementById('cardStack');
+const flyLayer = document.getElementById('flyLayer');
+
+function renderStack(){
+  stackEl.innerHTML = '';
+  const visible = cardOrder.slice(0, VISIBLE_COUNT);
+
+  visible.forEach((imgIdx, pos) => {
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+    card.style.zIndex = VISIBLE_COUNT - pos;
+
+    const scale = 1 - pos * 0.06;
+    const rotate = pos === 0 ? 0 : CARD_TILTS[imgIdx % CARD_TILTS.length] * pos * 0.7;
+    const translateY = pos * 12;
+    const baseTransform = `translate(0px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`;
+    card.style.transform = baseTransform;
+    card.style.opacity = pos === 0 ? '1' : String(1 - pos * 0.18);
+    card.dataset.baseTransform = baseTransform;
+	  card.dataset.imageIndex = String(imgIdx);
+    const img = document.createElement('img');
+    img.src = GALLERY_IMAGES[imgIdx];
+    card.appendChild(img);
+
+    if(pos === 0) attachDrag(card);
+    stackEl.appendChild(card);
+  });
+
+  document.getElementById('cardCurrent').textContent =
+    ((shownCount - 1) % GALLERY_IMAGES.length) + 1;
+}
+
+function attachDrag(card){
+  let startX = 0, startY = 0, curX = 0, curY = 0, dragging = false, rafId = null;
+
+  function applyDragTransform(){
+    const rotate = curX * 0.06;
+    card.style.transform = `translate(${curX}px, ${curY}px) rotate(${rotate}deg)`;
+    card.style.opacity = String(Math.max(1 - Math.hypot(curX, curY) / 260, 0.35));
+    rafId = null;
+  }
+
+  function onDown(e){
+    dragging = true;
+    card.classList.add('dragging');
+    startX = e.clientX;
+    startY = e.clientY;
+    card.setPointerCapture(e.pointerId);
+  }
+  function onMove(e){
+    if(!dragging) return;
+    curX = e.clientX - startX;
+    curY = e.clientY - startY;
+    if(rafId === null) rafId = requestAnimationFrame(applyDragTransform);
+  }
+  function onUp(){
+    if(!dragging) return;
+    dragging = false;
+    card.classList.remove('dragging');
+    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+
+    const dist = Math.hypot(curX, curY);
+    if(dist > THROW_THRESHOLD){
+      throwCard(card, curX, curY);
+    } else if(dist < TAP_THRESHOLD){
+      card.style.transform = card.dataset.baseTransform;
+      card.style.opacity = '1';
+      openPhotoPopup(Number(card.dataset.imageIndex));
+    } else {
+      card.style.transform = card.dataset.baseTransform;
+      card.style.opacity = '1';
+    }
+    curX = 0; curY = 0;
+  }
+
+  card.addEventListener('pointerdown', onDown);
+  card.addEventListener('pointermove', onMove);
+  card.addEventListener('pointerup', onUp);
+  card.addEventListener('pointercancel', onUp);
+}
+
+function throwCard(card, x, y){
+  const angle = Math.atan2(y, x);
+  const flyDist = 900;
+  const flyX = Math.cos(angle) * flyDist;
+  const flyY = Math.sin(angle) * flyDist;
+
+  card.classList.add('flying');
+  flyLayer.appendChild(card);
+  requestAnimationFrame(() => {
+    card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
+    card.style.opacity = '0';
+  });
+  card.addEventListener('transitionend', () => card.remove(), { once: true });
+
+  cardOrder.push(cardOrder.shift());
+  shownCount++;
+  renderStack();
+}
+
+renderStack();
+
+/* ==========================================================
+   사진 확대 팝업 (캐러셀 방식) — 이 블록이 팝업 관련 코드의 유일한 버전임
+   - 화면 너비의 18%만 밀어도 다음/이전 사진으로 넘어감
+   - 손을 놓았을 때 이미 이동한 만큼은 그대로 이어서 마무리 (남은 거리에 비례한 시간)
+     -> 튕기듯 던져지는 느낌 없이 드래그가 자연스럽게 이어짐
+   - 핀치/더블탭으로 최대 200% 확대, 확대 중엔 드래그가 팬(이동)
+   - 이동 없는 탭 한 번 또는 X 버튼 -> 종료
+   ========================================================== */
+const photoPopup    = document.getElementById('photoPopup');
+const popupTrack    = document.getElementById('popupTrack');
+const imgPrevEl     = document.getElementById('popupImgPrev');
+const imgCurEl      = document.getElementById('popupImgCur');
+const imgNextEl     = document.getElementById('popupImgNext');
+const popupCloseBtn = document.getElementById('popupClose');
+const popupPrevBtn  = document.getElementById('popupPrev');
+const popupNextBtn  = document.getElementById('popupNext');
+
+const POPUP_MAX_SCALE    = 2;    // 200%
+const SWIPE_COMMIT_RATIO = 0.18; // 화면 너비의 18%만 밀어도 넘어감
+const BASE_SETTLE_MS     = 320;  // 처음부터 끝까지 다 이동할 때 걸리는 기준 시간(ms)
+
+let popupIndex = 0;
+let popupScale = 1, popupPanX = 0, popupPanY = 0;
+const popupPointers = new Map();
+let pinchStartDist = 0, pinchStartScale = 1;
+let dragStartX = 0, dragStartY = 0, dragDX = 0, dragDY = 0, tapMoved = false;
+let panBaseX = 0, panBaseY = 0;
+let lastTapTime = 0, tapCloseTimer = null;
+let popupAnimating = false;
+
+function wrapIndex(i){
+  return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+}
+function setPopupImages(){
+  imgPrevEl.src = GALLERY_IMAGES[wrapIndex(popupIndex - 1)];
+  imgCurEl.src  = GALLERY_IMAGES[wrapIndex(popupIndex)];
+  imgNextEl.src = GALLERY_IMAGES[wrapIndex(popupIndex + 1)];
+}
+function resetZoom(){
+  popupScale = 1; popupPanX = 0; popupPanY = 0;
+  imgCurEl.classList.add('no-transition');
+  imgCurEl.style.transform = 'translate(0px,0px) scale(1)';
+  requestAnimationFrame(() => imgCurEl.classList.remove('no-transition'));
+}
+function openPhotoPopup(imgIdx){
+  popupIndex = imgIdx;
+  popupAnimating = false;
+  setPopupImages();
+  resetZoom();
+  popupTrack.classList.add('no-transition');
+  popupTrack.style.transform = 'translate3d(-100vw,0,0)';
+  requestAnimationFrame(() => popupTrack.classList.remove('no-transition'));
+  photoPopup.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closePhotoPopup(){
+  photoPopup.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// direction: -1 이전 사진, 0 원위치 복귀, 1 다음 사진
+// durationMs: 이 전환에 걸릴 시간(ms) — 남은 거리에 비례해서 호출부에서 계산해서 넘김
+function settleSwipe(direction, durationMs){
+  const target = direction === -1 ? '0vw' : direction === 1 ? '-200vw' : '-100vw';
+  popupAnimating = direction !== 0;
+  popupTrack.style.transitionDuration = `${durationMs}ms`;
+  popupTrack.style.transitionTimingFunction = 'cubic-bezier(0.22,1,0.36,1)';
+  popupTrack.style.transform = `translate3d(${target},0,0)`;
+
+  if(direction === 0){
+    setTimeout(() => { popupAnimating = false; }, durationMs);
+    return;
+  }
+  popupTrack.addEventListener('transitionend', function handler(){
+    popupTrack.removeEventListener('transitionend', handler);
+    popupIndex = wrapIndex(popupIndex + direction);
+    setPopupImages();
+    resetZoom();
+    popupTrack.classList.add('no-transition');
+    popupTrack.style.transform = 'translate3d(-100vw,0,0)';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        popupTrack.classList.remove('no-transition');
+        popupAnimating = false;
+      });
+    });
+  }, { once: true });
+}
+
+popupPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(-1, BASE_SETTLE_MS); });
+popupNextBtn.addEventListener('click', (e) => { e.stopPropagation(); if(!popupAnimating) settleSwipe(1, BASE_SETTLE_MS); });
+popupCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closePhotoPopup(); });
+
+photoPopup.addEventListener('pointerdown', (e) => {
+  if(e.target.closest('.popup-nav') || e.target.closest('.popup-close')) return;
+  if(popupAnimating) return;
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  photoPopup.setPointerCapture(e.pointerId);
+
+  if(popupPointers.size === 1){
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    dragDX = 0; dragDY = 0; tapMoved = false;
+    panBaseX = popupPanX; panBaseY = popupPanY;
+    popupTrack.classList.add('no-transition');
+  }
+  if(popupPointers.size === 2){
+  tapMoved = true; /* 핀치 확대 중에는 탭 닫기 실행 방지 */
+    const pts = [...popupPointers.values()];
+    pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    pinchStartScale = popupScale;
+  }
+});
+
+photoPopup.addEventListener('pointermove', (e) => {
+  if(!popupPointers.has(e.pointerId)) return;
+  popupPointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+
+  if(popupPointers.size === 2){
+    const pts = [...popupPointers.values()];
+    const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    popupScale = Math.min(POPUP_MAX_SCALE, Math.max(1, pinchStartScale * (d / pinchStartDist)));
+    imgCurEl.classList.add('no-transition');
+    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
+    return;
+  }
+
+  dragDX = e.clientX - dragStartX;
+  dragDY = e.clientY - dragStartY;
+  if(Math.hypot(dragDX, dragDY) > 6) tapMoved = true;
+
+  if(popupScale > 1){
+    popupPanX = panBaseX + dragDX;
+    popupPanY = panBaseY + dragDY;
+    imgCurEl.classList.add('no-transition');
+    imgCurEl.style.transform = `translate(${popupPanX}px, ${popupPanY}px) scale(${popupScale})`;
+  } else {
+    popupTrack.style.transitionDuration = '0ms';
+    popupTrack.style.transform = `translate3d(calc(-100vw + ${dragDX}px),0,0)`;
+  }
+});
+
+function popupPointerEnd(e){
+  popupPointers.delete(e.pointerId);
+  if(popupPointers.size > 0) return;
+
+  imgCurEl.classList.remove('no-transition');
+
+  if(popupScale === 1){
+    popupTrack.classList.remove('no-transition');
+    const widthPx = photoPopup.clientWidth || window.innerWidth;
+    const ratio = Math.min(Math.abs(dragDX) / widthPx, 1);
+
+    if(ratio > SWIPE_COMMIT_RATIO){
+      const direction = dragDX > 0 ? -1 : 1;
+      const duration = Math.max(120, BASE_SETTLE_MS * (1 - ratio));
+      settleSwipe(direction, duration);
+    } else {
+      const duration = Math.max(150, BASE_SETTLE_MS * (0.6 + ratio));
+      settleSwipe(0, duration);
+      if(!tapMoved) handleTap();
+    }
+  } else if(!tapMoved){
+    handleTap();
+  }
+  dragDX = 0; dragDY = 0;
+}
+photoPopup.addEventListener('pointerup', popupPointerEnd);
+photoPopup.addEventListener('pointercancel', popupPointerEnd);
+
+/* 팝업 사진을 한 번 누르면 팝업 닫기
+   확대는 두 손가락 핀치로만 실행 */
+function handleTap(){
+  closePhotoPopup();
+}
 </script>
 </body>
 </html>
