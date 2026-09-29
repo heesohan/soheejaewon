@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 
 <html lang="ko">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
-<title>최재원, 한소희 모바일 청첩장</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet"/>
-<style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+  <title>최재원, 한소희 모바일 청첩장</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <style>
     :root {
       --bg: #2d2d2d;
       --card: #353535;
@@ -559,7 +564,7 @@
       height: auto;
     }
 
-    /* ---------- 봉투 플랩 위 금박 이름 ---------- */
+    /* ---------- 봉투 플랩 위 이름 ---------- */
     .envelope-name {
       position: absolute;
       z-index: 2;
@@ -602,6 +607,18 @@
       /* 은박의 옅은 입체 그림자 */
       filter: drop-shadow(0 1px .5px rgba(74, 78, 78, .48));
     }
+    #intro .envelope-name {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #ded9cd;
+  color: #ded9cd;
+  filter: none;
+
+  text-shadow:
+    -1px -1px 1px rgba(255, 255, 255, .9),
+     1px  1px 1px rgba(110, 98, 80, .42);
+}
 
     /* ---------- 봉투 아래 예식 일시·장소 ---------- */
     .envelope-date {
@@ -963,14 +980,81 @@
       cursor: pointer;
       outline-offset: 6px;
     }
+
     #intro.opened .envelope-wrap {
       cursor: default;
     }
+
     #intro.opened .envelope-name,
     #intro.opened .envelope-date {
       visibility: hidden;
-    }
+    }/* 봉투는 그대로, 클릭 후 011.jpg만 10% 크게 */
+#intro.opened .envelope-image {
+  width: 110%;
+  max-width: none;
+  margin-left: -5%;
+}
+/* 봉투를 누른 뒤: 인트로 화면 전체를 사진으로 채우기 */
+#intro.opened {
+  position: relative;
+  height: 100svh;
+  min-height: 100svh;
+  padding: 0;
+  overflow: hidden;
+}
 
+#intro.opened .envelope-intro {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#intro.opened .envelope-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  transform: none;
+}
+
+/* 기존 봉투 이미지가 011.jpg로 바뀐 뒤 화면에 꽉 채움 */
+#intro.opened .envelope-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 봉투에 있던 문구는 숨김 */
+#intro.opened .envelope-name,
+#intro.opened .envelope-date {
+  display: none;
+}
+
+/* 추가한 날짜·베뉴 문구를 사진 위 하단에 배치 */
+#intro.opened .intro-venue-info {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  bottom: max(48px, env(safe-area-inset-bottom));
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  color: #fff;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .65);
+}
     /* bg가 보이는 메인 영역을 위아래로 조금 확장 */
     #main.main {
       padding-top: 84px;
@@ -1019,88 +1103,110 @@
       font-family: 'Pretendard', sans-serif;
       font-weight: 600;
     }
+    #intro .intro-venue-info {
+  position: relative;
+  z-index: 3;
+  margin: 34px 0 0;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #77736c;
+}
+
+#intro .intro-venue-info span {
+  display: block;
+}
   </style>
 </head>
+
 <body>
-<main class="site">
-<section class="section" id="intro">
-<!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
-<div aria-hidden="true" class="heart-rain">
-<span></span><span></span><span></span><span></span><span></span>
-<span></span><span></span><span></span><span></span><span></span>
-</div>
-<div class="envelope-intro">
-<!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
-<div aria-label="봉투를 눌러 웨딩 사진 보기" class="envelope-wrap" role="button" tabindex="0">
-<img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png"/>
-<!-- 새로 추가: 움직이는 플랩과 사진 -->
+  <main class="site">
+    <section class="section" id="intro">
+      <!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
+      <div aria-hidden="true" class="heart-rain">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="envelope-intro">
+        <!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
+        <div aria-label="봉투를 눌러 웨딩 사진 보기" class="envelope-wrap" role="button" tabindex="0">
+          <img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png" />
+          <!-- 새로 추가: 움직이는 플랩과 사진 -->
 
+          <h1 class="envelope-name">Jaewon and Sohee</h1>
+        </div>
+        <!-- 봉투 아래 로고. -->
+        <p class="envelope-date">
+          <span>2026.11.28 SAT 12:00PM</span>
+        </p>
 
-<h1 class="envelope-name">Jaewon and Sohee</h1>
-</div>
-<!-- 봉투 아래 로고. -->
-<p class="envelope-date">
-<span>2026.11.28 SAT 12:00PM</span>
+<p class="intro-venue-info">
+  <span>2026년 11월 28일 토요일 12시</span>
+  <span>서울중앙교회 6층 중강당</span>
 </p>
-</div>
-</section>
-<section class="section main" id="main">
-<div class="main-name-tag">
-<img alt="이름택" src="https://raw.githubusercontent.com/heesohan/soheejaewon/261128/name.png"/>
-<span class="main-name-tag-text"></span>
-</div>
-<p class="main-intro-text">
-<br/><br/><b>최창균</b> · <b>김원경</b>의 장남 <span class="main-intro-name">재원</span>
-<br/><b>한상필</b> · <b>최지윤</b>의 장녀 <span class="main-intro-name">소희</span><br/>
-</p>
-<img alt="청첩장 메인 이미지" class="main-content" src="https://heesohan.github.io/soheejaewon/main.png"/>
-</section>
-<section class="section" id="gallery">
-<div class="section-title serif">Gallery</div>
-<div class="card-stack-wrap">
-<div class="card-stack" id="cardStack"></div>
-<div class="fly-layer" id="flyLayer"></div>
-</div>
-<div class="card-counter">
-<span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
-</div>
-</section>
-<section class="section datecount" id="datecount">
-<p class="dday-text">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</br></p>
-<div class="countdown">
-<div class="unit">
-<div class="num" id="cd-days">00</div>
-<div class="lab">DAYS</div>
-</div>
-<div class="unit">
-<div class="num" id="cd-hours">00</div>
-<div class="lab">HOUR</div>
-</div>
-<div class="unit">
-<div class="num" id="cd-mins">00</div>
-<div class="lab">MIN</div>
-</div>
-<div class="unit">
-<div class="num" id="cd-secs">00</div>
-<div class="lab">SEC</div>
-</div>
-</div>
-<div class="calendar">
-<div class="calendar-grid" id="calendar-grid"></div>
-</div>
-</section>
-<section class="section location" id="location">
-<h2 class="section-title">Location</h2>
-<p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p>
-<div class="map-wrap kakao-map-wrap">
-<!-- 카카오맵 지도 자리 -->
-<div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
-</div>
-</div>
-<!-- 카카오맵 퍼가기 로더: -->
-<script charset="UTF-8" class="daum_roughmap_loader_script" src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
-<!-- 카카오맵 실행 -->
-<script charset="UTF-8">
+      </div>
+      
+    </section>
+    <section class="section main" id="main">
+      <div class="main-name-tag">
+        <img alt="이름택" src="https://raw.githubusercontent.com/heesohan/soheejaewon/261128/name.png" />
+        <span class="main-name-tag-text"></span>
+      </div>
+      <p class="main-intro-text">
+        <br /><br /><b>최창균</b> · <b>김원경</b>의 장남 <span class="main-intro-name">재원</span>
+        <br /><b>한상필</b> · <b>최지윤</b>의 장녀 <span class="main-intro-name">소희</span><br />
+      </p>
+      <img alt="청첩장 메인 이미지" class="main-content" src="https://heesohan.github.io/soheejaewon/main.png" />
+    </section>
+    <section class="section" id="gallery">
+      <div class="section-title serif">Gallery</div>
+      <div class="card-stack-wrap">
+        <div class="card-stack" id="cardStack"></div>
+        <div class="fly-layer" id="flyLayer"></div>
+      </div>
+      <div class="card-counter">
+        <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
+      </div>
+    </section>
+    <section class="section datecount" id="datecount">
+      <p class="dday-text">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</br></p>
+      <div class="countdown">
+        <div class="unit">
+          <div class="num" id="cd-days">00</div>
+          <div class="lab">DAYS</div>
+        </div>
+        <div class="unit">
+          <div class="num" id="cd-hours">00</div>
+          <div class="lab">HOUR</div>
+        </div>
+        <div class="unit">
+          <div class="num" id="cd-mins">00</div>
+          <div class="lab">MIN</div>
+        </div>
+        <div class="unit">
+          <div class="num" id="cd-secs">00</div>
+          <div class="lab">SEC</div>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+    </section>
+    <section class="section location" id="location">
+      <h2 class="section-title">Location</h2>
+      <p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p>
+      <div class="map-wrap kakao-map-wrap">
+        <!-- 카카오맵 지도 자리 -->
+        <div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
+        </div>
+      </div>
+      <!-- 카카오맵 퍼가기 로더: -->
+      <script charset="UTF-8" class="daum_roughmap_loader_script"
+        src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
+      <!-- 카카오맵 실행 -->
+      <script charset="UTF-8">
         new daum.roughmap.Lander({
           "timestamp": "1790689993991",
           "key": "2f6jw53kbsn",
@@ -1108,89 +1214,93 @@
           "mapHeight": "360"
         }).render();
       </script>
-<p class="address">경기 안양시 동안구 관양로 305<br>서울중앙교회 교육원</br></p>
-<div class="route-btns"><a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">네이버지도</a><a href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305" rel="noopener" target="_blank">카카오맵</a>
-</div>
-<div class="info-block">
-<div class="info-text"><b>자가용</b><br>주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료
+      <p class="address">경기 안양시 동안구 관양로 305<br>서울중앙교회 교육원</br></p>
+      <div class="route-btns"><a
+          href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
+          rel="noopener" target="_blank">네이버지도</a><a
+          href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
+          rel="noopener" target="_blank">카카오맵</a>
+      </div>
+      <div class="info-block">
+        <div class="info-text"><b>자가용</b><br>주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료
           주차장, 인덕원 환승주차장] 교회당 주차 공간이 협소하므로 가급적 대중교통 이용을 부탁 드립니다.</br></div>
-</div>
-<div class="info-block">
-<div class="info-text"><b>지하철</b><br>4호선 인덕원역 3번 출구 도보 5분</br></div>
-</div>
-<div class="info-block">
-<div class="info-text"><b>버스</b><br/>인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303,
+      </div>
+      <div class="info-block">
+        <div class="info-text"><b>지하철</b><br>4호선 인덕원역 3번 출구 도보 5분</br></div>
+      </div>
+      <div class="info-block">
+        <div class="info-text"><b>버스</b><br />인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장 일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303,
           777 간선: 441, 502, 540 마을: 마8, 12</div>
-</div>
-</section>
-<section class="section detail" id="detail">
-<h2 class="section-title">Detail</h2>
-<p style="margin:-20px 0 10px">안내사항</p>
-<div class="detail-track" id="detail-track"></div>
-<div class="detail-controls"><button id="detail-prev" type="button">‹</button>
-<div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button>
-</div>
-</section>
-<section class="section account" id="account">
-<h2 class="section-title">Gift</h2>
-<p style="margin:-20px 0 28px">마음 전하실 곳</p>
-<p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p>
-<div class="accordion">
-<div class="acc-item" id="groomAcc">
-<div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div>
-<div class="acc-body">
-<div class="acc-body-inner">
-<div class="acct-card">
-<div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-<div class="acct-card">
-<div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span>
-</div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-<div class="acct-card">
-<div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span>
-</div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-</div>
-</div>
-</div>
-<div class="acc-item" id="brideAcc">
-<div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div>
-<div class="acc-body">
-<div class="acc-body-inner">
-<div class="acct-card">
-<div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-<div class="acct-card">
-<div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-<div class="acct-card">
-<div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div>
-<div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
-<div aria-label="갤러리 사진 뷰어" aria-modal="true" class="photo-popup" id="photoPopup" role="dialog">
-<button aria-label="닫기" class="popup-close" id="popupClose">×</button>
-<button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
-<button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
-<div class="popup-track" id="popupTrack">
-<div class="popup-slide"><img alt="" id="popupImgPrev" src=""/></div>
-<div class="popup-slide"><img alt="" id="popupImgCur" src=""/></div>
-<div class="popup-slide"><img alt="" id="popupImgNext" src=""/></div>
-</div>
-<div aria-label="사진 썸네일" id="galleryViewerThumbs" role="group"></div>
-</div>
-<script>
+      </div>
+    </section>
+    <section class="section detail" id="detail">
+      <h2 class="section-title">Detail</h2>
+      <p style="margin:-20px 0 10px">안내사항</p>
+      <div class="detail-track" id="detail-track"></div>
+      <div class="detail-controls"><button id="detail-prev" type="button">‹</button>
+        <div class="detail-dots" id="detail-dots"></div><button id="detail-next" type="button">›</button>
+      </div>
+    </section>
+    <section class="section account" id="account">
+      <h2 class="section-title">Gift</h2>
+      <p style="margin:-20px 0 28px">마음 전하실 곳</p>
+      <p style="font-size:14px;line-height:1.9;margin:0 auto 25px">참석이 어려우신 분들을 위해 조심스럽게 안내드립니다.</p>
+      <div class="accordion">
+        <div class="acc-item" id="groomAcc">
+          <div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span>⌄</span></div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <div class="acct-card">
+                <div><span class="acct-name">신랑 최재원 · 카카오뱅크</span><span class="acct-bank">3333-07-9419395</span></div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+              <div class="acct-card">
+                <div><span class="acct-name">신랑 아버지 최창균 · 국민은행</span><span class="acct-bank">819-21-0170-606</span>
+                </div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+              <div class="acct-card">
+                <div><span class="acct-name">신랑 어머니 김원경 · 국민은행</span><span class="acct-bank">819-21-0290-072</span>
+                </div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="acc-item" id="brideAcc">
+          <div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span>⌄</span></div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <div class="acct-card">
+                <div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+              <div class="acct-card">
+                <div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+              <div class="acct-card">
+                <div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div>
+                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div aria-label="갤러리 사진 뷰어" aria-modal="true" class="photo-popup" id="photoPopup" role="dialog">
+    <button aria-label="닫기" class="popup-close" id="popupClose">×</button>
+    <button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
+    <button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
+    <div class="popup-track" id="popupTrack">
+      <div class="popup-slide"><img alt="" id="popupImgPrev" src="" /></div>
+      <div class="popup-slide"><img alt="" id="popupImgCur" src="" /></div>
+      <div class="popup-slide"><img alt="" id="popupImgNext" src="" /></div>
+    </div>
+    <div aria-label="사진 썸네일" id="galleryViewerThumbs" role="group"></div>
+  </div>
+  <script>
     /* momo-6: D-day, calendar, Detail, Gift unchanged */
     const target = new Date('2026-11-28T12:00:00+09:00'); function updateCountdown() {const d = Math.max(0, target - Date.now()), days = Math.floor(d / 86400000), hours = Math.floor(d / 3600000) % 24, mins = Math.floor(d / 60000) % 60, secs = Math.floor(d / 1000) % 60; document.getElementById('dday-num').textContent = days;[['cd-days', days], ['cd-hours', hours], ['cd-mins', mins], ['cd-secs', secs]].forEach(([id, n]) => document.getElementById(id).textContent = String(n).padStart(2, '0'))} updateCountdown(); setInterval(updateCountdown, 1000); function buildCalendar() {const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => {const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el)}); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) {const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el)} } buildCalendar();
     const detailSources = ['안내1.png', '안내2.png', '안내3.png', '안내4.png'], detailTrack = document.getElementById('detail-track'), detailDots = document.getElementById('detail-dots'); detailSources.forEach((src, i) => {const slide = document.createElement('div'); slide.className = 'detail-slide'; const card = document.createElement('div'); card.className = 'detail-card detail-placeholder'; card.style.transform = `rotate(${[3, 0, -3, 0][i]}deg)`; card.textContent = `안내${i + 1}.png`; const img = new Image(); img.onload = () => {card.className = 'detail-card'; card.innerHTML = ''; card.append(img)}; img.src = src; slide.append(card); detailTrack.append(slide); const dot = document.createElement('button'); dot.type = 'button'; dot.onclick = () => goDetail(i); detailDots.append(dot)}); let detailIndex = 0; function goDetail(i) {detailIndex = Math.max(0, Math.min(3, i)); detailTrack.scrollTo({left: detailTrack.clientWidth * detailIndex, behavior: 'smooth'});[...detailDots.children].forEach((d, n) => d.classList.toggle('active', n === detailIndex))} document.getElementById('detail-prev').onclick = () => goDetail(detailIndex - 1); document.getElementById('detail-next').onclick = () => goDetail(detailIndex + 1); let detailTimer; detailTrack.addEventListener('scroll', () => {clearTimeout(detailTimer); detailTimer = setTimeout(() => {detailIndex = Math.round(detailTrack.scrollLeft / detailTrack.clientWidth); goDetail(detailIndex)}, 80)}, {passive: true}); goDetail(0);
@@ -1406,7 +1516,7 @@
     });
 
   </script>
-<script>
+  <script>
     (() => {
       const intro = document.getElementById('intro');
       const envelope = intro.querySelector('.envelope-wrap');
@@ -1432,8 +1542,8 @@
         }
       });
     })();
-</script>
-<script>
+  </script>
+  <script>
     (() => {
       const viewer = document.getElementById('photoPopup');
       const image = document.getElementById('popupImgCur');
@@ -1598,4 +1708,5 @@
     })();
   </script>
 </body>
+
 </html>
