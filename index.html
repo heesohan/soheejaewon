@@ -13,8 +13,8 @@
     rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crafty+Girls&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&amp;display=swap">
   <style>
     :root {
       --bg: #2d2d2d;
@@ -1054,12 +1054,10 @@
       color: #d9dcdd;
       font-family: 'Courier Prime', monospace;
       font-size: 17px;
-      font-weight: 100;
+      font-weight: 400;
       line-height: 1.0;
-      text-shadow:
-        -1px -1px 1px rgba(255, 255, 255, .9),
-        1px 1px 1px rgba(78, 82, 85, .55),
-        0 0 6px rgba(235, 238, 239, .45);
+      -webkit-text-stroke: .15px rgba(0, 0, 0, .35);
+      text-shadow: 0 0 2px rgba(235, 238, 239, .18);
     }
 
     /* 글씨가 왼쪽부터 드러나고 마지막 상태를 유지 */
@@ -1278,6 +1276,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    /* 작은 하트 안에만 보이는 고대비 점형 이퀄라이저 */
     #music-toggle {
       position: fixed;
       top: max(14px, env(safe-area-inset-top));
@@ -1285,67 +1284,47 @@
       z-index: 900;
       display: grid;
       place-items: center;
-      width: 29px;
-      height: 29px;
+      width: 32px;
+      height: 32px;
       padding: 0;
-      background: #bebfc4;
-      color: #ffffff;
+      border: 0;
+      background: transparent;
       cursor: pointer;
-      box-shadow: 0 2px 9px rgba(70, 59, 42, .15);
-      backdrop-filter: blur(3px);
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
     }
-
+    #music-toggle .heart-icon {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      fill: #f2b8cb;
+    }
     #music-toggle .equalizer {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 2px;
-      width: 17px;
-      height: 13px;
+      gap: 1px;
+      width: 12px;
+      height: 7px;
+      margin-top: -2px;
+      overflow: hidden;
     }
-
     #music-toggle .equalizer span {
-      width: 3px;
-      height: 3px;
-      border-radius: 3px;
-      background: currentColor;
+      flex: 0 0 1.5px;
+      height: 2px;
+      border-radius: 2px;
+      background: #ffffff;
     }
-
-    #music-toggle.playing .equalizer span {
-      animation: equalize .62s ease-in-out infinite alternate;
-    }
-
-    #music-toggle.playing .equalizer span:nth-child(2) {
-      animation-delay: -.45s;
-    }
-
-    #music-toggle.playing .equalizer span:nth-child(3) {
-      animation-delay: -.16s;
-    }
-
-    #music-toggle.playing .equalizer span:nth-child(4) {
-      animation-delay: -.53s;
-    }
-
-    #music-toggle.playing .equalizer span:nth-child(5) {
-      animation-delay: -.28s;
-    }
-
-    @keyframes equalize {
-      0% {
-        height: 3px;
-      }
-
-      100% {
-        height: 15px;
-      }
-    }
-
+    #music-toggle.playing .equalizer span { animation: heartEq .68s ease-in-out infinite alternate; }
+    #music-toggle.playing .equalizer span:nth-child(2) { animation-delay: -.44s; }
+    #music-toggle.playing .equalizer span:nth-child(3) { animation-delay: -.14s; }
+    #music-toggle.playing .equalizer span:nth-child(4) { animation-delay: -.55s; }
+    #music-toggle.playing .equalizer span:nth-child(5) { animation-delay: -.27s; }
+    @keyframes heartEq { from { height: 2px; } to { height: 7px; } }
     @media (prefers-reduced-motion: reduce) {
-      #music-toggle.playing .equalizer span {
-        animation: none;
-        height: 9px;
-      }
+      #music-toggle.playing .equalizer span { animation: none; height: 5px; }
     }
 
     #intro.opened .intro-venue-info {
@@ -1505,26 +1484,6 @@
             </div>
           </div>
         </div>
-        <div class="acc-item" id="brideAcc">
-          <div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span class="acc-arrow"
-              aria-hidden="true">▾</span></div>
-          <div class="acc-body">
-            <div class="acc-body-inner">
-              <div class="acct-card">
-                <div><span class="acct-name">신부 한소희 · 카카오뱅크</span><span class="acct-bank">3333-37-4090797</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신부 아버지 한상필 · 신협</span><span class="acct-bank">132-093-097712</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-              <div class="acct-card">
-                <div><span class="acct-name">신부 어머니 최지윤 · 농협</span><span class="acct-bank">044-12-164655</span></div>
-                <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
     <section id="sec-share" class="section">
@@ -1536,8 +1495,9 @@
       <p class="copyright">ⓒSHJW</p>
     </section>
   </main>
-  <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=18"></audio>
+  <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=22"></audio>
   <button id="music-toggle" type="button" aria-label="배경음악 켜기" aria-pressed="false">
+    <svg class="heart-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 29C11.3 25 2 18.5 2 10.7 2 6.2 5.2 3 9.5 3c2.8 0 5 1.3 6.5 3.5C17.5 4.3 19.7 3 22.5 3 26.8 3 30 6.2 30 10.7 30 18.5 20.7 25 16 29Z"/></svg>
     <span class="equalizer" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
   </button>
   <div id="toast" role="status" aria-live="polite"></div>
@@ -1976,7 +1936,7 @@
       try {
         if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(url);
         else {const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed');}
-        showToast('청첩장 주소가 복사되었습니다 ✓');
+        showToast('복사되었습니다 ✓');
       } catch (error) {showToast('복사에 실패했습니다');}
     }
     async function shareKakao() {
