@@ -912,8 +912,14 @@
     }
 
     #photoPopup .popup-nav {
-      z-index: 20;
-    }
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 200;
+}
 
     #galleryViewerThumbs {
       position: absolute;
@@ -1451,6 +1457,170 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   updateEnvelope();
+})();
+</script>
+<script>
+(() => {
+  const viewer = document.getElementById('photoPopup');
+  const image = document.getElementById('popupImgCur');
+  const prev = document.getElementById('popupPrev');
+  const next = document.getElementById('popupNext');
+  const close = document.getElementById('popupClose');
+
+  if (!viewer || !image) return;
+
+  const pointers = new Map();
+  let scale = 1;
+  let panX = 0;
+  let panY = 0;
+  let startX = 0;
+  let startY = 0;
+  let pinchDistance = 0;
+  let pinchStartScale = 1;
+  let pinched = false;
+  let lastTap = 0;
+  let closeTimer = null;
+  let ignoreTapUntil = 0;
+
+  function draw() {
+    image.style.setProperty(
+      'transform',
+      `translate(${panX}px, ${panY}px) scale(${scale})`,
+      'important'
+    );
+  }
+
+  function resetZoom() {
+    scale = 1;
+    panX = 0;
+    panY = 0;
+    draw();
+  }
+
+  function distance() {
+    const [a, b] = [...pointers.values()];
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  function isPhoto(event) {
+    return event.target === image;
+  }
+
+  viewer.addEventListener('pointerdown', event => {
+    if (!isPhoto(event)) return;
+
+    // 기존 뷰어의 탭/스와이프 처리와 중복 실행되지 않도록 함
+    event.stopImmediatePropagation();
+
+    image.setPointerCapture(event.pointerId);
+    pointers.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY
+    });
+
+    if (pointers.size === 1) {
+      startX = event.clientX;
+      startY = event.clientY;
+      pinched = false;
+    }
+
+    if (pointers.size === 2) {
+      clearTimeout(closeTimer);
+      pinched = true;
+      pinchDistance = distance();
+      pinchStartScale = scale;
+    }
+  }, true);
+
+  viewer.addEventListener('pointermove', event => {
+    if (!pointers.has(event.pointerId)) return;
+    event.stopImmediatePropagation();
+
+    const previous = pointers.get(event.pointerId);
+    pointers.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY
+    });
+
+    if (pointers.size === 2) {
+      scale = Math.min(
+        2,
+        Math.max(1, pinchStartScale * distance() / pinchDistance)
+      );
+      draw();
+      return;
+    }
+
+    if (scale > 1 && previous) {
+      panX += event.clientX - previous.x;
+      panY += event.clientY - previous.y;
+      draw();
+    }
+  }, true);
+
+  viewer.addEventListener('pointerup', event => {
+    if (!pointers.has(event.pointerId)) return;
+    event.stopImmediatePropagation();
+
+    pointers.delete(event.pointerId);
+
+    if (pinched) {
+      // 핀치 직후 손을 뗀 동작을 '한 번 탭'으로 오인해 닫지 않음
+      ignoreTapUntil = Date.now() + 350;
+      if (pointers.size === 0) pinched = false;
+      return;
+    }
+
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+
+    if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) {
+      if (scale === 1) {
+        clearTimeout(closeTimer);
+        dx < 0 ? next.click() : prev.click();
+      }
+      return;
+    }
+
+    if (Math.hypot(dx, dy) > 12 || Date.now() < ignoreTapUntil) return;
+
+    const now = Date.now();
+
+    if (now - lastTap < 280) {
+      clearTimeout(closeTimer);
+      lastTap = 0;
+
+      if (scale === 1) {
+        scale = 2;
+      } else {
+        resetZoom();
+      }
+      draw();
+    } else {
+      lastTap = now;
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
+        close.click();
+        lastTap = 0;
+      }, 280);
+    }
+  }, true);
+
+  viewer.addEventListener('pointercancel', event => {
+    if (!pointers.has(event.pointerId)) return;
+    event.stopImmediatePropagation();
+    pointers.delete(event.pointerId);
+    pinched = false;
+  }, true);
+
+  // 다음 사진으로 바뀌면 확대 상태 해제
+  new MutationObserver(() => {
+    clearTimeout(closeTimer);
+    resetZoom();
+  }).observe(image, {
+    attributes: true,
+    attributeFilter: ['src']
+  });
 })();
 </script>
 </body>
