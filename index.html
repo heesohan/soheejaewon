@@ -1,4 +1,3 @@
-<!-- ver-2-5.html 수정본은 원본 구조를 유지한 상태에서 아래 변경을 반영할 수 있도록 구성했습니다. -->
 <!DOCTYPE html>
 
 <html lang="ko">
@@ -179,34 +178,10 @@
       background: #3a3a3a
     }
 
-    .map-wrap #naver-map {
+    .map-wrap iframe {
       width: 100%;
-      height: 100%
-    }
-
-    .map-wrap {
-      position: relative
-    }
-
-    .map-message {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: #3a3a3a;
-      color: #fff;
-      font-size: 12px;
-      line-height: 1.7;
-      text-align: center
-    }
-
-    .map-message a {
-      color: #fff;
-      text-decoration: underline;
-      margin-top: 8px
+      height: 100%;
+      border: 0
     }
 
     .address {
@@ -887,7 +862,7 @@
         <!-- 봉투 그림. 다른 이미지로 교체하려면 src 주소만 변경 -->
         <div class="envelope-wrap">
           <img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png" />
-          <!-- 봉투 플랩에 겹쳐지는 금박 필기체 이름 -->
+          <!-- 봉투 플랩에 겹쳐지는 은박 필기체 이름 -->
           <h1 class="envelope-name">Jaewon and Sohee</h1>
         </div>
         <!-- 봉투 아래 로고. -->
@@ -942,20 +917,17 @@
     <section class="section location" id="location">
       <h2 class="section-title">Location</h2>
       <p class="section-title" style="font-family:'Noto Sans KR';font-size:18px;margin-top:-17px">오시는길</p>
-      <div class="map-wrap" aria-label="네이버지도: 서울중앙교회 교육원">
-        <div id="naver-map"></div>
-        <div class="map-message" id="map-message">네이버 지도 표시를 위해 아래 스크립트의 Client ID를 입력해 주세요.<br><a
-            href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305%20%EC%84%9C%EC%9A%B8%EC%A4%91%EC%95%99%EA%B5%90%ED%9A%8C%EA%B5%90%EC%9C%A1%EA%B4%80"
-            target="_blank" rel="noopener noreferrer">네이버지도에서 위치 보기</a></div>
-      </div>
+      <div class="map-wrap"><iframe title="구글 지도"
+                    src="https://www.google.com/maps?q=%EC%84%9C%EC%9A%B8%EC%97%AD&output=embed" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
       <p class="address">경기 안양시 동안구 관양로 305<br />서울중앙교회 교육원 중강당 6층</p>
       <div class="route-btns"><a
           href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
           rel="noopener" target="_blank">네이버지도</a><a
           href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
           rel="noopener" target="_blank">카카오맵</a><a
-          href="https://www.google.com/maps/search/?api=1&amp;query=%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305%20%EC%84%9C%EC%9A%B8%EC%A4%91%EC%95%99%EA%B5%90%ED%9A%8C%EA%B5%90%EC%9C%A1%EA%B4%80"
-          rel="noopener noreferrer" target="_blank">구글맵</a></div>
+          href="https://tmap.life/search?name=%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
+          rel="noopener" target="_blank">티맵</a></div>
       <div class="info-block">
         <div class="info-text"><b>자가용</b><br />주차장 : 서울중앙교회 본당 지하 교회당 주차공간이 협소하여 만차 시 현장에서 안내드리고 있습니다. [천변 주차장, 대로변 유료
           주차장, 인덕원 환승주차장] 교회당 주차 공간이 협소하므로 가급적 대중교통 이용을 부탁 드립니다.</div>
@@ -1351,41 +1323,6 @@
        확대는 두 손가락 핀치로만 실행 */
     function handleTap() {
       closePhotoPopup();
-    }
-  </script>
-
-  <script>
-    // 네이버 클라우드 Maps > Application에서 Web Dynamic Map을 활성화하고
-    // 배포할 웹사이트 주소를 등록한 뒤, 아래 Client ID만 바꾸세요. Client Secret은 넣지 마세요.
-    const NAVER_MAP_CLIENT_ID = '여기에_네이버_클라이언트_ID';
-    const mapMessage = document.getElementById('map-message');
-    function showNaverMapError(message) {
-      mapMessage.firstChild.textContent = message;
-      mapMessage.style.display = 'flex';
-    }
-    window.navermap_authFailure = function () {
-      showNaverMapError('네이버 지도 인증에 실패했습니다. Client ID와 등록한 웹사이트 주소를 확인해 주세요.');
-    };
-    function initWeddingMap() {
-      if (!window.naver || !naver.maps) {
-        showNaverMapError('네이버 지도를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
-        return;
-      }
-      try {
-        const position = new naver.maps.LatLng(37.3971806, 126.9779038);
-        const map = new naver.maps.Map('naver-map', { center: position, zoom: 17 });
-        new naver.maps.Marker({ position: position, map: map, title: '서울중앙교회 교육원' });
-        mapMessage.style.display = 'none';
-      } catch (error) {
-        showNaverMapError('네이버 지도 표시에 실패했습니다. 브라우저 콘솔을 확인해 주세요.');
-        console.error(error);
-      }
-    }
-    if (NAVER_MAP_CLIENT_ID !== '여기에_네이버_클라이언트_ID') {
-      const mapSdk = document.createElement('script');
-      mapSdk.src = 'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + encodeURIComponent(NAVER_MAP_CLIENT_ID) + '&callback=initWeddingMap';
-      mapSdk.onerror = function () { showNaverMapError('네이버 지도 SDK를 불러오지 못했습니다.'); };
-      document.head.appendChild(mapSdk);
     }
   </script>
 </body>
