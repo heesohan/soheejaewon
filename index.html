@@ -822,7 +822,7 @@
     #photoPopup .popup-close {
   position: absolute;
   z-index: 30;
-  top: max(18px, env(safe-area-inset-top));
+  top: max(23px, env(safe-area-inset-top));
   left: 50%;
   right: auto;
   transform: translateX(-50%);
@@ -907,7 +907,26 @@
     #galleryViewerThumbs .gallery-viewer-thumb.active::after {
       content: none;
     }
+/* 닫기 버튼 안에 얇은 X 그리기 */
+#photoPopup .popup-close::before,
+#photoPopup .popup-close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 1px;
+  background: #fff;
+  transform-origin: center;
+}
 
+#photoPopup .popup-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#photoPopup .popup-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
     /* 봉투 탭: 페이지를 새로고침하기 전까지 사진으로 교체 */
     #intro .envelope-wrap {
       cursor: pointer;
@@ -1573,7 +1592,7 @@
   </button>
   <div id="toast" role="status" aria-live="polite"></div>
   <div aria-label="갤러리 사진 뷰어" aria-modal="true" class="photo-popup" id="photoPopup" role="dialog">
-    <button aria-label="닫기" class="popup-close" id="popupClose">×</button>
+    <button aria-label="닫기" class="popup-close" id="popupClose"></button>
     <button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
     <button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
     <div class="popup-track" id="popupTrack">
