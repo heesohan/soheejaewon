@@ -958,8 +958,8 @@
 
 /* PC 마우스 오버 */
 #intro:not(.opened) .envelope-wrap:hover {
-  transform: translateY(-33px) scale(1.015) !important;/* scale(1.04)는 4% 커지는 설정*/
-  filter: drop-shadow(0 6px 7px rgba(90, 70, 45, .16));
+  transform: translateY(-32px) scale(1.005) !important;
+  filter: drop-shadow(0 5px 5px rgba(90, 70, 45, .12));
 }
 
 /* 클릭하는 순간 */
@@ -970,34 +970,24 @@
 /* 모바일 두근두근 */
 @media (hover: none) and (pointer: coarse) {
   #intro:not(.opened) .envelope-wrap {
-    animation: introHeartbeat 1.8s ease-in-out infinite;
+    animation: introTinyBeat 2s ease-in-out infinite;
   }
 }
 
-@keyframes introHeartbeat {
-  0%, 100% {
+@keyframes introTinyBeat {
+  0%, 28%, 55%, 100% {
     transform: translateY(-30px) scale(1);
   }
-
   14% {
-    transform: translateY(-30px) scale(1.035);
+    transform: translateY(-31px) scale(1.008);
   }
-
-  28% {
-    transform: translateY(-30px) scale(1);
-  }
-
   42% {
-    transform: translateY(-30px) scale(1.025);
-  }
-
-  58% {
-    transform: translateY(-30px) scale(1);
+    transform: translateY(-31px) scale(1.004);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #intro .envelope-wrap {
+  #intro:not(.opened) .envelope-wrap {
     animation: none !important;
     transition: none !important;
   }
