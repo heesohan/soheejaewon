@@ -164,16 +164,32 @@
       color: #b9d9ea; /* 연하늘색 */
     }
 
-    /* 28일: 토요일이어도 흰색, 배경을 조금 더 선명하게 */
-    .calendar-grid .day.highlight,
-    .calendar-grid .day.highlight:nth-child(7n) {
-      color: #fff;
-      background: #ec8db3;
-      font-family: 'Pretendard', sans-serif;
-      font-size: 15px;    /* 다른 날짜는 12px */
-      font-weight: 700;
-      border-radius: 50%;
-    }
+    /* 결혼식 날짜 28일: 꽃 모양 배경 */
+.calendar-grid .day.highlight {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: none;
+  color: #fff;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 0;
+}
+
+/* 숫자 뒤에 꽃잎 만들기 */
+.calendar-grid .day.highlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 32px;
+  height: 32px;
+  background: #ec8db3;
+  border-radius: 42% 58% 45% 55% / 55% 42% 58% 45%;
+  transform: rotate(22deg);
+}
     
     .location {
       text-align: center
