@@ -182,7 +182,7 @@
 
     .route-btns {
       width: calc(100% - 22px);
-      margin: 0 auto 32px;
+      margin: 0 auto 48px;
       display: flex;
       gap: 6px
     }
@@ -1203,6 +1203,15 @@
       font-size: 12px;
       white-space: nowrap;
     }
+    #location .route-btns a.naver-map-btn {
+      background: #03C75A;
+      color: #fff;
+    }
+
+    #location .route-btns a.kakao-map-btn {
+      background: #FEE500;
+      color: #191919;
+    }
 
     #account .acc-arrow {
       font-family: 'Pretendard', sans-serif;
@@ -1423,9 +1432,9 @@
         }).render();
       </script>
 
-      <div class="route-btns"><a
+      <div class="route-btns"><a class="naver-map-btn" 
           href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-          rel="noopener" target="_blank"><b>네이버지도</b></a><a
+          rel="noopener" target="_blank"><b>네이버지도</b></a><a class="kakao-map-btn" 
           href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
           rel="noopener" target="_blank"><b>카카오맵</b></a>
       </div>
