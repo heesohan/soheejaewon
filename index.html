@@ -822,11 +822,10 @@
     #photoPopup .popup-close {
   position: absolute;
   z-index: 30;
-   top: auto; /* 기존 top: max(18px, ...) 해제 */
-      bottom: calc(max(12px, env(safe-area-inset-bottom)) + 88px); /* X를 더 위로 올리려면 플러스 내리려면 마이너스 */
-  left: 50%;
+  top: max(30px, env(safe-area-inset-top));
   right: auto;
-  transform: translateX(-50%);
+  bottom: auto; /* bottom: calc(max(12px, env(safe-area-inset-bottom)) + 88px); X를 더 위로 올리려면 플러스 내리려면 마이너스 */
+  transform: none; /* transform: translateX(-50%); */
 
   width: 44px;
   height: 44px;
