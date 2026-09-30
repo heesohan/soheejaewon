@@ -820,17 +820,22 @@
     }
 
     #photoPopup .popup-close {
-      z-index: 30;
-      top: max(10px, env(safe-area-inset-top));
-      right: max(10px, env(safe-area-inset-right));
-      width: 44px;
-      height: 44px;
-      border: 0;
-      border-radius: 0;
-      color: #fff;
-      background: transparent;
-      font: 200 30px/1 Arial, sans-serif;
-    }
+  position: absolute;
+  z-index: 30;
+  top: max(18px, env(safe-area-inset-top));
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 0;
+  color: #fff;
+  background: transparent;
+  font: 200 30px/1 Arial, sans-serif;
+  cursor: pointer;
+}
 
     #photoPopup .popup-nav {
       border: 0;
