@@ -164,31 +164,14 @@
       color: #b9d9ea; /* 연하늘색 */
     }
 
-    /* 결혼식 날짜 28일: 꽃 모양 배경 */
+    /* 결혼식 날짜 28일: 둥근 사각형 */
 .calendar-grid .day.highlight {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  background: none;
+  background: #ec8db3;
   color: #fff;
+  border-radius: 8px;
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
   font-weight: 700;
-  border-radius: 0;
-}
-
-/* 숫자 뒤에 꽃잎 만들기 */
-.calendar-grid .day.highlight::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 32px;
-  height: 32px;
-  background: #ec8db3;
-  border-radius: clip-path
-  transform: rotate(22deg);
 }
     
     .location {
