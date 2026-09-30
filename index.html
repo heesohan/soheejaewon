@@ -152,7 +152,21 @@
       color: #2d2d2d;
       font-weight: 700
     }
+    /* 일요일 날짜: 기존 연핑크 포인트 색 */
+    .calendar-grid .day:nth-child(7n + 1) {
+      color: var(--accent); /* #eac7d1 */
+    }
 
+    /* 토요일 날짜: 연하늘색 */
+    .calendar-grid .day:nth-child(7n) {
+      color: #b9d9ea;
+    }
+
+    /* 결혼식 날 28일: 토요일 색보다 우선해서 흰색 */
+    .calendar-grid .day.highlight {
+      color: #fff;
+    }
+    
     .location {
       text-align: center
     }
