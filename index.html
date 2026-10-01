@@ -18,19 +18,15 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap"
     rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&amp;display=swap">
   <style>
     :root {
       --bg: #2d2d2d;
-      --card: #353535;
       --accent: #eac7d1;
       --text: #fff;
       --muted: rgba(255, 255, 255, .68);
-      --cream: #fcf8fa;
-      --pink: #ff6098
     }
 
     * {
@@ -64,16 +60,6 @@
       position: relative
     }
 
-    .divider {
-      height: 0;
-      margin: 0;
-      border: 0
-    }
-
-    .serif {
-      font-family: 'Gowun Batang', serif
-    }
-
     .section-title {
       text-align: center;
       font-family: 'Reenie Beanie', cursive;
@@ -89,18 +75,6 @@
       padding-top: 54px
     }
 
-
-    .main-content {
-      width: calc(100% + 35px);
-      margin-left: -15px;
-      margin-right: -15px;
-    }
-
-    #main.main .main-image-wrap {
-      position: relative;
-      width: 100%;
-      line-height: 0;
-    }
 
     #main.main .main-content {
       display: block !important;
@@ -147,12 +121,6 @@
       border-radius: 8px
     }
 
-    .calendar-grid .day.highlight {
-      background: #ec8db3;
-      color: #2d2d2d;
-      font-weight: 700
-    }
-
     /* 일요일: 요일 글자 + 날짜 숫자 */
     .calendar-grid .dow:nth-child(7n + 1),
     .calendar-grid .day:nth-child(7n + 1) {
@@ -167,11 +135,18 @@
       /* 연하늘색 */
     }
 
-    /* 결혼식 날짜 28일: 둥근 사각형 */
+    /* 결혼식 날짜 28일: 정사각형 핑크 박스 */
     .calendar-grid .day.highlight {
+      width: 32px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      padding: 0;
+      display: grid;
+      place-items: center;
+
       background: #ec8db3;
       color: #fff;
-      border-radius: 8px;
+      border-radius: 4px;
       font-family: 'Pretendard', sans-serif;
       font-size: 14px;
       font-weight: 700;
@@ -245,10 +220,6 @@
 
     .info-text b {
       color: var(--accent)
-    }
-
-    .info-block .mini-icon {
-      display: none
     }
 
     .account {
@@ -521,24 +492,7 @@
       line-height: 1.35;
       /* 위·아래로 뻗는 필기체 획이 잘리지 않게 함 */
       letter-spacing: .01em;
-
-
-      /* ===== 은박 색상 ===== */
-      background: linear-gradient(105deg,
-          #6f7375 0%,
-          #f7f7f4 18%,
-          #aeb2b3 36%,
-          #ffffff 52%,
-          #85898b 72%,
-          #dedfda 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      /* 은박의 옅은 입체 그림자 */
-      filter: drop-shadow(0 1px .5px rgba(74, 78, 78, .48));
     }
-
     #intro .envelope-name {
       background: none;
       -webkit-background-clip: border-box;
@@ -744,9 +698,6 @@
       will-change: transform;
     }
 
-    .popup-track.no-transition {
-      transition: none !important;
-    }
 
     .popup-slide {
       width: 100vw;
@@ -767,12 +718,8 @@
       -webkit-user-drag: none;
     }
 
-    .popup-slide img.no-transition {
-      transition: none;
-    }
 
-
-    /* momo-4 갤러리 제목·카드 스택 우선 적용 */
+    /* 갤러리 제목·카드 스택 우선 적용 */
     #gallery .section-title {
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 18px;
@@ -900,17 +847,13 @@
       background: transparent;
     }
 
-    /* 현재 보고 있는 사진: 1px 점선 프레임 */
+    /* 현재 보고 있는 사진: 1px 프레임 */
     #galleryViewerThumbs .gallery-viewer-thumb.active {
       padding: 0;
       border: 1px solid #f8f4ec;
       background: transparent;
     }
 
-    /* 기존 우표 모양 내부 점선 제거 */
-    #galleryViewerThumbs .gallery-viewer-thumb.active::after {
-      content: none;
-    }
 
     /* 닫기 버튼 안에 얇은 X 그리기 */
     #photoPopup .popup-close::before,
@@ -943,61 +886,56 @@
       cursor: default;
     }
 
-    #intro.opened .envelope-name,
-    #intro.opened .envelope-date {
-      visibility: hidden;
+    /* intro.png 클릭 유도 효과 */
+    #intro .envelope-wrap {
+      cursor: pointer;
+      transform-origin: center center;
+      transition: transform .25s ease, filter .25s ease;
     }
 
-/* intro.png 클릭 유도 효과 */
-#intro .envelope-wrap {
-  cursor: pointer;
-  transform-origin: center center;
-  transition: transform .25s ease, filter .25s ease;
-}
-
-/* PC 마우스 오버 */
-#intro:not(.opened) .envelope-wrap:hover {
-  transform: translateY(-32px) scale(1.005) !important;
-  filter: drop-shadow(0 5px 5px rgba(90, 70, 45, .12));
-}
-
-/* 클릭하는 순간 */
-#intro:not(.opened) .envelope-wrap:active {
-  transform: translateY(-27px) scale(.98) !important;
-}
-
-/* 모바일 두근두근 */
-@media (hover: none) and (pointer: coarse) {
-  #intro:not(.opened) .envelope-wrap {
-    animation: introTinyBeat 2s ease-in-out infinite;
-  }
-}
-
-@keyframes introTinyBeat {
-  0%, 28%, 55%, 100% {
-    transform: translateY(-30px) scale(1);
-  }
-  14% {
-    transform: translateY(-31px) scale(1.008);
-  }
-  42% {
-    transform: translateY(-31px) scale(1.004);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #intro:not(.opened) .envelope-wrap {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-    /* 봉투는 그대로, 클릭 후 이미지지만 10% 크게 */
-    #intro.opened .envelope-image {
-      width: 110%;
-      max-width: none;
-      margin-left: -5%;
+    /* PC 마우스 오버 */
+    #intro:not(.opened) .envelope-wrap:hover {
+      transform: translateY(-32px) scale(1.005) !important;
+      filter: drop-shadow(0 5px 5px rgba(90, 70, 45, .12));
     }
+
+    /* 클릭하는 순간 */
+    #intro:not(.opened) .envelope-wrap:active {
+      transform: translateY(-27px) scale(.98) !important;
+    }
+
+    /* 모바일 두근두근 */
+    @media (hover: none) and (pointer: coarse) {
+      #intro:not(.opened) .envelope-wrap {
+        animation: introTinyBeat 2s ease-in-out infinite;
+      }
+    }
+
+    @keyframes introTinyBeat {
+
+      0%,
+      28%,
+      55%,
+      100% {
+        transform: translateY(-30px) scale(1);
+      }
+
+      14% {
+        transform: translateY(-31px) scale(1.008);
+      }
+
+      42% {
+        transform: translateY(-31px) scale(1.004);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #intro:not(.opened) .envelope-wrap {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
 
     /* 봉투를 누른 뒤: 인트로 화면 전체를 사진으로 채우기 */
     #intro.opened {
@@ -1681,14 +1619,12 @@
     <button aria-label="이전 사진" class="popup-nav popup-prev" id="popupPrev">‹</button>
     <button aria-label="다음 사진" class="popup-nav popup-next" id="popupNext">›</button>
     <div class="popup-track" id="popupTrack">
-      <div class="popup-slide"><img alt="" id="popupImgPrev" src="" /></div>
       <div class="popup-slide"><img alt="" id="popupImgCur" src="" /></div>
-      <div class="popup-slide"><img alt="" id="popupImgNext" src="" /></div>
     </div>
     <div aria-label="사진 썸네일" id="galleryViewerThumbs" role="group"></div>
   </div>
   <script>
-    /* 디데이, 캘린더더 */
+    /* 디데이, 캘린더 */
     const weddingDate = Date.UTC(2026, 10, 28);
     function updateCountdown() {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
@@ -1852,7 +1788,7 @@
     function renderViewer(index) {
       popupIndex = wrapIndex(index);
       imgCurEl.src = GALLERY_IMAGES[popupIndex];
-      popupSlides.forEach((slide, i) => slide.classList.toggle('is-current', i === 1));
+      popupSlides.forEach(slide => slide.classList.add('is-current'));
       [...galleryViewerThumbs.children].forEach((thumb, i) => {
         thumb.classList.toggle('active', i === popupIndex);
         thumb.setAttribute('aria-current', String(i === popupIndex));
