@@ -334,15 +334,15 @@
       color: #fff
     }
 
-    /* ===== momo-4 원본: 인트로(배경/봉투/텍스트) ===== */
+    /* ===== 인트로(배경/봉투/텍스트) ===== */
     #intro {
-      /* ---------- 위치·크기: 가장 자주 수정하는 값 ---------- */
+      /* ---------- 위치·크기 ---------- */
       --envelope-width: 100%;
       /* 봉투 가로 크기. 예: 80%, 90%, 100% */
       --envelope-max-width: 480px;
       /* 큰 화면에서 봉투가 더 커지지 않는 최대 너비 */
       --envelope-offset-y: -30px;
-      /* 봉투·은 이름만 위/아래 이동. -20px=위로, 20px=아래로 */
+      /* 봉투 이름만 위/아래 이동. -20px=위로, 20px=아래로 */
       --name-top: 6%;
       /* 봉투 플랩 안 이름 위치. 숫자가 커질수록 아래로 내려감 */
       --date-gap: -70px;
@@ -595,14 +595,13 @@
     }
 
 
-    /* momo-4 인트로: 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
+    /* 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
     #intro.section {
       padding: clamp(44px, 9vh, 78px) 20px 52px;
     }
 
 
-    /* ===== momo-4 원본: 갤러리(스택/스와이프/뷰어) ===== */
-    /* ===================== 4. GALLERY (카드 스택 스와이프) ===================== */
+    /* ===================== 4. 갤러리 (카드 스택 스와이프) ===================== */
     #gallery {
       padding: 64px 24px 40px;
     }
@@ -993,7 +992,7 @@
   }
 }
 
-    /* 봉투는 그대로, 클릭 후 011.jpg만 10% 크게 */
+    /* 봉투는 그대로, 클릭 후 이미지지만 10% 크게 */
     #intro.opened .envelope-image {
       width: 110%;
       max-width: none;
@@ -1498,7 +1497,7 @@
 <body>
   <main class="site">
     <section class="section" id="intro">
-      <!-- 기존 인트로에서 유지한 요소: 배경 하트 -->
+      <!-- 배경 하트 -->
       <div aria-hidden="true" class="heart-rain">
         <span></span><span></span><span></span><span></span><span></span>
         <span></span><span></span><span></span><span></span><span></span>
@@ -1689,7 +1688,7 @@
     <div aria-label="사진 썸네일" id="galleryViewerThumbs" role="group"></div>
   </div>
   <script>
-    /* momo-6: D-day, calendar, Detail, Gift unchanged */
+    /* 디데이, 캘린더더 */
     const weddingDate = Date.UTC(2026, 10, 28);
     function updateCountdown() {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
@@ -1700,7 +1699,7 @@
     updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() { const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => { const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el) }); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) { const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el) } } buildCalendar();
     function toggleAcc(id) { document.getElementById(id).classList.toggle('open') } async function acctCopy(el) { const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try { await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500) } catch { el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500) } }
 
-    /* momo-4: card stack and photo viewer */
+    /* 갤러리 뷰어어 */
     const GALLERY_IMAGES = [
       'https://heesohan.github.io/soheejaewon/3.jpg',
       'https://heesohan.github.io/soheejaewon/4.jpg',
