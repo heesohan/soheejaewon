@@ -78,10 +78,11 @@
 
     #main.main .main-content {
       display: block !important;
-      width: 100% !important;
       height: auto !important;
       max-width: none !important;
       margin: 0 auto !important;
+      width: 98% !important;
+      margin: 0 auto 8px !important;
     }
 
 
@@ -145,7 +146,7 @@
       place-items: center;
 
       background: #ec8db3;
-      color: #fff;
+      color: #f1f1ed;
       border-radius: 4px;
       font-family: 'Pretendard', sans-serif;
       font-size: 14px;
@@ -196,11 +197,9 @@
     .route-btns a {
       flex: 1;
       padding: 11px 0;
-      background: #fdfdfc;
       color: #2d2d2d;
-      border-radius: 30px;
       font-size: 11px;
-      text-decoration: none
+      text-decoration: none;
     }
 
     .info-block {
@@ -221,10 +220,12 @@
     .info-text b {
       color: var(--accent)
     }
+
     .info-text .parking-location {
       color: var(--accent);
       font-weight: 400;
     }
+
     .account {
       text-align: center
     }
@@ -496,6 +497,7 @@
       /* 위·아래로 뻗는 필기체 획이 잘리지 않게 함 */
       letter-spacing: .01em;
     }
+
     #intro .envelope-name {
       background: none;
       -webkit-background-clip: border-box;
@@ -729,11 +731,6 @@
       letter-spacing: .1em;
     }
 
-    /* 메인 사진 크기·서명 위치 조정: 마지막 규칙으로 적용 */
-    #main.main .main-content {
-      width: 98% !important;
-      margin: 0 auto 8px !important;
-    }
 
 
 
@@ -1187,17 +1184,25 @@
     #location .memo-title,
     #account .memo-title,
     #sec-share .memo-title {
+      position: relative;
+
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+
       width: min(35.533%, 121.333px);
       aspect-ratio: 3 / 1;
       height: auto;
       padding: 3.467% 4.333%;
       margin: 0 auto 25.6px;
-      background: url('https://raw.githubusercontent.com/heesohan/soheejaewon/261128/memo.png') center / 100% 100% no-repeat;
+
+      background: #e9dfc9;
+      border: 1px solid #e9dfc9;
+      border-radius: 50%;
+
       color: #363232;
+      /* 글자색 */
       font-family: 'Pretendard', sans-serif;
       font-size: clamp(11px, 2.5vw, 13px);
       font-weight: 600;
@@ -1205,6 +1210,18 @@
       letter-spacing: -0.06em;
       white-space: nowrap;
       text-align: center;
+    }
+
+    #location .memo-title::after,
+    #account .memo-title::after,
+    #sec-share .memo-title::after {
+      content: "";
+      position: absolute;
+      inset: 2.5px 3.2px;
+      
+      border: 5px solid rgb(50, 42, 45, 0.03);
+      border-radius: 50%;
+      pointer-events: none;
     }
 
     #dday-num {
@@ -1233,7 +1250,7 @@
       gap: 10px;
       width: 100%;
       max-width: 300px;
-      /* 두 버튼 묶음의 전체 너비: 취향대로 조절 */
+      /* 두 버튼 묶음의 전체 너비 */
       margin: 0 auto 48px;
       /* 버튼 아래 여백 */
     }
@@ -1250,8 +1267,8 @@
       gap: 6px;
       box-sizing: border-box;
       border-radius: 30px;
-      background: #fdfdfc;
-      color: #2d2d2d;
+      background: rgba(236, 141, 179, 0.22);
+      color: #ffffff;
       text-decoration: none;
       white-space: nowrap;
     }
@@ -1279,41 +1296,119 @@
       background: var(--bg);
     }
 
+    /* ===== 하단 공유 버튼 ===== */
+
     #sec-share .share-actions {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 28px;
+      margin-top: 4px;
     }
 
-    #sec-share .share-actions button {
-      width: 200px;
-      /* width: fit-content; 글자에 따라 조절 */
-      max-width: 100%;
-      box-sizing: border-box;
-      padding: 0 18px;
-      min-height: 44px;
+#sec-share .share-icon-btn span {
+  display: block;
+  padding-top: 66px;
+  color: #fff;
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 10px;
+  font-weight: 300 !important;
+}
+
+    /* 버튼 전체 */
+    #sec-share .share-icon-btn {
+      position: relative;
+      width: 72px;
+      min-width: 72px;
+      padding: 0;
       border: 0;
-      border-radius: 12px;
+      background: transparent;
+      color: #fff;
       font-family: 'Pretendard', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 200;
+      line-height: 1.4;
       cursor: pointer;
+      text-align: center;
     }
 
-    #sec-share .kakao-btn {
+    /* 원 (배경) */
+    #sec-share .share-icon-btn::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+    /* 공유 영역 하단 이미지 */
+#sec-share .share-bottom-image {
+  display: block;
+  width: 15%;
+  height: auto;
+  margin: 70px auto 0;
+}
+    /* 카카오 키컬러 원 */
+    #sec-share .kakao-btn::before {
       background: #fee500;
-      color: #291b1b;
     }
 
-    #sec-share #url_copy {
-      background: #e9dfc9;
-      color: #363232;
+    /* 복사 버튼 원 */
+    #sec-share .copy-url-btn::before {
+      background: #ec8db3;
+    }
+
+    /* 아이콘 공통 */
+    #sec-share .share-icon {
+      position: absolute;
+      left: 50%;
+      top: 35%;
+      width: 29px;
+      height: 29px;
+      fill: none !important;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+
+    /* 공유하기 종이비행기 버튼 */
+    #sec-share .paper-plane {
+      fill: none !important;
+      stroke: #291b1b !important;
+      stroke-width: 1.8 !important;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: translate(calc(-50% - 1px), -50%);
+    }
+
+    /* 복사하기 버튼 */
+    #sec-share .copy-icon {
+      fill: none !important;
+      stroke: #ffffff !important;
+      stroke-width: 1.8 !important;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: translate(calc(-50% + 2px), -50%);
+    }
+
+
+    /* 눌렀을 때 살짝 축소 */
+    #sec-share .share-icon-btn:active {
+      transform: scale(.94);
+    }
+
+    /* 키보드 접근성 */
+    #sec-share .share-icon-btn:focus-visible {
+      outline: 2px solid #fee500;
+      outline-offset: 5px;
+      border-radius: 12px;
     }
 
     #sec-share .copyright {
-      margin: 30px 0 0;
+      margin: 12px 0 0;
       color: var(--muted);
       font-size: 11px;
       letter-spacing: .06em;
@@ -1346,7 +1441,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* 작은 하트 안에만 보이는 고대비 점형 이퀄라이저 */
+    /* 하트 점형 이퀄라이저 */
     #music-toggle {
       position: fixed;
       top: max(14px, env(safe-area-inset-top));
@@ -1449,7 +1544,7 @@
           <img alt="봉투" class="envelope-image" src="https://heesohan.github.io/soheejaewon/intro.png" />
           <!-- 새로 추가: 움직이는 플랩과 사진 -->
 
-          <h1 class="envelope-name">Jaewon and  Sohee</h1>
+          <h1 class="envelope-name">Jaewon and Sohee</h1>
         </div>
         <!-- 봉투 아래 로고. -->
         <p class="envelope-date">
@@ -1518,26 +1613,25 @@
 
       <div class="route-btns"><a class="naver-map-btn"
           href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-          rel="noopener" target="_blank"><img
-            src="https://i.namu.wiki/i/aKmWFD4NDcAMYsYbBFbxsVk335A_zc8Hb6n0C1FFad5mnna5bJaLDl30c4qfdV845kseqOaC0khXCW6vOT-SVZPDGUDj4QDrOeIR6IqGucBflJrTg1nwV8LlZS1HOTneMSd4OJZjei6IQFMEWAGgeQ.webp"
-            alt="" aria-hidden="true">
+          rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/naver.jpg" alt=""
+            aria-hidden="true">
           <span>네이버지도</span>
         </a>
         <a class="kakao-map-btn"
           href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-          rel="noopener" target="_blank"><img
-            src="https://developers.kakao.com/tool/images/resource/preview/map-icon-symbol.png" alt=""
+          rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/kakao.jpg" alt=""
             aria-hidden="true">
           <span>카카오맵</span>
         </a>
       </div>
       <div class="info-block">
         <div class="info-text"><b>주차</b>
-            <strong class="parking-location">주차장 : 서울중앙교회 본당 지하 1층</strong>
+          <strong class="parking-location">주차장 : 서울중앙교회 본당 지하 1층</strong>
           교회당 만차 시 현장에서 안내 도와 드립니다.
           [천변 주차장, 대로변 유료 주차장, 인덕원 환승주차장]
           주차공간이 협소하여 가급적 대중교통 이용을
-          부탁 드립니다.</br></div>
+          부탁 드립니다.</br>
+        </div>
       </div>
       <div class="info-block">
         <div class="info-text"><b>지하철</b>
@@ -1600,11 +1694,27 @@
       </div>
     </section>
     <section id="sec-share" class="section">
-      <h2 class="section-title memo-title">공유하기</h2>
+      <h2 class="section-title memo-title">청첩장 전달하기</h2>
       <div class="share-actions">
-        <button type="button" class="kakao-btn" onclick="shareKakao()">카카오톡으로 공유하기</button>
-        <button type="button" id="url_copy" onclick="copyURL()">청첩장 주소 복사하기</button>
+        <button type="button" class="share-icon-btn kakao-btn" onclick="shareKakao()" aria-label="카카오톡으로 공유하기">
+          <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 3 10.8 13.2"></path>
+            <path d="m21 3-6.5 18-3.7-7.3L3 10.8 21 3Z"></path>
+          </svg>
+          <span>공유하기</span>
+        </button>
+
+        <button type="button" id="url_copy" class="share-icon-btn copy-url-btn" onclick="copyURL()"
+          aria-label="청첩장 주소 복사하기">
+          <svg class="share-icon copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="8" y="8" width="11" height="11" rx="1.5"></rect>
+            <path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"></path>
+          </svg>
+          <span>복사하기</span>
+        </button>
       </div>
+      <div><img class="share-bottom-image" src="https://heesohan.github.io/soheejaewon/a10.png" alt="" aria-hidden="true" />
+
       <p class="copyright">ⓒSHJW</p>
     </section>
   </main>
@@ -1630,13 +1740,13 @@
     /* 디데이, 캘린더 */
     const weddingDate = Date.UTC(2026, 10, 28);
     function updateCountdown() {
-      const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
-      const value = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+      const parts = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date());
+      const value = Object.fromEntries(parts.map(({type, value}) => [type, value]));
       const todayInKorea = Date.UTC(Number(value.year), Number(value.month) - 1, Number(value.day));
       document.getElementById('dday-num').textContent = Math.max(0, Math.round((weddingDate - todayInKorea) / 86400000));
     }
-    updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() { const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => { const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el) }); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) { const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el) } } buildCalendar();
-    function toggleAcc(id) { document.getElementById(id).classList.toggle('open') } async function acctCopy(el) { const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try { await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500) } catch { el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500) } }
+    updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() {const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => {const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el)}); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) {const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el)} } buildCalendar();
+    function toggleAcc(id) {document.getElementById(id).classList.toggle('open')} async function acctCopy(el) {const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try {await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500)} catch {el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500)} }
 
     /* 갤러리 뷰어어 */
     const GALLERY_IMAGES = [
@@ -1660,7 +1770,7 @@
       'https://heesohan.github.io/soheejaewon/2.jpg'
     ];
 
-    GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+    GALLERY_IMAGES.forEach(src => {const im = new Image(); im.src = src;});
 
     const CARD_TILTS = [
       6, -8, 5, -9, 7, -4, 8, -6, 4,
@@ -1733,7 +1843,7 @@
         if (!dragging) return;
         dragging = false;
         card.classList.remove('dragging');
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        if (rafId) {cancelAnimationFrame(rafId); rafId = null;}
 
         const dist = Math.hypot(curX, curY);
         if (dist > THROW_THRESHOLD) {
@@ -1767,7 +1877,7 @@
         card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
         card.style.opacity = '0';
       });
-      card.addEventListener('transitionend', () => card.remove(), { once: true });
+      card.addEventListener('transitionend', () => card.remove(), {once: true});
 
       cardOrder.push(cardOrder.shift());
       shownCount++;
@@ -1787,7 +1897,7 @@
     let popupIndex = 0;
     let swipeStartX = null, swipeStartY = null;
 
-    function wrapIndex(i) { return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length; }
+    function wrapIndex(i) {return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;}
     function renderViewer(index) {
       popupIndex = wrapIndex(index);
       imgCurEl.src = GALLERY_IMAGES[popupIndex];
@@ -1797,7 +1907,7 @@
         thumb.setAttribute('aria-current', String(i === popupIndex));
       });
       const active = galleryViewerThumbs.children[popupIndex];
-      if (active) galleryViewerThumbs.scrollTo({ left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant' });
+      if (active) galleryViewerThumbs.scrollTo({left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant'});
     }
     function openPhotoPopup(index) {
       renderViewer(index);
@@ -1814,8 +1924,8 @@
       photoPopup.classList.remove('active');
       document.body.style.overflow = '';
     }
-    function previousPhoto() { renderViewer(popupIndex - 1); }
-    function nextPhoto() { renderViewer(popupIndex + 1); }
+    function previousPhoto() {renderViewer(popupIndex - 1);}
+    function nextPhoto() {renderViewer(popupIndex + 1);}
     GALLERY_IMAGES.forEach((src, i) => {
       const thumb = document.createElement('button');
       thumb.type = 'button'; thumb.className = 'gallery-viewer-thumb';
@@ -1823,13 +1933,13 @@
       const image = document.createElement('img');
       image.src = src; image.alt = ''; image.loading = 'lazy';
       thumb.appendChild(image);
-      thumb.addEventListener('click', event => { event.stopPropagation(); renderViewer(i); });
+      thumb.addEventListener('click', event => {event.stopPropagation(); renderViewer(i);});
       galleryViewerThumbs.appendChild(thumb);
     });
     popupCloseBtn.addEventListener('click', closePhotoPopup);
-    popupPrevBtn.addEventListener('click', event => { event.stopPropagation(); previousPhoto(); });
-    popupNextBtn.addEventListener('click', event => { event.stopPropagation(); nextPhoto(); });
-    photoPopup.addEventListener('click', event => { if (event.target === photoPopup) closePhotoPopup(); });
+    popupPrevBtn.addEventListener('click', event => {event.stopPropagation(); previousPhoto();});
+    popupNextBtn.addEventListener('click', event => {event.stopPropagation(); nextPhoto();});
+    photoPopup.addEventListener('click', event => {if (event.target === photoPopup) closePhotoPopup();});
     photoPopup.addEventListener('pointerdown', event => {
       if (event.target.closest('.popup-nav, .popup-close, #galleryViewerThumbs')) return;
       swipeStartX = event.clientX; swipeStartY = event.clientY;
@@ -2042,21 +2152,21 @@
   </script>
 
   <script>
-    function invitationURL() { return window.location.href.split('#')[0]; }
-    function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000); }
+    function invitationURL() {return window.location.href.split('#')[0];}
+    function showToast(message) {const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);}
     async function copyURL() {
       const url = invitationURL();
-      if (!/^https?:/.test(url)) { showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return; }
+      if (!/^https?:/.test(url)) {showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return;}
       try {
         if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(url);
-        else { const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed'); }
+        else {const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed');}
         showToast('복사되었습니다 ✓');
-      } catch (error) { showToast('복사에 실패했습니다'); }
+      } catch (error) {showToast('복사에 실패했습니다');}
     }
     async function shareKakao() {
       const url = invitationURL();
-      if (!/^https?:/.test(url)) { showToast('웹에 게시된 청첩장에서 공유할 수 있습니다'); return; }
-      if (navigator.share) { try { await navigator.share({ title: document.title, text: '최재원 ♥ 한소희의 결혼식에 초대합니다.', url }); return; } catch (error) { if (error.name === 'AbortError') return; } }
+      if (!/^https?:/.test(url)) {showToast('웹에 게시된 청첩장에서 공유할 수 있습니다'); return;}
+      if (navigator.share) {try {await navigator.share({title: document.title, text: '최재원 ♥ 한소희의 결혼식에 초대합니다.', url}); return;} catch (error) {if (error.name === 'AbortError') return;} }
       await copyURL(); showToast('주소를 카카오톡에 붙여넣어 주세요');
     }
     (() => {
@@ -2077,7 +2187,7 @@
         try {
           audio.currentTime = startAt;
           needsFirstSeek = false;
-        } catch (error) { /* metadata가 준비되면 다시 시도 */ }
+        } catch (error) { /* metadata가 준비되면 다시 시도 */}
       }
       function requestPlay() {
         if (userTurnedOff) return;
@@ -2100,13 +2210,13 @@
       audio.addEventListener('pause', syncMusicUI);
       audio.addEventListener('error', () => {
         syncMusicUI();
-        if (!warned) { warned = true; showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요'); }
+        if (!warned) {warned = true; showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요');}
       });
       button.addEventListener('click', () => {
-        if (!audio.paused) { userTurnedOff = true; audio.pause(); }
-        else { userTurnedOff = false; requestPlay(); }
+        if (!audio.paused) {userTurnedOff = true; audio.pause();}
+        else {userTurnedOff = false; requestPlay();}
       });
-      window.addEventListener('load', requestPlay, { once: true });
+      window.addEventListener('load', requestPlay, {once: true});
     })();
   </script>
 </body>
