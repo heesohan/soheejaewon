@@ -1313,7 +1313,7 @@
             aspect-ratio: 3 / 1;
             height: auto;
             padding: 3.467% 4.333%;
-            margin: 0 auto 25.6px;
+            margin: 0 auto 10px;
 
             background: #e9dfc9;
             border: 1px solid #e9dfc9;
@@ -1335,7 +1335,8 @@
         #sec-share .memo-title::after {
             content: "";
             position: absolute;
-            inset: 2.4px 3.2px; /* 여백 */
+            inset: 2.4px 3.2px;
+            /* 여백 */
 
             border: 5px solid rgb(50, 42, 45, 0.03);
             border-radius: 50%;
@@ -1357,10 +1358,26 @@
         }
 
         #location .address {
-            margin: 0 auto 18px;
+            margin: -12px auto 18px;
             font-family: 'Pretendard', sans-serif;
             font-size: 14px;
             line-height: 1.7;
+        }
+
+        #location .copy-address {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        #location .copy-address:active {
+            opacity: 0.6;
+            transform: scale(0.98);
+        }
+
+        #location .copy-address:focus-visible {
+            outline: 1px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 5px;
         }
 
         #location .route-btns {
@@ -1718,7 +1735,10 @@
         </section>
         <section class="section location" id="location">
             <h2 class="section-title memo-title">오시는 길</h2>
-            <p class="address">경기 안양시 동안구 관양로 305<br>서울중앙교회 교육원 6층 중강당</p>
+            <p class="address copy-address" role="button" tabindex="0" aria-label="주소 복사하기">
+                경기 안양시 동안구 관양로 305
+                서울중앙교회 교육원 중강당 6층
+            </p>
             <div class="map-wrap kakao-map-wrap">
                 <!-- 카카오맵 지도 자리 -->
                 <div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
@@ -1736,7 +1756,45 @@
                     "mapHeight": "360"
                 }).render();
             </script>
+            <script>
+                const addressCopyTarget = document.querySelector('#location .copy-address');
 
+                async function copyAddress() {
+                    const address =
+                        '경기 안양시 동안구 관양로 305\n서울중앙교회 교육원 중강당 6층';
+
+                    try {
+                        if (navigator.clipboard && window.isSecureContext) {
+                            await navigator.clipboard.writeText(address);
+                        } else {
+                            const field = document.createElement('textarea');
+                            field.value = address;
+                            field.style.position = 'fixed';
+                            field.style.opacity = '0';
+                            document.body.appendChild(field);
+                            field.select();
+
+                            const copied = document.execCommand('copy');
+                            field.remove();
+
+                            if (!copied) throw new Error('Copy failed');
+                        }
+
+                        showToast('주소가 복사되었습니다.');
+                    } catch (error) {
+                        showToast('복사하지 못했습니다. 다시 시도해 주세요.');
+                    }
+                }
+
+                addressCopyTarget.addEventListener('click', copyAddress);
+
+                addressCopyTarget.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        copyAddress();
+                    }
+                });
+            </script>
             <div class="route-btns"><a class="naver-map-btn"
                     href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
                     rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/naver.jpg" alt=""
