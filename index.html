@@ -311,6 +311,7 @@
 
         /* ===== 인트로(배경/봉투/텍스트) ===== */
         #intro {
+            position: relative;
             /* ---------- 위치·크기 ---------- */
             --envelope-width: 100%;
             /* 봉투 가로 크기. 예: 80%, 90%, 100% */
@@ -880,8 +881,10 @@
         #intro .click-hint {
             position: absolute;
             z-index: 20;
-            top: 28%; /* 위치 */
-            right: 16%; /* 위치 */
+            top: 28%;
+            /* 위치 */
+            right: 16%;
+            /* 위치 */
             display: flex;
             align-items: flex-start;
             gap: 2px;
@@ -917,34 +920,65 @@
         }
 
         /* click! */
+
+        #intro .click-hint {
+            position: absolute;
+            z-index: 20;
+            top: 28%;
+            right: 16%;
+
+            display: flex;
+            align-items: center;
+            /* 이미지와 글자 세로 중앙 맞춤 */
+            gap: 5px;
+            /* 이미지와 글자 사이 간격 */
+
+            pointer-events: none;
+        }
+
+        #intro .click-arrow-image {
+            display: block;
+            width: 20px;
+            height: auto;
+            opacity: 0.45;
+            flex-shrink: 0;
+            transform: rotate(15deg);
+        }
+
         #intro .click-text {
             display: block;
+            margin: 0;
+            white-space: nowrap;
+            transform: translateY(-14px);
             font-family: "Betania Patmos In", cursive;
             font-size: 15px;
             line-height: 1;
-            white-space: nowrap;
 
-            animation: clickTwinkle 1.5s ease-in-out infinite;
+            /* 기본 글자색 → 밝게 지나가는 빛 → 기본 글자색 */
+            background: linear-gradient(90deg,
+                    #77736c 0%,
+                    #77736c 42%,
+                    #ffffff 50%,
+                    #77736c 58%,
+                    #77736c 100%);
+            background-size: 250% 100%;
+            background-position: 100% center;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+
+            animation: clickShimmer 3s ease-in-out infinite;
         }
 
-        /* 글자 반짝임 */
-        @keyframes clickTwinkle {
-
-            0%,
-            100% {
-                opacity: .5;
-                filter: brightness(1);
-                text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-                transform: scale(1);
+        @keyframes clickShimmer {
+            0% {
+                background-position: 120% center;
             }
 
-            50% {
-                opacity: 1;
-                filter: brightness(1.18);
-                text-shadow:
-                    0 0 3px rgba(255, 255, 255, .9),
-                    0 0 9px rgba(255, 255, 255, .55);
-                transform: scale(1.06);
+            100% {
+                background-position: -120% center;
             }
         }
 
@@ -1631,28 +1665,9 @@
                     <!-- 움직이는 사진 -->
 
                     <h1 class="envelope-name">Jaewon and Sohee</h1>
-                    <div class="click-hint" aria-hidden="true">
-                        <svg class="click-arrow" viewBox="0 0 100 100" aria-hidden="true">
-                            <path d="
-                              M 38 82
-                              C 42 75, 45 71, 48 67
-                              C 52 62, 58 60, 60 55
-                              C 62 50, 58 46, 54 48
-                              C 50 50, 51 56, 56 58
-                              C 61 60, 68 56, 72 50
-                              C 78 44, 82 37, 81 31
-                            "></path>
-
-                            <path
-                            d="
-                              M 85 31
-                              L 74 31
-                              M 85 31
-                              L 80 41
-                            "
-                            transform="rotate(-20 85 31)"
-                          ></path>
-                        </svg>
+                    <div class="click-hint">
+                        <img class="click-arrow-image" src="https://heesohan.github.io/soheejaewon/arrow.png" alt=""
+                            aria-hidden="true">
 
                         <span class="click-text">click!</span>
                     </div>
