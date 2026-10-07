@@ -1857,7 +1857,7 @@
                             if (!copied) throw new Error('Copy failed');
                         }
 
-                        showToast('주소가 복사되었습니다.');
+                        showToast('주소가 복사되었습니다 ✓');
                     } catch (error) {
                         showToast('복사하지 못했습니다. 다시 시도해 주세요.');
                     }
@@ -2448,7 +2448,7 @@
             try {
                 if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(url);
                 else { const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed'); }
-                showToast('복사되었습니다 ✓');
+                showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
         async function shareKakao() {
