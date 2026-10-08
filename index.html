@@ -2666,16 +2666,13 @@
                     syncMusicUI();
                 } catch (error) {
                     syncMusicUI();
+                    console.error('음악 재생 오류:', error);
 
-                    if (!warned) {
+                    if (error.name === 'NotAllowedError') {
+                        showToast('브라우저가 자동재생을 차단했습니다.');
+                    } else if (!warned) {
                         warned = true;
-
-                        if (error.name === 'NotAllowedError') {
-                            showToast('음악 버튼을 한 번 더 눌러주세요.');
-                        } else {
-                            showToast('음원을 불러올 수 없습니다.');
-                            console.error('음악 재생 오류:', error);
-                        }
+                        showToast('음원을 불러올 수 없습니다.');
                     }
                 }
             }
@@ -2707,9 +2704,10 @@
             });
 
             syncMusicUI();
+
+            window.addEventListener('load', playMusic, { once: true });
         })();
-        
-        window.addEventListener('load', requestPlay, { once: true });
+
     </script>
 
     <div class="scroll-controls" aria-label="페이지 이동">
