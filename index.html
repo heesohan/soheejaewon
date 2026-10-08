@@ -2660,21 +2660,35 @@
                 }
             }
             window.startInvitationMusic = requestPlay;
+
             audio.addEventListener('loadedmetadata', seekFirstTime);
             audio.addEventListener('play', syncMusicUI);
             audio.addEventListener('playing', syncMusicUI);
             audio.addEventListener('pause', syncMusicUI);
+
             audio.addEventListener('error', () => {
                 syncMusicUI();
-                if (!warned) { warned = true; showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요'); }
+
+                if (!warned) {
+                    warned = true;
+                    showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요');
+                }
             });
+
             button.addEventListener('click', () => {
-                if (!audio.paused) { userTurnedOff = true; audio.pause(); }
-                else { userTurnedOff = false; requestPlay(); }
+                if (!audio.paused) {
+                    userTurnedOff = true;
+                    audio.pause();
+                } else {
+                    userTurnedOff = false;
+                    requestPlay();
+                }
             });
+
             window.addEventListener('load', requestPlay, { once: true });
         })();
     </script>
+
     <div class="scroll-controls" aria-label="페이지 이동">
         <button type="button" class="scroll-control-btn" id="scroll-top" aria-label="맨 위로 이동">
             <span class="chevron chevron-up" aria-hidden="true"></span>
@@ -2684,6 +2698,35 @@
             <span class="chevron chevron-down" aria-hidden="true"></span>
         </button>
     </div>
+
+    <script>
+        (() => {
+            const scrollTopButton = document.getElementById('scroll-top');
+            const scrollBottomButton = document.getElementById('scroll-bottom');
+
+            const getPageHeight = () => {
+                return Math.max(
+                    document.body.scrollHeight,
+                    document.documentElement.scrollHeight
+                );
+            };
+
+            scrollTopButton?.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            scrollBottomButton?.addEventListener('click', () => {
+                window.scrollTo({
+                    top: getPageHeight(),
+                    behavior: 'smooth'
+                });
+            });
+        })();
+    </script>
+
 </body>
 
 </html>
