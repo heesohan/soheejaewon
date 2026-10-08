@@ -14,9 +14,10 @@
     <meta property="og:image" content="https://heesohan.github.io/sohee/og.png">
     <meta name="format-detection" content="telephone=no">
 
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
-        crossorigin="anonymous"></script>
-    
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js"
+        integrity="sha384-OL+ylM/iuPLtW5U3XcvLSGhE8JzReKDank5InqlHGWPhb4140/yrBw0bg0y7+C9J" crossorigin="anonymous">
+        </script>
+
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet"
@@ -343,16 +344,17 @@
         }
 
         .acct-bank {
-  color: #ffffff !important;
-  font-size: 13px;
-  text-decoration: none !important;
-  -webkit-text-decoration: none !important;
-}
+            color: #ffffff !important;
+            font-size: 13px;
+            text-decoration: none !important;
+            -webkit-text-decoration: none !important;
+        }
+
         .account .acct-bank,
-.account .acct-bank a {
-  color: #ffffff !important;
-  text-decoration: none !important;
-}
+        .account .acct-bank a {
+            color: #ffffff !important;
+            text-decoration: none !important;
+        }
 
         .acc-actions button {
             border: 0;
@@ -367,7 +369,7 @@
             color: #fff
         }
 
-        /* ===== 인트로(배경/봉투/텍스트) ===== */
+        /* ===== 인트로===== */
         #intro {
             position: relative;
             /* ---------- 위치·크기 ---------- */
@@ -391,7 +393,7 @@
             justify-content: center;
             overflow: hidden;
 
-            /* 종이 배경 */
+            /* 인트로 배경 */
             background-color: #e8e4d9;
             background-image:
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E"),
@@ -1509,6 +1511,7 @@
             line-height: 1;
             transition: transform 0.3s ease;
         }
+
         .account .acc-item.open .acc-arrow {
             transform: rotate(180deg);
         }
@@ -1941,17 +1944,20 @@
                     <div class="acc-body">
                         <div class="acc-body-inner">
                             <div class="acct-card">
-                                <div><span class="acct-name">신랑 · <b>최재원</b></span><span class="acct-bank">카카오뱅크 3333-07-9419395</span></div>
+                                <div><span class="acct-name">신랑 · <b>최재원</b></span><span class="acct-bank">카카오뱅크
+                                        3333-07-9419395</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
                             <div class="acct-card">
-                                <div><span class="acct-name">신랑 아버지 · <b>최창균</b></span><span class="acct-bank">국민은행 819-21-0170-606</span></div>
+                                <div><span class="acct-name">신랑 아버지 · <b>최창균</b></span><span class="acct-bank">국민은행
+                                        819-21-0170-606</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
                             <div class="acct-card">
-                                <div><span class="acct-name">신랑 어머니 · <b>김원경</b></span><span class="acct-bank">국민은행 819-21-0290-072</span></div>
+                                <div><span class="acct-name">신랑 어머니 · <b>김원경</b></span><span class="acct-bank">국민은행
+                                        819-21-0290-072</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
@@ -1964,17 +1970,20 @@
                     <div class="acc-body">
                         <div class="acc-body-inner">
                             <div class="acct-card">
-                                <div><span class="acct-name">신부 · <b>한소희</b></span><span class="acct-bank">카카오뱅크 3333-04-1520860</span></div>
+                                <div><span class="acct-name">신부 · <b>한소희</b></span><span class="acct-bank">카카오뱅크
+                                        3333-04-1520860</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
                             <div class="acct-card">
-                                <div><span class="acct-name">신부 아버지 · <b>한상필</b></span><span class="acct-bank">신협 132-093-097712</span></div>
+                                <div><span class="acct-name">신부 아버지 · <b>한상필</b></span><span class="acct-bank">신협
+                                        132-093-097712</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
                             <div class="acct-card">
-                                <div><span class="acct-name">신부 어머니 · <b>최지윤</b></span><span class="acct-bank">농협 044-12-164655</span></div>
+                                <div><span class="acct-name">신부 어머니 · <b>최지윤</b></span><span class="acct-bank">농협
+                                        044-12-164655</span></div>
                                 <div class="acc-actions"><button class="copy-btn" onclick="acctCopy(this)">복사</button>
                                 </div>
                             </div>
@@ -1986,7 +1995,8 @@
         <section id="sec-share" class="section">
             <h2 class="section-title memo-title">청첩장 전달하기</h2>
             <div class="share-actions">
-                <button type="button" class="share-icon-btn kakao-btn" onclick="shareKakao()" aria-label="카카오톡으로 공유하기">
+                <button type="button" id="kakaotalk-sharing-btn" class="share-icon-btn kakao-btn"
+                    aria-label="카카오톡으로 공유">
                     <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M21 3 10.8 13.2"></path>
                         <path d="m21 3-6.5 18-3.7-7.3L3 10.8 21 3Z"></path>
@@ -2455,17 +2465,39 @@
                 showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
-Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
-async function shareKakao() {
-  try {
-    await Kakao.Share.sendCustom({
-      templateId: 137855
-    });
-  } catch (error) {
-    console.error(error);
-    showToast(error.message || '카카오톡 공유 실패');
-  }
-}
+        /*카카오톡 공유*/
+        Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
+
+        Kakao.Share.createDefaultButton({
+            container: '#kakaotalk-sharing-btn',
+            objectType: 'feed',
+            content: {
+                title: '최재원 ♥ 한소희 모바일 청첩장',
+                description: '2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당',
+                imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
+                link: {
+                    mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
+                    webUrl: 'https://heesohan.github.io/soheejaewon/'
+                }
+            },
+            buttons: [
+                {
+                    title: '청첩장 보기',
+                    link: {
+                        mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
+                        webUrl: 'https://heesohan.github.io/soheejaewon/'
+                    }
+                },
+                {
+                    title: '위치 보기',
+                    link: {
+                        mobileWebUrl: 'https://naver.me/FqWgkscj',
+                        webUrl: 'https://naver.me/FqWgkscj'
+                    }
+                }
+            ]
+        });
+
         (() => {
             const audio = document.getElementById('bgm');
             const button = document.getElementById('music-toggle');
