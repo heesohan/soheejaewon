@@ -2456,29 +2456,13 @@
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
 Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
-
-function shareKakao() {
-    const url = invitationURL();
-
-    if (!/^https?:/.test(url)) {
-        showToast('웹에 게시된 청첩장에서 공유할 수 있습니다');
-        return;
-    }
-
+async function shareKakao() {
   try {
-    if (!window.Kakao) {
-      throw new Error('Kakao SDK가 로드되지 않았습니다');
-    }
-
-    if (!Kakao.isInitialized()) {
-      throw new Error('Kakao SDK가 초기화되지 않았습니다');
-    }
-
-    Kakao.Share.sendCustom({
+    await Kakao.Share.sendCustom({
       templateId: 137855
     });
   } catch (error) {
-    console.error('Kakao share error:', error);
+    console.error(error);
     showToast(error.message || '카카오톡 공유 실패');
   }
 }
