@@ -2592,7 +2592,7 @@
                 showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
-        /*카카오톡 공유*/
+                /*카카오톡 공유*/
         Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
         window.shareKakao = function () {
@@ -2607,13 +2607,11 @@
             }
 
             Kakao.Share.sendDefault({
-                Kakao.Share.sendDefault({
                 objectType: 'feed',
                 content: {
                     title: '최재원 ♥ 한소희 모바일 청첩장',
                     description:
-                        '2026년 11월 28일 토요일 오후 12시
-                        서울중앙교회 교육원 6층 중강당',
+                        '2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당',
                     imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
                     link: {
                         mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
