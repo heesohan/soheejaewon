@@ -1995,13 +1995,13 @@
         <section id="sec-share" class="section">
             <h2 class="section-title memo-title">청첩장 전달하기</h2>
             <div class="share-actions">
-<a id="kakaotalk-sharing-btn" href="javascript:;" class="share-icon-btn kakao-btn" aria-label="카카오톡으로 공유">
-  <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M21 3 10.8 13.2"></path>
-    <path d="m21 3-6.5 18-3.7-7.3L3 10.8 21 3Z"></path>
-  </svg>
-  <span>카카오톡 공유</span>
-</a>
+                <button type="button" class="share-icon-btn kakao-btn" onclick="shareKakao()" aria-label="카카오톡으로 공유하기">
+                    <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 3 10.8 13.2"></path>
+                        <path d="m21 3-6.5 18-3.7-7.3L3 10.8 21 3Z"></path>
+                    </svg>
+                    <span>공유하기</span>
+                </button>
 
                 <button type="button" id="url_copy" class="share-icon-btn copy-url-btn" onclick="copyURL()"
                     aria-label="청첩장 주소 복사하기">
