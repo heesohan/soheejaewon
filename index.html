@@ -2594,50 +2594,25 @@
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
                 /*카카오톡 공유*/
-        Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
+<script>
+  Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
-        window.shareKakao = function () {
-            if (!window.Kakao) {
-                showToast('카카오 SDK를 불러오지 못했습니다.');
-                return;
-            }
+  window.shareKakao = function () {
+    if (!window.Kakao) {
+      showToast('카카오 SDK를 불러오지 못했습니다.');
+      return;
+    }
 
-            if (!Kakao.isInitialized()) {
-                showToast('카카오 SDK가 초기화되지 않았습니다.');
-                return;
-            }
+    if (!Kakao.isInitialized()) {
+      showToast('카카오 SDK가 초기화되지 않았습니다.');
+      return;
+    }
 
-            Kakao.Share.sendDefault({
-                objectType: 'feed',
-                content: {
-                    title: '최재원 ♥ 한소희 모바일 청첩장',
-                    description:
-                        '2026년 11월 28일 토요일 오후 12시<br>
-                        서울중앙교회 교육원 6층 중강당',
-                    imageUrl: 'https://heesohan.github.io/soheejaewon/2.jpg',
-                    link: {
-                        mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
-                        webUrl: 'https://heesohan.github.io/soheejaewon/'
-                    }
-                },
-                buttons: [
-                    {
-                        title: '청첩장 보기',
-                        link: {
-                            mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
-                            webUrl: 'https://heesohan.github.io/soheejaewon/'
-                        }
-                    },
-                    {
-                        title: '위치 보기',
-                        link: {
-                            mobileWebUrl: 'https://naver.me/FqWgkscj',
-                            webUrl: 'https://naver.me/FqWgkscj'
-                        }
-                    }
-                ]
-            });
-        };
+    Kakao.Share.sendCustom({
+      templateId: 137852
+    });
+  };
+</script>
     </script>
     <script>
         (() => {
