@@ -14,6 +14,9 @@
     <meta property="og:image" content="https://heesohan.github.io/sohee/og.png">
     <meta name="format-detection" content="telephone=no">
 
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        crossorigin="anonymous"></script>
+    
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet"
@@ -2452,12 +2455,20 @@
                 showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
-        async function shareKakao() {
-            const url = invitationURL();
-            if (!/^https?:/.test(url)) { showToast('웹에 게시된 청첩장에서 공유할 수 있습니다'); return; }
-            if (navigator.share) { try { await navigator.share({ title: document.title, text: '최재원 ♥ 한소희의 결혼식에 초대합니다.', url }); return; } catch (error) { if (error.name === 'AbortError') return; } }
-            await copyURL(); showToast('주소를 카카오톡에 붙여넣어 주세요');
-        }
+Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
+
+function shareKakao() {
+    const url = invitationURL();
+
+    if (!/^https?:/.test(url)) {
+        showToast('웹에 게시된 청첩장에서 공유할 수 있습니다');
+        return;
+    }
+
+    Kakao.Share.sendCustom({
+        templateId: 137852
+    });
+}
         (() => {
             const audio = document.getElementById('bgm');
             const button = document.getElementById('music-toggle');
