@@ -2146,7 +2146,7 @@
                 <p class="copyright">ⓒSHJW</p>
         </section>
     </main>
-    <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=20"></audio>
+    <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=18"></audio>
     <button id="music-toggle" type="button" aria-label="배경음악 켜기" aria-pressed="false">
         <svg class="heart-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
             <path
@@ -2595,97 +2595,118 @@
         /*카카오톡 공유*/
         Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
-        Kakao.Share.createDefaultButton({
-            container: '#kakaotalk-sharing-btn',
-            objectType: 'feed',
-            content: {
-                title: '최재원 ♥ 한소희 모바일 청첩장',
-                description: '2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당',
-                imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
-                link: {
-                    mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
-                    webUrl: 'https://heesohan.github.io/soheejaewon/'
-                }
-            },
-            buttons: [
-                {
-                    title: '청첩장 보기',
+        window.shareKakao = function () {
+            if (!window.Kakao) {
+                showToast('카카오 SDK를 불러오지 못했습니다.');
+                return;
+            }
+
+            if (!Kakao.isInitialized()) {
+                showToast('카카오 SDK가 초기화되지 않았습니다.');
+                return;
+            }
+
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '최재원 ♥ 한소희 모바일 청첩장',
+                    description:
+                        '2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당',
+                    imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
                     link: {
                         mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
                         webUrl: 'https://heesohan.github.io/soheejaewon/'
                     }
                 },
-                {
-                    title: '위치 보기',
-                    link: {
-                        mobileWebUrl: 'https://naver.me/FqWgkscj',
-                        webUrl: 'https://naver.me/FqWgkscj'
+                buttons: [
+                    {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
+                            webUrl: 'https://heesohan.github.io/soheejaewon/'
+                        }
+                    },
+                    {
+                        title: '위치 보기',
+                        link: {
+                            mobileWebUrl: 'https://naver.me/FqWgkscj',
+                            webUrl: 'https://naver.me/FqWgkscj'
+                        }
                     }
-                }
-            ]
-        });
-
+                ]
+            });
+        };
+    </script>
+    <script>
         (() => {
             const audio = document.getElementById('bgm');
             const button = document.getElementById('music-toggle');
-            const startAt = 18;
+
+            if (!audio || !button) return;
+
             let userTurnedOff = false;
-            let needsFirstSeek = true;
             let warned = false;
+
             function syncMusicUI() {
                 const playing = !audio.paused && !audio.ended;
+
                 button.classList.toggle('playing', playing);
                 button.setAttribute('aria-pressed', String(playing));
-                button.setAttribute('aria-label', playing ? '배경음악 끄기' : '배경음악 켜기');
+                button.setAttribute(
+                    'aria-label',
+                    playing ? '음악 일시정지' : '음악 재생'
+                );
             }
-            function seekFirstTime() {
-                if (!needsFirstSeek || audio.readyState < 1) return;
+
+            async function playMusic() {
+                userTurnedOff = false;
+
                 try {
-                    audio.currentTime = startAt;
-                    needsFirstSeek = false;
-                } catch (error) { /* metadata가 준비되면 다시 시도 */ }
-            }
-            function requestPlay() {
-                if (userTurnedOff) return;
-                seekFirstTime();
-                const attempt = audio.play();
-                if (attempt && typeof attempt.catch === 'function') {
-                    attempt.catch(error => {
-                        syncMusicUI();
-                        if (error.name !== 'NotAllowedError' && !warned) {
-                            warned = true;
-                            showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요');
+                    await audio.play();
+                    syncMusicUI();
+                } catch (error) {
+                    syncMusicUI();
+
+                    if (!warned) {
+                        warned = true;
+
+                        if (error.name === 'NotAllowedError') {
+                            showToast('음악 버튼을 한 번 더 눌러주세요.');
+                        } else {
+                            showToast('음원을 불러올 수 없습니다.');
+                            console.error('음악 재생 오류:', error);
                         }
-                    });
+                    }
                 }
             }
-            window.startInvitationMusic = requestPlay;
 
-            audio.addEventListener('loadedmetadata', seekFirstTime);
+            function pauseMusic() {
+                userTurnedOff = true;
+                audio.pause();
+                syncMusicUI();
+            }
+
+            window.startInvitationMusic = playMusic;
+
             audio.addEventListener('play', syncMusicUI);
             audio.addEventListener('playing', syncMusicUI);
             audio.addEventListener('pause', syncMusicUI);
+            audio.addEventListener('ended', syncMusicUI);
 
             audio.addEventListener('error', () => {
                 syncMusicUI();
-
-                if (!warned) {
-                    warned = true;
-                    showToast('음원을 불러올 수 없습니다. 파일 경로를 확인해 주세요');
-                }
+                console.error('audio error:', audio.error);
             });
 
             button.addEventListener('click', () => {
-                if (!audio.paused) {
-                    userTurnedOff = true;
-                    audio.pause();
+                if (audio.paused) {
+                    playMusic();
                 } else {
-                    userTurnedOff = false;
-                    requestPlay();
+                    pauseMusic();
                 }
             });
 
-            window.addEventListener('load', requestPlay, { once: true });
+            syncMusicUI();
         })();
     </script>
 
