@@ -10,10 +10,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://heesohan.github.io/soheejaewon/">
     <meta property="og:title" content="재원, 소희 결혼합니다 ♡">
-    <meta property="og:description" content="2026년 11월 28일 토요일 오후 12시<br>
-        서울중앙교회 교육원 6층 중강당">
+    <meta property="og:description" content="2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당">
     <meta property="og:image" content="https://heesohan.github.io/sohee/og.png">
     <meta name="format-detection" content="telephone=no">
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -1754,6 +1755,7 @@
             font-weight: 400;
         }
 
+        /* 페이지 맨 위·맨 아래 이동 버튼 */
         .scroll-controls {
             position: fixed;
             right: max(16px, env(safe-area-inset-right));
@@ -1947,70 +1949,6 @@
                         copyAddress();
                     }
                 });
-
-                .scroll - controls {
-                    position: fixed;
-                    right: max(16px, env(safe - area - inset - right));
-                    bottom: max(20px, env(safe - area - inset - bottom));
-                    z - index: 850;
-                    display: flex;
-                    flex - direction: column;
-                    align - items: center;
-                    gap: 18px;
-                }
-
-                .scroll - control - btn {
-                    width: 28px;
-                    height: 28px;
-                    padding: 0;
-                    border: 0;
-                    display: grid;
-                    place - items: center;
-                    background: transparent;
-                    color: rgba(255, 255, 255, 0.78);
-                    cursor: pointer;
-                    -webkit - tap - highlight - color: transparent;
-                    transition: transform 0.2s ease, color 0.2s ease;
-                }
-
-                .scroll - control - btn:hover {
-                    color: #ec8db3;
-                    transform: scale(1.12);
-                }
-
-                .scroll - control - btn:active {
-                    transform: scale(0.9);
-                }
-
-                .scroll - control - btn: focus - visible {
-                    outline: 2px solid #fee500;
-                    outline - offset: 4px;
-                    border - radius: 4px;
-                }
-
-                .chevron {
-                    display: block;
-                    width: 5px;
-                    height: 5px;
-                    border: solid currentColor;
-                    border - width: 0 1px 1px 0;
-                }
-
-                .chevron - up {
-                    transform: rotate(-135deg);
-                    margin - top: 5px;
-                }
-
-                .chevron - down {
-                    transform: rotate(45deg);
-                    margin - top: -5px;
-                }
-
-                @media(prefers - reduced - motion: reduce) {
-                .scroll - control - btn {
-                        transition: none;
-                    }
-                }
             </script>
             <div class="route-btns"><a class="naver-map-btn"
                     href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
@@ -2143,7 +2081,7 @@
                 <p class="copyright">ⓒSHJW</p>
         </section>
     </main>
-    <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=18"></audio>
+    <audio id="bgm" preload="auto" loop playsinline src="https://heesohan.github.io/soheejaewon/mr.mp3#t=20"></audio>
     <button id="music-toggle" type="button" aria-label="배경음악 켜기" aria-pressed="false">
         <svg class="heart-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
             <path
@@ -2589,45 +2527,21 @@
                 showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
-    </script>
-
-    <script>
         Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
-        window.shareKakao = function () {
-            if (!Kakao.isInitialized()) {
-                alert('카카오 SDK가 초기화되지 않았습니다.');
+        function shareKakao() {
+            const url = invitationURL();
+
+            if (!/^https?:/.test(url)) {
+                showToast('웹에 게시된 청첩장에서 공유할 수 있습니다');
                 return;
             }
 
-            Kakao.Share.sendDefault({
-                objectType: 'feed',
-
-                content: {
-                    title: '최재원 ♥ 한소희 모바일 청첩장',
-                    description:
-                        '2026년 11월 28일 토요일 오후 12시\n서울중앙교회 교육원 6층 중강당',
-                    imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
-                    link: {
-                        mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
-                        webUrl: 'https://heesohan.github.io/soheejaewon/'
-                    }
-                },
-
-                buttons: [
-                    {
-                        title: '청첩장 보기',
-                        link: {
-                            mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
-                            webUrl: 'https://heesohan.github.io/soheejaewon/'
-                        }
-                    }
-                ]
+            Kakao.Share.sendCustom({
+                templateId: 137852
             });
-        };
-    </script>
+        }
 
-    <script>
         (() => {
             const audio = document.getElementById('bgm');
             const button = document.getElementById('music-toggle');
@@ -2699,7 +2613,6 @@
         })();
 
     </script>
-
     <div class="scroll-controls" aria-label="페이지 이동">
         <button type="button" class="scroll-control-btn" id="scroll-top" aria-label="맨 위로 이동">
             <span class="chevron chevron-up" aria-hidden="true"></span>
@@ -2737,7 +2650,6 @@
             });
         })();
     </script>
-
 </body>
 
 </html>
