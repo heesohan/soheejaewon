@@ -15,10 +15,6 @@
     <meta property="og:image" content="https://heesohan.github.io/sohee/og.png">
     <meta name="format-detection" content="telephone=no">
 
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js"
-        integrity="sha384-OL+ylM/iuPLtW5U3XcvLSGhE8JzReKDank5InqlHGWPhb4140/yrBw0bg0y7+C9J" crossorigin="anonymous">
-        </script>
-
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="stylesheet"
@@ -2593,27 +2589,44 @@
                 showToast('청첩장이 복사되었습니다 ✓');
             } catch (error) { showToast('복사에 실패했습니다'); }
         }
-                /*카카오톡 공유*/
-<script>
-  Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
-
-  window.shareKakao = function () {
-    if (!window.Kakao) {
-      showToast('카카오 SDK를 불러오지 못했습니다.');
-      return;
-    }
-
-    if (!Kakao.isInitialized()) {
-      showToast('카카오 SDK가 초기화되지 않았습니다.');
-      return;
-    }
-
-    Kakao.Share.sendCustom({
-      templateId: 137852
-    });
-  };
-</script>
     </script>
+
+    <script>
+        Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
+
+        window.shareKakao = function () {
+            if (!Kakao.isInitialized()) {
+                alert('카카오 SDK가 초기화되지 않았습니다.');
+                return;
+            }
+
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+
+                content: {
+                    title: '최재원 ♥ 한소희 모바일 청첩장',
+                    description:
+                        '2026년 11월 28일 토요일 오후 12시\n서울중앙교회 교육원 6층 중강당',
+                    imageUrl: 'https://heesohan.github.io/soheejaewon/og.png',
+                    link: {
+                        mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
+                        webUrl: 'https://heesohan.github.io/soheejaewon/'
+                    }
+                },
+
+                buttons: [
+                    {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: 'https://heesohan.github.io/soheejaewon/',
+                            webUrl: 'https://heesohan.github.io/soheejaewon/'
+                        }
+                    }
+                ]
+            });
+        };
+    </script>
+
     <script>
         (() => {
             const audio = document.getElementById('bgm');
