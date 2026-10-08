@@ -2708,6 +2708,8 @@
 
             syncMusicUI();
         })();
+        
+        window.addEventListener('load', requestPlay, { once: true });
     </script>
 
     <div class="scroll-controls" aria-label="페이지 이동">
