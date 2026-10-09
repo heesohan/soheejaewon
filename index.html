@@ -343,70 +343,18 @@
             letter-spacing: .015em;
         }
 
-
-
-
-
-        /* 봉투 우측 상단 클릭 안내 */
+       /* click! */
         #intro .click-hint {
             position: absolute;
             z-index: 20;
             top: 28%;
-            /* 위치 */
-            right: 16%;
-            /* 위치 */
-            display: flex;
-            align-items: flex-start;
-            gap: 2px;
-            color: #4c4642;
-            transform: rotate(-8deg);
-            pointer-events: none;
-        }
-
-        /* 화살표 */
-        #intro .click-arrow {
-            display: block;
-            width: 48px;
-            height: auto;
-            margin: 0 -2px 0 0;
-            overflow: visible;
-            transform: rotate(-4deg);
-        }
-
-        #intro .click-arrow path {
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        #intro .click-arrow path {
-            fill: none;
-            stroke: #77736c;
-            stroke-width: 1.9;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* click! */
-
-        #intro .click-hint {
-            position: absolute;
-            z-index: 20;
-            top: 28%;
-            right: 16%;
+            right: 20%;
 
             display: flex;
             align-items: center;
-            /* 이미지와 글자 세로 중앙 맞춤 */
-            gap: 8px;
-            /* 이미지와 글자 사이 간격 */
-
             pointer-events: none;
-        }
-
-        #intro .click-arrow-image {
+            }
+        #intro .cursor-image{
             display: block;
             width: 15px;
             height: auto;
@@ -420,7 +368,7 @@
             margin: 0;
             white-space: nowrap;
             transform: translateY(-18px);
-            font-family: "Betania Patmos In", cursive;
+            font-family: "Betania Patmos In",'NostalgicGukhanbakOchungiWriterKim', sans-serif;
             font-size: 15px;
             line-height: 1;
             opacity: 0.65;
@@ -428,9 +376,9 @@
             /* 기본 글자색 → 밝게 지나가는 빛 → 기본 글자색 */
             background: linear-gradient(90deg,
                     #77736c 0%,
-                    #77736c 42%,
+                    #c8c1b4 42%,
                     #ffffff 50%,
-                    #77736c 58%,
+                    #c8c1b4 58%,
                     #77736c 100%);
             background-size: 250% 100%;
             background-position: 100% center;
@@ -440,7 +388,7 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
 
-            animation: clickShimmer 3s ease-in-out infinite;
+            animation: clickShimmer 4s ease-in-out infinite;
         }
 
         @keyframes clickShimmer {
@@ -1907,11 +1855,8 @@
                     <!-- 움직이는 사진 -->
 
                     <h1 class="envelope-name">Jaewon and Sohee</h1>
-                    <div class="click-hint">
-                        <img class="click-arrow-image" src="https://heesohan.github.io/soheejaewon/arrow.png" alt=""
-                            aria-hidden="true">
-
-                        <span class="click-text">click!</span>
+                    <div class="click-hint"><img class="cursor-image" src="https://heesohan.github.io/soheejaewon/cursor.png" />
+                        <span class="click-text">click!!</span>
                     </div>
                 </div>
                 <!-- 봉투 아래 로고. -->
