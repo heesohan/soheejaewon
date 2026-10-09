@@ -18,14 +18,17 @@
 
     <link rel="icon" type="image/png" sizes="512x512" href="https://heesohan.github.io/soheejaewon/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://heesohan.github.io/soheejaewon/favicon.png">
-    
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;display=swap">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Reenie+Beanie&amp;family=Gowun+Batang:wght@400;700&amp;family=Imperial+Script&amp;family=Noto+Sans+KR:wght@300;400;500;700&amp;family=Special+Elite&amp;family=Nanum+Square+Round:wght@300;400;700;800&amp;display=swap">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Betania+Patmos+In&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Betania+Patmos+In&amp;display=swap">
     <style>
         :root {
             --bg: #2d2d2d;
@@ -90,283 +93,9 @@
             margin: 0 auto 8px !important;
         }
 
-
-
-        .datecount {
-            text-align: center
-        }
-
-        .dday-text {
-            font-size: 15px;
-            line-height: 1.8;
-            margin: 0 0 8px
-        }
-
-        .calendar {
-            max-width: 320px;
-            margin: 0 auto;
-            background: #ffffff0a;
-            border-radius: 16px;
-            padding: 18px
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            font-size: 12px
-        }
-
-        .calendar-grid .dow {
-            color: #ffffff66;
-            padding-bottom: 6px
-        }
-
-        .calendar-grid .day {
-            padding: 6px 0;
-            border-radius: 8px
-        }
-
-        /* 일요일: 요일 글자 + 날짜 숫자 */
-        .calendar-grid .dow:nth-child(7n + 1),
-        .calendar-grid .day:nth-child(7n + 1) {
-            color: var(--accent);
-            /* 기존 연핑크 #eac7d1 */
-        }
-
-        /* 토요일: 요일 글자 + 날짜 숫자 */
-        .calendar-grid .dow:nth-child(7n),
-        .calendar-grid .day:nth-child(7n) {
-            color: #b9d9ea;
-            /* 연하늘색 */
-        }
-
-        /* 결혼식 날짜 28일: 정사각형 핑크 박스 */
-        .calendar-grid .day.highlight {
-            width: 32px;
-            aspect-ratio: 1 / 1;
-            margin: 0 auto;
-            padding: 0;
-            display: grid;
-            place-items: center;
-
-            background: #ec8db3;
-            color: #f1f1ed;
-            border-radius: 4px;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .location {
-            text-align: center
-        }
-
-        .map-wrap {
-            width: calc(100% - 22px);
-            height: 220px;
-            margin: 0 auto 16px;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #3a3a3a
-        }
-
-        .kakao-map-wrap {
-            height: 220px;
-        }
-
-        .kakao-map-wrap .root_daum_roughmap,
-        .kakao-map-wrap .root_daum_roughmap_landing {
-            width: 100% !important;
-            height: 220px !important;
-        }
-
-        .kakao-map-wrap .wrap_map {
-            height: 220px !important;
-        }
-
-        .address {
-            font-size: 14px;
-            line-height: 1.7;
-            margin: 0 auto 16px;
-            white-space: pre-line
-        }
-
-        .route-btns {
-            width: calc(100% - 22px);
-            margin: 0 auto 48px;
-            display: flex;
-            gap: 6px
-        }
-
-        .route-btns a {
-            flex: 1;
-            padding: 11px 0;
-            color: #2d2d2d;
-            font-size: 11px;
-            text-decoration: none;
-        }
-
-        .info-block {
-            text-align: left;
-            background: #ffffff0a;
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-bottom: 14px
-        }
-
-        #location .info-block {
-            width: calc(100% - 22px);
-            margin-left: auto;
-            margin-right: auto;
-            box-sizing: border-box;
-        }
-
-        .info-text {
-            font-size: 13px;
-            line-height: 1.7;
-            color: #ffffffe6;
-            white-space: pre-line
-        }
-
-        .info-text b {
-            color: var(--accent)
-        }
-
-        .info-text .parking-location {
-            color: var(--accent);
-            font-weight: 400;
-        }
-
-        /* 안내 사항 */
-        #notice {
-            text-align: center;
-        }
-
-        #notice .memo-title {
-            margin: 0 auto 14px;
-        }
-
-        #notice .notice-box {
-            width: calc(100% - 22px);
-            margin: 0 auto;
-            padding: 16px 18px;
-
-            box-sizing: border-box;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.06);
-
-            text-align: left;
-            color: rgba(255, 255, 255, 0.9);
-            font-family: Pretendard, "Noto Sans KR", sans-serif;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.8;
-        }
-
-        #notice .notice-box b {
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        #notice .notice-box p {
-            margin: 0;
-        }
-
-        #notice .notice-box p+p {
-            margin-top: 12px;
-        }
-
-        .account {
-            text-align: center
-        }
-
-        .accordion {
-            text-align: left
-        }
-
-        .acc-item {
-            background: #ffffff0a;
-            border-radius: 14px;
-            margin-bottom: 12px;
-            overflow: hidden
-        }
-
-        .acc-header {
-            padding: 16px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-family: Pretendard, "Noto Sans KR", sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .acc-header>span:first-child {
-            font-family: Pretendard, "Noto Sans KR", sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .acc-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height .3s
-        }
-
-        .acc-item.open .acc-body {
-            max-height: 420px
-        }
-
-        .acc-body-inner {
-            padding: 0 18px 18px
-        }
-
-        .acct-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #ffffff0d;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-            font-size: 13px
-        }
-
-        .acct-name {
-            display: block;
-            color: #ffffffb3;
-            font-size: 12px;
-            margin-bottom: 2px
-        }
-
-        .acct-bank {
-            color: #ffffff !important;
-            font-size: 13px;
-            text-decoration: none !important;
-            -webkit-text-decoration: none !important;
-        }
-
-        .account .acct-bank,
-        .account .acct-bank a {
-            color: #ffffff !important;
-            text-decoration: none !important;
-        }
-
-        .acc-actions button {
-            border: 0;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 11px;
-            cursor: pointer
-        }
-
-        .copy-btn {
-            background: #ffffff26;
-            color: #fff
+        /* 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
+        #intro.section {
+            padding: clamp(44px, 9vh, 78px) 20px 52px;
         }
 
         /* ===== 인트로===== */
@@ -504,6 +233,13 @@
             }
         }
 
+        /* 사용자가 '동작 줄이기'를 선택한 기기에서는 하트 애니메이션을 멈춤 */
+        @media (prefers-reduced-motion:reduce) {
+            .heart-rain span {
+                animation: none;
+            }
+        }
+
         /* ---------- 봉투·이름·예식 정보 전체 정렬 ---------- */
         .envelope-intro {
             position: relative;
@@ -607,335 +343,9 @@
             letter-spacing: .015em;
         }
 
-        /* 사용자가 '동작 줄이기'를 선택한 기기에서는 하트 애니메이션을 멈춤 */
-        @media (prefers-reduced-motion:reduce) {
-            .heart-rain span {
-                animation: none;
-            }
-        }
-
-
-        /* 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
-        #intro.section {
-            padding: clamp(44px, 9vh, 78px) 20px 52px;
-        }
-
-
-        /* ===================== 4. 갤러리 (카드 스택 스와이프) ===================== */
-        #gallery {
-            padding: 64px 24px 40px;
-        }
-
-        #gallery .section-title {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .card-stack-wrap {
-            position: relative;
-            width: 78%;
-            max-width: 300px;
-            aspect-ratio: 3/4;
-            margin: 0 auto;
-        }
-
-        .card-stack {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .photo-card {
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #222;
-            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
-            touch-action: none;
-            cursor: grab;
-            will-change: transform, opacity;
-            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-        }
-
-        .fly-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 50;
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            pointer-events: none;
-        }
-
-        .photo-card.dragging {
-            transition: none;
-            cursor: grabbing;
-        }
-
-        .photo-card.flying {
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .card-counter {
-            margin-top: 18px;
-            text-align: center;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.05em;
-        }
-
-        .card-counter .count-num {
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        .photo-popup {
-            position: fixed;
-            inset: 0;
-            background: rgba(45, 45, 45, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 300;
-            overflow: hidden;
-            touch-action: none;
-        }
-
-        .photo-popup.active {
-            display: flex;
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.4);
-            color: #fff;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 310;
-        }
-
-        .popup-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.35);
-            color: #fff;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 310;
-        }
-
-        .popup-prev {
-            left: 14px;
-        }
-
-        .popup-next {
-            right: 14px;
-        }
-
-        .popup-track {
-            display: flex;
-            width: 300vw;
-            height: 100%;
-            transform: translate3d(-100vw, 0, 0);
-            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform;
-        }
-
-
-        .popup-slide {
-            width: 100vw;
-            height: 100%;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .popup-slide img {
-            width: 100vw;
-            height: 100%;
-            object-fit: contain;
-            transform-origin: center center;
-            transition: transform 0.2s ease;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-
-        /* 갤러리 제목·카드 스택 우선 적용 */
-        #gallery .section-title {
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 18px;
-            letter-spacing: .1em;
-        }
 
 
 
-
-        /* 갤러리 뷰어: 즉시 사진 교체, 선택 사진만 테두리 */
-        #photoPopup {
-            background: rgba(0, 0, 0, .7) !important;
-        }
-
-        #photoPopup .popup-track {
-            display: block !important;
-            width: 100% !important;
-            height: 100%;
-            transform: none !important;
-            transition: none !important;
-        }
-
-        #photoPopup .popup-slide {
-            display: none !important;
-            width: 100%;
-            height: 100%;
-            padding: 54px 34px 104px;
-            box-sizing: border-box;
-        }
-
-        #photoPopup .popup-slide.is-current {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #photoPopup .popup-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transform: none !important;
-            transition: none !important;
-        }
-
-        #photoPopup .popup-close {
-            position: absolute;
-            z-index: 30;
-            top: max(18px, env(safe-area-inset-top));
-            right: 18px;
-            bottom: auto;
-            left: auto;
-            transform: none;
-
-            width: 44px;
-            height: 44px;
-            border: 0;
-            border-radius: 0;
-            color: #fff;
-            background: transparent;
-            font: 200 30px/1 Arial, sans-serif;
-            cursor: pointer;
-        }
-
-        #photoPopup .popup-nav {
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-            box-shadow: none;
-            color: #fff;
-            font-size: 30px;
-            font-weight: 200;
-        }
-
-        #galleryViewerThumbs {
-            position: absolute;
-            z-index: 25;
-            left: 50%;
-            bottom: max(12px, env(safe-area-inset-bottom));
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: safe center;
-            align-items: center;
-            gap: 7px;
-            width: min(94vw, 560px);
-            height: 76px;
-            padding: 6px 4px;
-            box-sizing: border-box;
-            overflow-x: auto;
-            scrollbar-width: none;
-            touch-action: pan-x;
-        }
-
-        #galleryViewerThumbs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .gallery-viewer-thumb {
-            flex: none;
-            display: block;
-            width: 54px;
-            height: 62px;
-            padding: 0;
-            border: 0;
-            outline: 0;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        .gallery-viewer-thumb img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* 선택하지 않은 썸네일: 프레임 없음 */
-        #galleryViewerThumbs .gallery-viewer-thumb {
-            padding: 0;
-            border: 0;
-            background: transparent;
-        }
-
-        /* 현재 보고 있는 사진: 1px 프레임 */
-        #galleryViewerThumbs .gallery-viewer-thumb.active {
-            padding: 0;
-            border: 1px solid #f8f4ec;
-            background: transparent;
-        }
-
-
-        /* 닫기 버튼 안에 얇은 X 그리기 */
-        #photoPopup .popup-close::before,
-        #photoPopup .popup-close::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 22px;
-            height: 1px;
-            background: #fff;
-            transform-origin: center;
-        }
-
-        #photoPopup .popup-close::before {
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        #photoPopup .popup-close::after {
-            transform: translate(-50%, -50%) rotate(-45deg);
-        }
 
         /* 봉투 우측 상단 클릭 안내 */
         #intro .click-hint {
@@ -1350,6 +760,657 @@
             }
         }
 
+
+        /* ===== 갤러리 (카드 스택 스와이프) ===== */
+        #gallery {
+            padding: 64px 24px 40px;
+        }
+
+        #gallery .section-title {
+            text-align: center;
+        }
+
+        .section-title-gallery {
+            margin: 20px auto 28px;
+            color: var(--text);
+            font-family: 'NostalgicGukhanbakOchungiWriterKim', sans-serif;
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.2;
+            text-align: center;
+
+        }
+
+        .section-title-gallery-letter {
+            position: relative;
+            width: 10%;
+            margin: 0 auto 0px;
+        }
+
+        .card-stack-wrap {
+            position: relative;
+            width: 78%;
+            max-width: 300px;
+            aspect-ratio: 3/4;
+            margin: 0 auto;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .photo-card {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #222;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+            touch-action: none;
+            cursor: grab;
+            will-change: transform, opacity;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+        }
+
+        .fly-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .photo-card.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+
+        .photo-card.flying {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .card-counter {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.05em;
+        }
+
+        .card-counter .count-num {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .photo-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 45, 45, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .photo-popup.active {
+            display: flex;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 310;
+        }
+
+        .popup-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 310;
+        }
+
+        .popup-prev {
+            left: 14px;
+        }
+
+        .popup-next {
+            right: 14px;
+        }
+
+        .popup-track {
+            display: flex;
+            width: 300vw;
+            height: 100%;
+            transform: translate3d(-100vw, 0, 0);
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+
+        .popup-slide {
+            width: 100vw;
+            height: 100%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-slide img {
+            width: 100vw;
+            height: 100%;
+            object-fit: contain;
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+
+        /* 갤러리 제목·카드 스택 우선 적용 */
+        #gallery .section-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 18px;
+            letter-spacing: .1em;
+        }
+
+
+
+
+        /* 갤러리 뷰어: 즉시 사진 교체, 선택 사진만 테두리 */
+        #photoPopup {
+            background: rgba(0, 0, 0, .7) !important;
+        }
+
+        #photoPopup .popup-track {
+            display: block !important;
+            width: 100% !important;
+            height: 100%;
+            transform: none !important;
+            transition: none !important;
+        }
+
+        #photoPopup .popup-slide {
+            display: none !important;
+            width: 100%;
+            height: 100%;
+            padding: 54px 34px 104px;
+            box-sizing: border-box;
+        }
+
+        #photoPopup .popup-slide.is-current {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #photoPopup .popup-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform: none !important;
+            transition: none !important;
+        }
+
+        #photoPopup .popup-close {
+            position: absolute;
+            z-index: 30;
+            top: max(18px, env(safe-area-inset-top));
+            right: 18px;
+            bottom: auto;
+            left: auto;
+            transform: none;
+
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 0;
+            color: #fff;
+            background: transparent;
+            font: 200 30px/1 Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        #photoPopup .popup-nav {
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            color: #fff;
+            font-size: 30px;
+            font-weight: 200;
+        }
+
+        #galleryViewerThumbs {
+            position: absolute;
+            z-index: 25;
+            left: 50%;
+            bottom: max(12px, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: safe center;
+            align-items: center;
+            gap: 7px;
+            width: min(94vw, 560px);
+            height: 76px;
+            padding: 6px 4px;
+            box-sizing: border-box;
+            overflow-x: auto;
+            scrollbar-width: none;
+            touch-action: pan-x;
+        }
+
+        #galleryViewerThumbs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-viewer-thumb {
+            flex: none;
+            display: block;
+            width: 54px;
+            height: 62px;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .gallery-viewer-thumb img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 선택하지 않은 썸네일: 프레임 없음 */
+        #galleryViewerThumbs .gallery-viewer-thumb {
+            padding: 0;
+            border: 0;
+            background: transparent;
+        }
+
+        /* 현재 보고 있는 사진: 1px 프레임 */
+        #galleryViewerThumbs .gallery-viewer-thumb.active {
+            padding: 0;
+            border: 1px solid #f8f4ec;
+            background: transparent;
+        }
+
+
+        /* 닫기 버튼 안에 얇은 X 그리기 */
+        #photoPopup .popup-close::before,
+        #photoPopup .popup-close::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 22px;
+            height: 1px;
+            background: #fff;
+            transform-origin: center;
+        }
+
+        #photoPopup .popup-close::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        #photoPopup .popup-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        /* ===== 카운트다운 달력 ===== */
+
+        .datecount {
+            text-align: center
+        }
+
+        .calendar {
+            max-width: 320px;
+            margin: 0 auto;
+            background: #ffffff0a;
+            border-radius: 16px;
+            padding: 18px
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            font-size: 12px
+        }
+
+        .calendar-grid .dow {
+            color: #ffffff66;
+            padding-bottom: 6px
+        }
+
+        .calendar-grid .day {
+            padding: 6px 0;
+            border-radius: 8px
+        }
+
+        /* 일요일: 요일 글자 + 날짜 숫자 */
+        .calendar-grid .dow:nth-child(7n + 1),
+        .calendar-grid .day:nth-child(7n + 1) {
+            color: var(--accent);
+            /* 연핑크 #eac7d1 */
+        }
+
+        /* 토요일: 요일 글자 + 날짜 숫자 */
+        .calendar-grid .dow:nth-child(7n),
+        .calendar-grid .day:nth-child(7n) {
+            color: #b9d9ea;
+            /* 연하늘색 */
+        }
+
+        /* 결혼식 날짜 28일: 정사각형 핑크 박스 */
+        .calendar-grid .day.highlight {
+            width: 32px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            padding: 0;
+            display: grid;
+            place-items: center;
+
+            background: #ec8db3;
+            color: #f1f1ed;
+            border-radius: 4px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        #dday-num {
+            color: #ec8db3;
+        }
+
+        .calendar-month {
+            margin: 20px auto 13px;
+            color: var(--text);
+            font-family: 'NostalgicGukhanbakOchungiWriterKim', sans-serif;
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        @font-face {
+            font-family: 'NostalgicGukhanbakOchungiWriterKim';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607161334@griunxhangeulochungikim-regular/griunxhangeulochungikim-regular/GriunXHangeulOCHUNGIKIM-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        .dday {
+            font-size: 14px;
+            font-family: 'NostalgicGukhanbakOchungiWriterKim', sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+            line-height: 1.8;
+            margin: 20px auto 10px;
+        }
+
+        .dday-text {
+            font-size: 15px;
+            line-height: 1.8;
+            margin: 25 0 0px
+        }
+
+
+
+        /* ===== 지도 ===== */
+
+        .location {
+            text-align: center
+        }
+
+        .map-wrap {
+            width: calc(100% - 22px);
+            height: 220px;
+            margin: 0 auto 16px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #3a3a3a
+        }
+
+        .kakao-map-wrap {
+            height: 220px;
+        }
+
+        .kakao-map-wrap .root_daum_roughmap,
+        .kakao-map-wrap .root_daum_roughmap_landing {
+            width: 100% !important;
+            height: 220px !important;
+        }
+
+        .kakao-map-wrap .wrap_map {
+            height: 220px !important;
+        }
+
+        .address {
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0 auto 16px;
+            white-space: pre-line
+        }
+
+        .route-btns {
+            width: calc(100% - 22px);
+            margin: 0 auto 48px;
+            display: flex;
+            gap: 6px
+        }
+
+        .route-btns a {
+            flex: 1;
+            padding: 11px 0;
+            color: #2d2d2d;
+            font-size: 11px;
+            text-decoration: none;
+        }
+
+        .info-block {
+            text-align: left;
+            background: #ffffff0a;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 14px
+        }
+
+        #location .info-block {
+            width: calc(100% - 22px);
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        .info-text {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #ffffffe6;
+            white-space: pre-line
+        }
+
+        .info-text b {
+            color: var(--accent)
+        }
+
+        .info-text .parking-location {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        /* ===== 안내 사항 ===== */
+        #notice {
+            text-align: center;
+        }
+
+        #notice .memo-title {
+            margin: 0 auto 14px;
+        }
+
+        #notice .notice-box {
+            width: calc(100% - 22px);
+            margin: 0 auto;
+            padding: 16px 18px;
+
+            box-sizing: border-box;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+
+            text-align: left;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: Pretendard, "Noto Sans KR", sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        #notice .notice-box b {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        #notice .notice-box p {
+            margin: 0;
+        }
+
+        #notice .notice-box p+p {
+            margin-top: 12px;
+        }
+
+
+        /* 계좌 */
+
+        .account {
+            text-align: center
+        }
+
+        .accordion {
+            text-align: left
+        }
+
+        .acc-item {
+            background: #ffffff0a;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden
+        }
+
+        .acc-header {
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: Pretendard, "Noto Sans KR", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .acc-header>span:first-child {
+            font-family: Pretendard, "Noto Sans KR", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .acc-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s
+        }
+
+        .acc-item.open .acc-body {
+            max-height: 420px
+        }
+
+        .acc-body-inner {
+            padding: 0 18px 18px
+        }
+
+        .acct-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff0d;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 13px
+        }
+
+        .acct-name {
+            display: block;
+            color: #ffffffb3;
+            font-size: 12px;
+            margin-bottom: 2px
+        }
+
+        .acct-bank {
+            color: #ffffff !important;
+            font-size: 13px;
+            text-decoration: none !important;
+            -webkit-text-decoration: none !important;
+        }
+
+        .account .acct-bank,
+        .account .acct-bank a {
+            color: #ffffff !important;
+            text-decoration: none !important;
+        }
+
+        .acc-actions button {
+            border: 0;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            cursor: pointer
+        }
+
+        .copy-btn {
+            background: #ffffff26;
+            color: #fff
+        }
+
+
         #gallery .gallery-heart {
             width: fit-content;
             margin: 0 auto 25.6px;
@@ -1371,10 +1432,10 @@
             justify-content: center;
             box-sizing: border-box;
 
-            width: min(35.533%, 121.333px);
-            aspect-ratio: 3 / 1;
-            height: auto;
-            padding: 3.467% 4.333%;
+            width: min(35.533%, 105px);
+            height: 34px;
+            aspect-ratio: auto;
+            padding: 0 4.333%;
             margin: 0 auto 30px;
 
             background: #e9dfc9;
@@ -1408,20 +1469,6 @@
 
         #location .memo-title {
             margin-bottom: 8px;
-        }
-
-        #dday-num {
-            color: #ec8db3;
-        }
-
-        .calendar-month {
-            margin: 20px auto 10px;
-            color: var(--text);
-            font-family: 'Sacramento', cursive;
-            font-size: 40px;
-            font-weight: 400;
-            line-height: 1.2;
-            text-align: center;
         }
 
         #location .address {
@@ -1821,6 +1868,27 @@
                 transition: none;
             }
         }
+
+        /* 스크롤 효과 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
     </style>
 </head>
 
@@ -1863,19 +1931,20 @@
 
         </section>
         <section class="section main" id="main">
-            <div class="main-name-tag">
+            <div class="main-name-tag reveal">
                 <img alt="이름택" src="https://raw.githubusercontent.com/heesohan/soheejaewon/261128/name.png" />
                 <span class="main-name-tag-text"></span>
             </div>
-            <p class="main-intro-text">
+            <p class="main-intro-text reveal">
                 <br /><br /><b>최창균</b> · <b>김원경</b>의 장남 <span class="main-intro-name">재원</span>
                 <br /><b>한상필</b> · <b>최지윤</b>의 차녀 <span class="main-intro-name">소희</span><br />
             </p>
-            <img alt="청첩장 메인 이미지" class="main-content" src="https://heesohan.github.io/soheejaewon/main.png" />
+            <img alt="청첩장 메인 이미지" class="main-content reveal" src="https://heesohan.github.io/soheejaewon/main.png" />
         </section>
-        <section class="section" id="gallery">
-            <h2 class="section-title gallery-heart">♥</h2>
-            <div class="card-stack-wrap">
+        <section class="section reveal" id="gallery">
+            <h2 class="section-title-gallery reveal"><img alt="편지" class="section-title-gallery-letter"
+                    src="https://raw.githubusercontent.com/heesohan/soheejaewon/261128/letter.png" /></h2>
+            <div class="card-stack-wrap reveal">
                 <div class="card-stack" id="cardStack"></div>
                 <div class="fly-layer" id="flyLayer"></div>
             </div>
@@ -1883,100 +1952,106 @@
                 <span class="count-num" id="cardCurrent">1</span> / <span id="cardTotal">18</span>
             </div>
         </section>
-        <section class="section datecount" id="datecount">
-            <p class="dday-text">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</p>
-            <div class="calendar-month" lang="en">November</div>
-            <div class="calendar">
-                <div class="calendar-grid" id="calendar-grid"></div>
-            </div>
-        </section>
-        <section class="section location" id="location">
-            <h2 class="section-title memo-title">오시는 길</h2>
-            <p class="address copy-address" role="button" tabindex="0" aria-label="주소 복사하기">
-                경기 안양시 동안구 관양로 305
-                
-            </p>
-            <div class="map-wrap kakao-map-wrap">
-                <!-- 카카오맵 지도 자리 -->
-                <div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
+        <section class="section datecount reveal" id="datecount">
+            <div class="calendar-month reveal" lang="en">November</div>
+            <div class="reveal">
+                <p class="dday"> 2026년 11월 28일 토요일 낮 12시</p>
+                <div class="calendar">
+                    <div class="calendar-grid" id="calendar-grid"></div>
                 </div>
             </div>
-            <!-- 카카오맵 퍼가기 로더: -->
-            <script charset="UTF-8" class="daum_roughmap_loader_script"
-                src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
-            <!-- 카카오맵 실행 -->
-            <script charset="UTF-8">
-                new daum.roughmap.Lander({
-                    "timestamp": "1790689993991",
-                    "key": "2f6jw53kbsn",
-                    "mapWidth": "640",
-                    "mapHeight": "360"
-                }).render();
-            </script>
-            <script>
-                const addressCopyTarget = document.querySelector('#location .copy-address');
+            <p class="dday-text reveal">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</p>
+        </section>
+        <section class="section location reveal" id="location">
+            <h2 class="section-title memo-title reveal">오시는 길</h2>
+            <div class="reveal">
+                <p class="address copy-address" role="button" tabindex="0" aria-label="주소 복사하기">
+                    경기 안양시 동안구 관양로 305
+                    서울중앙교회 교육원 6층 중강당
+                </p>
+                <div class="map-wrap kakao-map-wrap">
+                    <!-- 카카오맵 지도 자리 -->
+                    <div class="root_daum_roughmap root_daum_roughmap_landing" id="daumRoughmapContainer1790689993991">
+                    </div>
+                </div>
+                <!-- 카카오맵 퍼가기 로더: -->
+                <script charset="UTF-8" class="daum_roughmap_loader_script"
+                    src="https://t1.kakaocdn.net/kakaomapweb/roughmap/loader/prod/roughmapLoader.js"></script>
+                <!-- 카카오맵 실행 -->
+                <script charset="UTF-8">
+                    new daum.roughmap.Lander({
+                        "timestamp": "1790689993991",
+                        "key": "2f6jw53kbsn",
+                        "mapWidth": "640",
+                        "mapHeight": "360"
+                    }).render();
+                </script>
+                <script>
+                    const addressCopyTarget = document.querySelector('#location .copy-address');
 
-                async function copyAddress() {
-                    const address =
-                        '경기 안양시 동안구 관양로 305\n서울중앙교회 교육원 6층 중강당';
+                    async function copyAddress() {
+                        const address =
+                            '경기 안양시 동안구 관양로 305';
 
-                    try {
-                        if (navigator.clipboard && window.isSecureContext) {
-                            await navigator.clipboard.writeText(address);
-                        } else {
-                            const field = document.createElement('textarea');
-                            field.value = address;
-                            field.style.position = 'fixed';
-                            field.style.opacity = '0';
-                            document.body.appendChild(field);
-                            field.select();
+                        try {
+                            if (navigator.clipboard && window.isSecureContext) {
+                                await navigator.clipboard.writeText(address);
+                            } else {
+                                const field = document.createElement('textarea');
+                                field.value = address;
+                                field.style.position = 'fixed';
+                                field.style.opacity = '0';
+                                document.body.appendChild(field);
+                                field.select();
 
-                            const copied = document.execCommand('copy');
-                            field.remove();
+                                const copied = document.execCommand('copy');
+                                field.remove();
 
-                            if (!copied) throw new Error('Copy failed');
+                                if (!copied) throw new Error('Copy failed');
+                            }
+
+                            showToast('주소가 복사되었습니다 ✓');
+                        } catch (error) {
+                            showToast('복사하지 못했습니다. 다시 시도해 주세요.');
                         }
-
-                        showToast('주소가 복사되었습니다 ✓');
-                    } catch (error) {
-                        showToast('복사하지 못했습니다. 다시 시도해 주세요.');
                     }
-                }
 
-                addressCopyTarget.addEventListener('click', copyAddress);
+                    addressCopyTarget.addEventListener('click', copyAddress);
 
-                addressCopyTarget.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        copyAddress();
-                    }
-                });
-            </script>
-            <div class="route-btns"><a class="naver-map-btn"
-                    href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-                    rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/naver.jpg" alt=""
-                        aria-hidden="true">
-                    <span>네이버지도</span>
-                </a>
-                <a class="kakao-map-btn"
-                    href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
-                    rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/kakao.jpg" alt=""
-                        aria-hidden="true">
-                    <span>카카오맵</span>
-                </a>
+                    addressCopyTarget.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            copyAddress();
+                        }
+                    });
+                </script>
+                <div class="route-btns"><a class="naver-map-btn"
+                        href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
+                        rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/naver.jpg"
+                            alt="" aria-hidden="true">
+                        <span>네이버지도</span>
+                    </a>
+                    <a class="kakao-map-btn"
+                        href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%20%EC%95%88%EC%96%91%EC%8B%9C%20%EB%8F%99%EC%95%88%EA%B5%AC%20%EA%B4%80%EC%96%91%EB%A1%9C%20305"
+                        rel="noopener" target="_blank"><img src="https://heesohan.github.io/soheejaewon/kakao.jpg"
+                            alt="" aria-hidden="true">
+                        <span>카카오지도</span>
+                    </a>
+                </div>
             </div>
-            <div class="info-block">
+
+            <div class="info-block reveal">
                 <div class="info-text"><b>주차</b>
                     <strong class="parking-location">주차장 : 서울중앙교회 본당 지하 1층</strong>
                     교회당 만차 시 현장에서 안내 도와 드립니다.
                     [천변 주차장, 대로변 유료 주차장, 인덕원 환승주차장]
                 </div>
             </div>
-            <div class="info-block">
+            <div class="info-block reveal">
                 <div class="info-text"><b>지하철</b>
                     4호선 인덕원역 3번 출구 도보 5분</br></div>
             </div>
-            <div class="info-block">
+            <div class="info-block reveal">
                 <div class="info-text"><b>버스</b>
                     인덕원초교, 인덕원사거리, 인덕원삼성아파트 정류장
                     일반: 1, 1-5, 8, 8-1, 22, 51, 60-1, 103, 303, 777
@@ -1984,10 +2059,10 @@
                     마을: 마8, 12</div>
             </div>
         </section>
-        <section class="section" id="notice">
+        <section class="section reveal" id="notice">
             <h2 class="section-title memo-title">안내 사항</h2>
 
-            <div class="notice-box">
+            <div class="notice-box reveal">
                 <p>
                     <b>식사</b>는 예식 30분 전부터 1층(혹은 B1층) 식당에서 <br>
                     뷔페 형식으로 이용하실 수 있습니다.
@@ -2000,10 +2075,10 @@
             </div>
         </section>
         <section class="section account" id="account">
-            <h2 class="section-title memo-title">마음 전하실 곳</h2>
+            <h2 class="section-title memo-title reveal">마음 전하실 곳</h2>
             <!-- 참석이 어려우신 분들을 위해 조심스럽게 안내드립니다. -->
-            <div class="accordion">
-                <div class="acc-item" id="groomAcc">
+            <div class="accordion reveal">
+                <div class="acc-item reveal" id="groomAcc">
                     <div class="acc-header" onclick="toggleAcc('groomAcc')"><span>신랑측 계좌번호</span><span class="acc-arrow"
                             aria-hidden="true">▾</span></div>
                     <div class="acc-body">
@@ -2026,7 +2101,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="acc-item" id="brideAcc">
+                <div class="acc-item reveal" id="brideAcc">
                     <div class="acc-header" onclick="toggleAcc('brideAcc')"><span>신부측 계좌번호</span><span class="acc-arrow"
                             aria-hidden="true">▾</span></div>
                     <div class="acc-body">
@@ -2051,15 +2126,15 @@
                 </div>
             </div>
         </section>
-        <section id="sec-share" class="section">
-            <h2 class="section-title memo-title">청첩장 전달하기</h2>
-            <div class="share-actions">
+        <section id="sec-share" class="section reveal">
+            <h2 class="section-title memo-title reveal">공유하기</h2>
+            <div class="share-actions reveal">
                 <button type="button" class="share-icon-btn kakao-btn" onclick="shareKakao()" aria-label="카카오톡으로 공유하기">
                     <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M21 3 10.8 13.2"></path>
                         <path d="m21 3-6.5 18-3.7-7.3L3 10.8 21 3Z"></path>
                     </svg>
-                    <span>공유하기</span>
+                    <span>카카오톡</span>
                 </button>
 
                 <button type="button" id="url_copy" class="share-icon-btn copy-url-btn" onclick="copyURL()"
@@ -2071,9 +2146,9 @@
                     <span>복사하기</span>
                 </button>
             </div>
-            <div><img class="share-bottom-image" src="https://heesohan.github.io/soheejaewon/a10.png" alt=""
+            <div class="reveal">
+                <img class="share-bottom-image" src="https://heesohan.github.io/soheejaewon/a10.png" alt=""
                     aria-hidden="true" />
-
                 <p class="copyright">ⓒSHJW</p>
         </section>
     </main>
@@ -2100,13 +2175,13 @@
         /* 디데이, 캘린더 */
         const weddingDate = Date.UTC(2026, 10, 28);
         function updateCountdown() {
-            const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
-            const value = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+            const parts = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date());
+            const value = Object.fromEntries(parts.map(({type, value}) => [type, value]));
             const todayInKorea = Date.UTC(Number(value.year), Number(value.month) - 1, Number(value.day));
             document.getElementById('dday-num').textContent = Math.max(0, Math.round((weddingDate - todayInKorea) / 86400000));
         }
-        updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() { const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => { const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el) }); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) { const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el) } } buildCalendar();
-        function toggleAcc(id) { document.getElementById(id).classList.toggle('open') } async function acctCopy(el) { const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try { await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500) } catch { el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500) } }
+        updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() {const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => {const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el)}); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) {const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el)} } buildCalendar();
+        function toggleAcc(id) {document.getElementById(id).classList.toggle('open')} async function acctCopy(el) {const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try {await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500)} catch {el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500)} }
 
         /* 갤러리 뷰어어 */
         const GALLERY_IMAGES = [
@@ -2130,7 +2205,7 @@
             'https://heesohan.github.io/soheejaewon/2.jpg'
         ];
 
-        GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
+        GALLERY_IMAGES.forEach(src => {const im = new Image(); im.src = src;});
 
         const CARD_TILTS = [
             6, -8, 5, -9, 7, -4, 8, -6, 4,
@@ -2203,7 +2278,7 @@
                 if (!dragging) return;
                 dragging = false;
                 card.classList.remove('dragging');
-                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                if (rafId) {cancelAnimationFrame(rafId); rafId = null;}
 
                 const dist = Math.hypot(curX, curY);
                 if (dist > THROW_THRESHOLD) {
@@ -2237,7 +2312,7 @@
                 card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
                 card.style.opacity = '0';
             });
-            card.addEventListener('transitionend', () => card.remove(), { once: true });
+            card.addEventListener('transitionend', () => card.remove(), {once: true});
 
             cardOrder.push(cardOrder.shift());
             shownCount++;
@@ -2257,7 +2332,7 @@
         let popupIndex = 0;
         let swipeStartX = null, swipeStartY = null;
 
-        function wrapIndex(i) { return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length; }
+        function wrapIndex(i) {return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;}
         function renderViewer(index) {
             popupIndex = wrapIndex(index);
             imgCurEl.src = GALLERY_IMAGES[popupIndex];
@@ -2267,7 +2342,7 @@
                 thumb.setAttribute('aria-current', String(i === popupIndex));
             });
             const active = galleryViewerThumbs.children[popupIndex];
-            if (active) galleryViewerThumbs.scrollTo({ left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant' });
+            if (active) galleryViewerThumbs.scrollTo({left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant'});
         }
         function openPhotoPopup(index) {
             renderViewer(index);
@@ -2284,8 +2359,8 @@
             photoPopup.classList.remove('active');
             document.body.style.overflow = '';
         }
-        function previousPhoto() { renderViewer(popupIndex - 1); }
-        function nextPhoto() { renderViewer(popupIndex + 1); }
+        function previousPhoto() {renderViewer(popupIndex - 1);}
+        function nextPhoto() {renderViewer(popupIndex + 1);}
         GALLERY_IMAGES.forEach((src, i) => {
             const thumb = document.createElement('button');
             thumb.type = 'button'; thumb.className = 'gallery-viewer-thumb';
@@ -2293,13 +2368,13 @@
             const image = document.createElement('img');
             image.src = src; image.alt = ''; image.loading = 'lazy';
             thumb.appendChild(image);
-            thumb.addEventListener('click', event => { event.stopPropagation(); renderViewer(i); });
+            thumb.addEventListener('click', event => {event.stopPropagation(); renderViewer(i);});
             galleryViewerThumbs.appendChild(thumb);
         });
         popupCloseBtn.addEventListener('click', closePhotoPopup);
-        popupPrevBtn.addEventListener('click', event => { event.stopPropagation(); previousPhoto(); });
-        popupNextBtn.addEventListener('click', event => { event.stopPropagation(); nextPhoto(); });
-        photoPopup.addEventListener('click', event => { if (event.target === photoPopup) closePhotoPopup(); });
+        popupPrevBtn.addEventListener('click', event => {event.stopPropagation(); previousPhoto();});
+        popupNextBtn.addEventListener('click', event => {event.stopPropagation(); nextPhoto();});
+        photoPopup.addEventListener('click', event => {if (event.target === photoPopup) closePhotoPopup();});
         photoPopup.addEventListener('pointerdown', event => {
             if (event.target.closest('.popup-nav, .popup-close, #galleryViewerThumbs')) return;
             swipeStartX = event.clientX; swipeStartY = event.clientY;
@@ -2512,16 +2587,16 @@
     </script>
 
     <script>
-        function invitationURL() { return window.location.href.split('#')[0]; }
-        function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000); }
+        function invitationURL() {return window.location.href.split('#')[0];}
+        function showToast(message) {const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);}
         async function copyURL() {
             const url = invitationURL();
-            if (!/^https?:/.test(url)) { showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return; }
+            if (!/^https?:/.test(url)) {showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return;}
             try {
                 if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(url);
-                else { const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed'); }
+                else {const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed');}
                 showToast('청첩장이 복사되었습니다 ✓');
-            } catch (error) { showToast('복사에 실패했습니다'); }
+            } catch (error) {showToast('복사에 실패했습니다');}
         }
         Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
@@ -2605,7 +2680,7 @@
 
             syncMusicUI();
 
-            window.addEventListener('load', playMusic, { once: true });
+            window.addEventListener('load', playMusic, {once: true});
         })();
 
     </script>
@@ -2645,6 +2720,28 @@
                 });
             });
         })();
+    </script>
+    <script>
+        const revealItems = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.15,
+                rootMargin: '0px 0px -60px 0px'
+            }
+        );
+
+        revealItems.forEach((item) => {
+            revealObserver.observe(item);
+        });
     </script>
 </body>
 
