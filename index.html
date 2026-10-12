@@ -7,11 +7,6 @@
     <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
     <title>2026.11.28 최재원, 한소희의 모바일 청첩장</title>
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://heesohan.github.io/soheejaewon/">
-    <meta property="og:title" content="재원, 소희 결혼합니다 ♡">
-    <meta property="og:description" content="2026년 11월 28일 토요일 오후 12시 서울중앙교회 교육원 6층 중강당">
-    <meta property="og:image" content="https://heesohan.github.io/sohee/og.png">
     <meta name="format-detection" content="telephone=no">
 
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
@@ -93,7 +88,6 @@
             margin: 0 auto 8px !important;
         }
 
-        /* 스타일이 site 공통 스타일에 덮이지 않도록 원본 배치 유지 */
         #intro.section {
             padding: clamp(44px, 9vh, 78px) 20px 52px;
         }
@@ -131,7 +125,7 @@
             background-size: 180px 180px, 100% 100%, 100% 100%;
         }
 
-        /* ---------- 배경 하트: 위치·크기 변경은 nth-child 숫자에서 수정 ---------- */
+        /* 배경 하트 */
         .heart-rain {
             position: absolute;
             inset: 0;
@@ -240,7 +234,7 @@
             }
         }
 
-        /* ---------- 봉투·이름·예식 정보 전체 정렬 ---------- */
+        /* 예식 정보 */
         .envelope-intro {
             position: relative;
             z-index: 1;
@@ -250,7 +244,6 @@
             align-items: center;
         }
 
-        /* 봉투와 양각 이름을 함께 이동하는 박스. 날짜는 함께 이동하지 않음 */
         .envelope-wrap {
             position: relative;
             width: var(--envelope-width);
@@ -259,39 +252,29 @@
             transform: translateY(var(--envelope-offset-y));
         }
 
-        /* ===== 봉투 이미지 주소 자리 =====
-   실제 이미지 주소는 HTML의 <img class="envelope-image" src="여기">에서 수정합니다. */
         .envelope-image {
             display: block;
             width: 100%;
             height: auto;
         }
 
-        /* ---------- 봉투 플랩 위 이름 ---------- */
+        /* 봉투 플랩 위 이름 */
         .envelope-name {
             position: absolute;
             z-index: 2;
             top: var(--name-top);
             left: 50%;
             width: calc(100% - 24px);
-            /* 봉투 좌우 끝에서 12px씩 여유 */
             margin: 0;
             padding: 10px 14px;
-            /* 필기체의 긴 위·아래 획이 잘리지 않도록 공간 확보 */
             overflow: visible;
-            /* 글자 장식 획이 영역 밖으로 나가도 표시 */
-
             transform: translateX(-50%);
             text-align: center;
             white-space: nowrap;
-
             font-family: 'Imperial Script', 'Allura', cursive;
-
-            /* 마지막 32px은 모바일에서의 최대 글자 크기 */
             font-size: clamp(15px, 7vw, 32px);
             font-weight: 400;
             line-height: 1.35;
-            /* 위·아래로 뻗는 필기체 획이 잘리지 않게 함 */
             letter-spacing: .01em;
         }
 
@@ -308,24 +291,18 @@
                 1px 1px 1px rgba(110, 98, 80, .42);
         }
 
-        /* ---------- 봉투 아래 예식 일시·장소 ---------- */
+        /* 일시·장소 */
         .envelope-date {
             position: relative;
             z-index: 5;
-            /* 봉투와 겹쳐도 날짜·장소가 항상 맨 앞에 나타남 */
             margin: var(--date-gap) 0 0;
             text-align: center;
-
-            /* ===== 날짜·장소 ===== */
             font-family: 'Special Elite', monospace;
             font-size: 12px;
             font-weight: 400;
             line-height: 2.05;
             letter-spacing: .025em;
-
-            /* 종이에 눌린 양각 글자 효과 */
             color: #ded9cd;
-            /* 얇고 섬세한 양각 */
             text-shadow:
                 -.6px -.6px 1px rgba(255, 255, 255, .85),
                 .6px .6px 1px rgba(110, 98, 80, .32),
@@ -336,7 +313,6 @@
             display: block;
         }
 
-        /* 장소 줄만 따로: 글자 크기와 위쪽 간격 */
         .envelope-date .venue {
             margin-top: 2px;
             font-size: 11px;
@@ -373,7 +349,6 @@
             line-height: 1;
             opacity: 0.65;
 
-            /* 기본 글자색 → 밝게 지나가는 빛 → 기본 글자색 */
             background: linear-gradient(90deg,
                     #77736c 0%,
                     #c8c1b4 42%,
@@ -401,19 +376,16 @@
             }
         }
 
-        /* 봉투를 클릭한 뒤 사진 화면에서는 안내 제거 */
         #intro.opened .click-hint {
             display: none;
         }
 
-        /* 사용자가 동작 줄이기를 켠 경우 반짝임 중지 */
         @media (prefers-reduced-motion: reduce) {
             #intro .click-text {
                 animation: none;
             }
         }
 
-        /* 봉투 탭: 페이지를 새로고침하기 전까지 사진으로 교체 */
         #intro .envelope-wrap {
             cursor: pointer;
             outline-offset: 6px;
@@ -423,7 +395,6 @@
             cursor: default;
         }
 
-        /* intro.png 클릭 유도 효과 */
         #intro .envelope-wrap {
             cursor: pointer;
             transform-origin: center center;
@@ -474,7 +445,7 @@
         }
 
 
-        /* 봉투를 누른 뒤: 인트로 화면 전체를 사진으로 채우기 */
+        /* 봉투를 누른 뒤 */
         #intro.opened {
             position: relative;
             height: 100svh;
@@ -500,7 +471,6 @@
             transform: none;
         }
 
-        /* 기존 봉투 이미지가 011.jpg로 바뀐 뒤 화면에 꽉 채움 */
         #intro.opened .envelope-image {
             display: block;
             width: 100%;
@@ -511,13 +481,11 @@
             object-position: center;
         }
 
-        /* 봉투에 있던 문구는 숨김 */
         #intro.opened .envelope-name,
         #intro.opened .envelope-date {
             display: none;
         }
 
-        /* 사진 하단에만 그라데이션 */
         #intro.opened .envelope-intro::after {
             content: "";
             position: absolute;
@@ -534,7 +502,6 @@
                     transparent 100%);
         }
 
-        /* 추가한 날짜·베뉴 문구를 사진 위 하단에 배치 */
         #intro.opened .intro-venue-info {
             position: absolute;
             z-index: 10;
@@ -553,13 +520,11 @@
             text-shadow: 0 1px 5px rgba(0, 0, 0, .65);
         }
 
-        /* bg가 보이는 메인 영역 확장 */
         #main.main {
             padding-top: 84px;
             padding-bottom: 94px;
         }
 
-        /* 이름택: 메인 내용 가로폭의 50% */
         #main .main-name-tag {
             position: relative;
             width: 50%;
@@ -582,7 +547,6 @@
             white-space: nowrap;
         }
 
-        /* 이름택과 메인 사진 사이의 문구 */
         #main .main-intro-text {
             margin: 0 auto 24px;
             text-align: center;
@@ -618,12 +582,10 @@
             display: block;
         }
 
-        /* 클릭 전에는 문구를 표시하지 않음 */
         #intro .intro-laser-text {
             display: none;
         }
 
-        /* 사진으로 바뀐 뒤 상단에 표시 */
         #intro.opened .intro-laser-text {
             position: absolute;
             z-index: 20;
@@ -645,14 +607,12 @@
             text-shadow: 0 0 2px rgba(43, 45, 46, 0.18);
         }
 
-        /* 글씨가 왼쪽부터 드러나고 마지막 상태를 유지 */
         #intro.opened .intro-laser-words {
             display: block;
             clip-path: inset(0 100% 0 0);
             animation: writeInvitation 3s ease-in-out forwards;
         }
 
-        /* 글씨 끝을 따라가는 작은 빛 */
         #intro.opened .intro-laser-tip {
             position: absolute;
             top: 30%;
@@ -868,7 +828,6 @@
             will-change: transform;
         }
 
-
         .popup-slide {
             width: 100vw;
             height: 100%;
@@ -888,18 +847,12 @@
             -webkit-user-drag: none;
         }
 
-
-        /* 갤러리 제목·카드 스택 우선 적용 */
         #gallery .section-title {
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 18px;
             letter-spacing: .1em;
         }
 
-
-
-
-        /* 갤러리 뷰어: 즉시 사진 교체, 선택 사진만 테두리 */
         #photoPopup {
             background: rgba(0, 0, 0, .7) !important;
         }
@@ -1005,22 +958,18 @@
             object-fit: cover;
         }
 
-        /* 선택하지 않은 썸네일: 프레임 없음 */
         #galleryViewerThumbs .gallery-viewer-thumb {
             padding: 0;
             border: 0;
             background: transparent;
         }
 
-        /* 현재 보고 있는 사진: 1px 프레임 */
         #galleryViewerThumbs .gallery-viewer-thumb.active {
             padding: 0;
             border: 1px solid #f8f4ec;
             background: transparent;
         }
 
-
-        /* 닫기 버튼 안에 얇은 X 그리기 */
         #photoPopup .popup-close::before,
         #photoPopup .popup-close::after {
             content: "";
@@ -1072,21 +1021,21 @@
             border-radius: 8px
         }
 
-        /* 일요일: 요일 글자 + 날짜 숫자 */
+        /* 일요일 */
         .calendar-grid .dow:nth-child(7n + 1),
         .calendar-grid .day:nth-child(7n + 1) {
             color: var(--accent);
             /* 연핑크 #eac7d1 */
         }
 
-        /* 토요일: 요일 글자 + 날짜 숫자 */
+        /* 토요일 */
         .calendar-grid .dow:nth-child(7n),
         .calendar-grid .day:nth-child(7n) {
             color: #b9d9ea;
             /* 연하늘색 */
         }
 
-        /* 결혼식 날짜 28일: 정사각형 핑크 박스 */
+        /* 결혼식 날짜 28일 */
         .calendar-grid .day.highlight {
             width: 32px;
             aspect-ratio: 1 / 1;
@@ -1139,8 +1088,6 @@
             line-height: 1.8;
             margin: 25 0 0px
         }
-
-
 
         /* ===== 지도 ===== */
 
@@ -1447,9 +1394,7 @@
             gap: 10px;
             width: 100%;
             max-width: 300px;
-            /* 두 버튼 묶음의 전체 너비 */
             margin: 0 auto 48px;
-            /* 버튼 아래 여백 */
         }
 
         #location .route-btns a {
@@ -1537,7 +1482,6 @@
             font-weight: 300 !important;
         }
 
-        /* 버튼 전체 */
         #sec-share .share-icon-btn {
             position: relative;
             width: 72px;
@@ -1554,7 +1498,6 @@
             text-align: center;
         }
 
-        /* 원 (배경) */
         #sec-share .share-icon-btn::before {
             content: "";
             position: absolute;
@@ -1574,17 +1517,14 @@
             margin: 70px auto 0;
         }
 
-        /* 카카오 키컬러 원 */
         #sec-share .kakao-btn::before {
             background: #ec8db3;
         }
 
-        /* 복사 버튼 원 */
         #sec-share .copy-url-btn::before {
             background: #ec8db3;
         }
 
-        /* 아이콘 공통 */
         #sec-share .share-icon {
             position: absolute;
             left: 50%;
@@ -1598,7 +1538,7 @@
             pointer-events: none;
         }
 
-        /* 공유하기 종이비행기 버튼 */
+        /* 공유하기 버튼 */
         #sec-share .paper-plane {
             fill: none !important;
             stroke: #ffe7ee;
@@ -1618,13 +1558,10 @@
             transform: translate(calc(-50% + 2px), -50%);
         }
 
-
-        /* 눌렀을 때 살짝 축소 */
         #sec-share .share-icon-btn:active {
             transform: scale(.94);
         }
 
-        /* 키보드 접근성 */
         #sec-share .share-icon-btn:focus-visible {
             outline: 2px solid #fee500;
             outline-offset: 5px;
@@ -1665,7 +1602,7 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* 하트 점형 이퀄라이저 */
+        /* 하트 이퀄라이저 */
         #music-toggle {
             position: fixed;
             top: max(14px, env(safe-area-inset-top));
@@ -1752,7 +1689,7 @@
             font-weight: 400;
         }
 
-        /* 페이지 맨 위·맨 아래 이동 버튼 */
+        /* 페이지 이동 버튼 */
         .scroll-controls {
             position: fixed;
             right: max(16px, env(safe-area-inset-right));
@@ -2296,7 +2233,6 @@
         }
         function closePhotoPopup() {
             if (!photoPopup.classList.contains('active')) return;
-            // 팝업 마지막 사진을 갤러리 카드 스택의 첫 번째 사진으로 이동.
             const pos = cardOrder.indexOf(popupIndex);
             if (pos !== -1 && pos !== 0) cardOrder.unshift(cardOrder.splice(pos, 1)[0]);
             shownCount = popupIndex + 1;
@@ -2416,7 +2352,6 @@
             viewer.addEventListener('pointerdown', event => {
                 if (!isPhoto(event)) return;
 
-                // 기존 뷰어의 탭/스와이프 처리와 중복 실행되지 않도록 함
                 event.stopImmediatePropagation();
 
                 image.setPointerCapture(event.pointerId);
@@ -2472,7 +2407,6 @@
                 pointers.delete(event.pointerId);
 
                 if (pinched) {
-                    // 핀치 직후 손을 뗀 동작을 '한 번 탭'으로 오인해 닫지 않음
                     ignoreTapUntil = Date.now() + 350;
                     if (pointers.size === 0) pinched = false;
                     return;
@@ -2520,7 +2454,6 @@
                 pinched = false;
             }, true);
 
-            // 다음 사진으로 바뀌면 확대 상태 해제
             new MutationObserver(() => {
                 clearTimeout(closeTimer);
                 resetZoom();
