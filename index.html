@@ -1915,6 +1915,33 @@
                 animation: none;
             }
         }
+
+        /* ===== 오로라 경량화 ===== */
+
+        /* 안개빛은 움직이지 않게 하고 블러를 줄임 */
+        .aurora-sky .aurora-haze {
+            animation: none;
+            filter: blur(14px);
+            opacity: 0.65;
+        }
+
+        /* 별은 기본적으로 고정 */
+        .aurora-sky .aurora-star {
+            animation: none;
+            opacity: 0.25;
+        }
+
+        /* 별 5개 중 1개만 반짝이기 */
+        .aurora-sky .aurora-star:nth-of-type(5n) {
+            animation: auroraTwinkle var(--star-speed) ease-in-out var(--star-delay) infinite alternate;
+        }
+
+        /* 사용자 모션 감소 설정 유지 */
+        @media (prefers-reduced-motion: reduce) {
+            .aurora-sky .aurora-star:nth-of-type(5n) {
+                animation: none;
+            }
+        }
     </style>
 </head>
 
@@ -1987,10 +2014,10 @@
                                 <rect x="-200" y="0" width="1400" height="650" fill="url(#fade0)" />
                             </mask>
                             <filter id="soft0" x="-30%" y="-60%" width="160%" height="220%">
-                                <feGaussianBlur stdDeviation="11 15" />
+                                <feGaussianBlur stdDeviation="6 9" />
                             </filter>
                             <filter id="edge0" x="-30%" y="-60%" width="160%" height="220%">
-                                <feGaussianBlur stdDeviation="4 9" />
+                                <feGaussianBlur stdDeviation="2 5" />
                             </filter>
                         </defs>
                         <path
