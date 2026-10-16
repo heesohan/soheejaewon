@@ -1803,7 +1803,19 @@ body { isolation: isolate; }
 .desktop-aurora .aurora-panel:nth-child(2) { top:8%; }
 .desktop-aurora .aurora-panel:nth-child(3),
 .desktop-aurora .aurora-panel:nth-child(4) { display:none; }
-@media (max-width:480px) { .desktop-aurora { display:none; } }
+@media (max-width: 480px) {
+    .desktop-aurora {
+        display: block;
+    }
+
+    .site {
+        background: rgba(45, 45, 45, 0.95);
+    }
+
+    #sec-share {
+        background: transparent;
+    }
+}
 
 
 /* Extend vertical rays upward without changing the lower contour. */
