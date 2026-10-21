@@ -2517,20 +2517,18 @@ async function playMusic() {
     try {
         await audio.play();
 
-        // 잠금 화면에 표시할 음악 정보와 커버
         if ('mediaSession' in navigator && 'MediaMetadata' in window) {
             try {
                 navigator.mediaSession.metadata = new MediaMetadata({
-                    title: '재원 ♥ 소희의 결혼식',
-                    artist: '2026.11.28',
-                    album: '모바일 청첩장',
+                    title: '재원 ♥ 소희의 결혼식에 초대합니다.',
+                    artist: 'SHJW',
+                    album: '2026.11.28 12:00PM',
                     artwork: [
                         {
                             src: new URL(
                                 './music-cover.jpg',
                                 document.baseURI
                             ).href,
-                            sizes: '1200x600',
                             type: 'image/jpeg'
                         }
                     ]
