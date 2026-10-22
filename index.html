@@ -319,7 +319,7 @@
             letter-spacing: .015em;
         }
 
-       /* click! */
+        /* click! */
         #intro .click-hint {
             position: absolute;
             z-index: 20;
@@ -329,8 +329,9 @@
             display: flex;
             align-items: center;
             pointer-events: none;
-            }
-        #intro .cursor-image{
+        }
+
+        #intro .cursor-image {
             display: block;
             width: 15px;
             height: auto;
@@ -344,7 +345,7 @@
             margin: 0;
             white-space: nowrap;
             transform: translateY(-18px);
-            font-family: "Betania Patmos In",'NostalgicGukhanbakOchungiWriterKim', sans-serif;
+            font-family: "Betania Patmos In", 'NostalgicGukhanbakOchungiWriterKim', sans-serif;
             font-size: 15px;
             line-height: 1;
             opacity: 0.65;
@@ -1176,8 +1177,8 @@
             text-align: center;
         }
 
-        #notice .memo-title {
-            margin: 0 auto 14px;
+        #notice .memo-title .ko {
+            margin-bottom: 14px;
         }
 
         #notice .notice-box {
@@ -1316,53 +1317,36 @@
             line-height: 46.4px;
         }
 
-        #location .memo-title,
-        #notice .memo-title,
-        #account .memo-title,
-        #sec-share .memo-title {
-            position: relative;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-
-            width: min(35.533%, 105px);
-            height: 34px;
-            aspect-ratio: auto;
-            padding: 0 4.333%;
-            margin: 0 auto 30px;
-
-            background: #e9dfc9;
-            border: 1px solid #e9dfc9;
-            border-radius: 50%;
-
-            color: #363232;
-            /* 글자색 */
-            font-family: 'Pretendard', sans-serif;
-            font-size: clamp(11px, 2.5vw, 13px);
-            font-weight: 600;
-            line-height: 1.2;
-            letter-spacing: -0.06em;
-            white-space: nowrap;
+        .memo-title {
+            margin: 0;
             text-align: center;
         }
 
-        #location .memo-title::after,
-        #notice .memo-title::after,
-        #account .memo-title::after,
-        #sec-share .memo-title::after {
-            content: "";
-            position: absolute;
-            inset: 2.4px 3.2px;
-            /* 여백 */
+        .memo-title .en {
+            display: block;
+            margin: 20px auto 4px;
 
-            border: 5px solid rgb(50, 42, 45, 0.02);
-            border-radius: 50%;
-            pointer-events: none;
+            color: var(--text);
+            font-family: 'NostalgicGukhanbakOchungiWriterKim', sans-serif;
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: .02em;
         }
 
-        #location .memo-title {
+        .memo-title .ko {
+            display: block;
+            margin: 0 auto 30px;
+
+            color: rgba(255, 255, 255, .75);
+            font-family: 'Pretendard', sans-serif;
+            font-size: 13px;
+            font-weight: normal;
+            line-height: 1.8;
+            letter-spacing: 0;
+        }
+
+        #location .memo-title .ko {
             margin-bottom: 8px;
         }
 
@@ -1792,7 +1776,8 @@
                     <!-- 움직이는 사진 -->
 
                     <h1 class="envelope-name">Jaewon and Sohee</h1>
-                    <div class="click-hint"><img class="cursor-image" src="https://heesohan.github.io/soheejaewon/cursor.png" />
+                    <div class="click-hint"><img class="cursor-image"
+                            src="https://heesohan.github.io/soheejaewon/cursor.png" />
                         <span class="click-text">click!!</span>
                     </div>
                 </div>
@@ -1845,7 +1830,11 @@
             <p class="dday-text reveal">최재원 ♥ 한소희의 결혼식이<br><span id="dday-num">00</span>일 남았습니다</p>
         </section>
         <section class="section location reveal" id="location">
-            <h2 class="section-title memo-title reveal">오시는 길</h2>
+            <!-- 오시는 길 -->
+            <h2 class="section-title memo-title reveal">
+                <span class="en">Location</span>
+                <span class="ko">오시는 길</span>
+            </h2>
             <div class="reveal">
                 <p class="address copy-address" role="button" tabindex="0" aria-label="주소 복사하기">
                     경기 안양시 동안구 관양로 305
@@ -1942,7 +1931,11 @@
             </div>
         </section>
         <section class="section reveal" id="notice">
-            <h2 class="section-title memo-title">안내 사항</h2>
+            <!-- 안내 사항 -->
+            <h2 class="section-title memo-title reveal">
+                <span class="en">Notice</span>
+                <span class="ko">안내 사항</span>
+            </h2>
 
             <div class="notice-box reveal">
                 <p>
@@ -1957,7 +1950,11 @@
             </div>
         </section>
         <section class="section account" id="account">
-            <h2 class="section-title memo-title reveal">마음 전하실 곳</h2>
+            <!-- 마음 전하실 곳 -->
+            <h2 class="section-title memo-title reveal">
+                <span class="en">Gifts</span>
+                <span class="ko">마음 전하실 곳</span>
+            </h2>
             <!-- 참석이 어려우신 분들을 위해 조심스럽게 안내드립니다. -->
             <div class="accordion reveal">
                 <div class="acc-item reveal" id="groomAcc">
@@ -2009,7 +2006,11 @@
             </div>
         </section>
         <section id="sec-share" class="section reveal">
-            <h2 class="section-title memo-title reveal">공유하기</h2>
+            <!-- 공유하기 -->
+            <h2 class="section-title memo-title reveal">
+                <span class="en">Share</span>
+                <span class="ko">공유하기</span>
+            </h2>
             <div class="share-actions reveal">
                 <button type="button" class="share-icon-btn kakao-btn" onclick="shareKakao()" aria-label="카카오톡으로 공유하기">
                     <svg class="share-icon paper-plane" viewBox="0 0 24 24" aria-hidden="true">
@@ -2057,13 +2058,13 @@
         /* 디데이, 캘린더 */
         const weddingDate = Date.UTC(2026, 10, 28);
         function updateCountdown() {
-            const parts = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date());
-            const value = Object.fromEntries(parts.map(({type, value}) => [type, value]));
+            const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+            const value = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
             const todayInKorea = Date.UTC(Number(value.year), Number(value.month) - 1, Number(value.day));
             document.getElementById('dday-num').textContent = Math.max(0, Math.round((weddingDate - todayInKorea) / 86400000));
         }
-        updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() {const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => {const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el)}); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) {const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el)} } buildCalendar();
-        function toggleAcc(id) {document.getElementById(id).classList.toggle('open')} async function acctCopy(el) {const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try {await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500)} catch {el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500)} }
+        updateCountdown(); setInterval(updateCountdown, 60000); function buildCalendar() { const grid = document.getElementById('calendar-grid');['일', '월', '화', '수', '목', '금', '토'].forEach(x => { const el = document.createElement('div'); el.className = 'dow'; el.textContent = x; grid.append(el) }); const first = new Date(2026, 10, 1).getDay(); for (let i = 0; i < first; i++)grid.append(document.createElement('div')); for (let d = 1; d <= 30; d++) { const el = document.createElement('div'); el.className = 'day' + (d === 28 ? ' highlight' : ''); el.textContent = d; grid.append(el) } } buildCalendar();
+        function toggleAcc(id) { document.getElementById(id).classList.toggle('open') } async function acctCopy(el) { const value = el.closest('.acct-card').querySelector('.acct-bank').textContent.trim(); try { await navigator.clipboard.writeText(value); el.textContent = '복사됨'; setTimeout(() => el.textContent = '복사', 1500) } catch { el.textContent = '복사 실패'; setTimeout(() => el.textContent = '복사', 1500) } }
 
         /* 갤러리 뷰어어 */
         const GALLERY_IMAGES = [
@@ -2087,7 +2088,7 @@
             'https://heesohan.github.io/soheejaewon/2.jpg'
         ];
 
-        GALLERY_IMAGES.forEach(src => {const im = new Image(); im.src = src;});
+        GALLERY_IMAGES.forEach(src => { const im = new Image(); im.src = src; });
 
         const CARD_TILTS = [
             6, -8, 5, -9, 7, -4, 8, -6, 4,
@@ -2160,7 +2161,7 @@
                 if (!dragging) return;
                 dragging = false;
                 card.classList.remove('dragging');
-                if (rafId) {cancelAnimationFrame(rafId); rafId = null;}
+                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
 
                 const dist = Math.hypot(curX, curY);
                 if (dist > THROW_THRESHOLD) {
@@ -2194,7 +2195,7 @@
                 card.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${x * 0.15}deg)`;
                 card.style.opacity = '0';
             });
-            card.addEventListener('transitionend', () => card.remove(), {once: true});
+            card.addEventListener('transitionend', () => card.remove(), { once: true });
 
             cardOrder.push(cardOrder.shift());
             shownCount++;
@@ -2214,7 +2215,7 @@
         let popupIndex = 0;
         let swipeStartX = null, swipeStartY = null;
 
-        function wrapIndex(i) {return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;}
+        function wrapIndex(i) { return ((i % GALLERY_IMAGES.length) + GALLERY_IMAGES.length) % GALLERY_IMAGES.length; }
         function renderViewer(index) {
             popupIndex = wrapIndex(index);
             imgCurEl.src = GALLERY_IMAGES[popupIndex];
@@ -2224,7 +2225,7 @@
                 thumb.setAttribute('aria-current', String(i === popupIndex));
             });
             const active = galleryViewerThumbs.children[popupIndex];
-            if (active) galleryViewerThumbs.scrollTo({left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant'});
+            if (active) galleryViewerThumbs.scrollTo({ left: Math.max(0, active.offsetLeft - galleryViewerThumbs.clientWidth / 2 + active.clientWidth / 2), behavior: 'instant' });
         }
         function openPhotoPopup(index) {
             renderViewer(index);
@@ -2240,8 +2241,8 @@
             photoPopup.classList.remove('active');
             document.body.style.overflow = '';
         }
-        function previousPhoto() {renderViewer(popupIndex - 1);}
-        function nextPhoto() {renderViewer(popupIndex + 1);}
+        function previousPhoto() { renderViewer(popupIndex - 1); }
+        function nextPhoto() { renderViewer(popupIndex + 1); }
         GALLERY_IMAGES.forEach((src, i) => {
             const thumb = document.createElement('button');
             thumb.type = 'button'; thumb.className = 'gallery-viewer-thumb';
@@ -2249,13 +2250,13 @@
             const image = document.createElement('img');
             image.src = src; image.alt = ''; image.loading = 'lazy';
             thumb.appendChild(image);
-            thumb.addEventListener('click', event => {event.stopPropagation(); renderViewer(i);});
+            thumb.addEventListener('click', event => { event.stopPropagation(); renderViewer(i); });
             galleryViewerThumbs.appendChild(thumb);
         });
         popupCloseBtn.addEventListener('click', closePhotoPopup);
-        popupPrevBtn.addEventListener('click', event => {event.stopPropagation(); previousPhoto();});
-        popupNextBtn.addEventListener('click', event => {event.stopPropagation(); nextPhoto();});
-        photoPopup.addEventListener('click', event => {if (event.target === photoPopup) closePhotoPopup();});
+        popupPrevBtn.addEventListener('click', event => { event.stopPropagation(); previousPhoto(); });
+        popupNextBtn.addEventListener('click', event => { event.stopPropagation(); nextPhoto(); });
+        photoPopup.addEventListener('click', event => { if (event.target === photoPopup) closePhotoPopup(); });
         photoPopup.addEventListener('pointerdown', event => {
             if (event.target.closest('.popup-nav, .popup-close, #galleryViewerThumbs')) return;
             swipeStartX = event.clientX; swipeStartY = event.clientY;
@@ -2465,16 +2466,16 @@
     </script>
 
     <script>
-        function invitationURL() {return window.location.href.split('#')[0];}
-        function showToast(message) {const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);}
+        function invitationURL() { return window.location.href.split('#')[0]; }
+        function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2000); }
         async function copyURL() {
             const url = invitationURL();
-            if (!/^https?:/.test(url)) {showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return;}
+            if (!/^https?:/.test(url)) { showToast('웹에 게시된 청첩장 주소만 복사할 수 있습니다'); return; }
             try {
                 if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(url);
-                else {const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed');}
+                else { const field = document.createElement('textarea'); field.value = url; field.style.position = 'fixed'; field.style.opacity = '0'; document.body.appendChild(field); field.select(); const success = document.execCommand('copy'); field.remove(); if (!success) throw new Error('copy failed'); }
                 showToast('청첩장이 복사되었습니다 ✓');
-            } catch (error) {showToast('복사에 실패했습니다');}
+            } catch (error) { showToast('복사에 실패했습니다'); }
         }
         Kakao.init('4f42ab1fd91b25daa60b72bd847f7ded');
 
@@ -2511,48 +2512,48 @@
                 );
             }
 
-async function playMusic() {
-    userTurnedOff = false;
+            async function playMusic() {
+                userTurnedOff = false;
 
-    try {
-        await audio.play();
+                try {
+                    await audio.play();
 
-        if ('mediaSession' in navigator && 'MediaMetadata' in window) {
-            try {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: '재원 ♥ 소희의 모바일 청첩장',
-                    artist: '2026.11.28 12:00PM',
-                    album: 'SHJW',
-                    artwork: [
-                        {
-                            src: new URL(
-                                './music-cover.jpg',
-                                document.baseURI
-                            ).href,
-                            sizes: '1066x600',
-                            type: 'image/jpeg'
+                    if ('mediaSession' in navigator && 'MediaMetadata' in window) {
+                        try {
+                            navigator.mediaSession.metadata = new MediaMetadata({
+                                title: '재원 ♥ 소희의 모바일 청첩장',
+                                artist: '2026.11.28 12:00PM',
+                                album: 'SHJW',
+                                artwork: [
+                                    {
+                                        src: new URL(
+                                            './music-cover.jpg',
+                                            document.baseURI
+                                        ).href,
+                                        sizes: '1066x600',
+                                        type: 'image/jpeg'
+                                    }
+                                ]
+                            });
+                        } catch (metadataError) {
+                            console.warn('음악 커버 설정 오류:', metadataError);
                         }
-                    ]
-                });
-            } catch (metadataError) {
-                console.warn('음악 커버 설정 오류:', metadataError);
+                    }
+
+                    syncMusicUI();
+
+                } catch (error) {
+                    syncMusicUI();
+                    console.error('음악 재생 오류:', error);
+
+                    if (error.name === 'NotAllowedError') {
+                        showToast('브라우저가 자동재생을 차단했습니다.');
+                    } else if (!warned) {
+                        warned = true;
+                        showToast('음원을 불러올 수 없습니다.');
+                    }
+                }
             }
-        }
-
-        syncMusicUI();
-
-    } catch (error) {
-        syncMusicUI();
-        console.error('음악 재생 오류:', error);
-
-        if (error.name === 'NotAllowedError') {
-            showToast('브라우저가 자동재생을 차단했습니다.');
-        } else if (!warned) {
-            warned = true;
-            showToast('음원을 불러올 수 없습니다.');
-        }
-    }
-}
 
             function pauseMusic() {
                 userTurnedOff = true;
@@ -2582,7 +2583,7 @@ async function playMusic() {
 
             syncMusicUI();
 
-            window.addEventListener('load', playMusic, {once: true});
+            window.addEventListener('load', playMusic, { once: true });
         })();
 
     </script>
